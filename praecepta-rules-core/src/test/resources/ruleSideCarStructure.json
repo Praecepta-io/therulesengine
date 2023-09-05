@@ -1,0 +1,61 @@
+{
+	"RuleGrpName" : "",
+	"PreRuleGrp" : [
+		"sideCarTypes" : [
+				{ "order" : "1"
+					"sideCarType" : "PARSER",
+					"type" : "JSON",
+					"sideCarConfigs" : {
+						[ 
+							{"configpropName": "", "configpropValue": ""},
+							{"configpropName": "", "configpropValue": ""}
+						]	
+					}
+				},
+				{ "order" : "2"
+					"sideCarType" : "ENR",
+					"type" : "SIMPLE_API",
+					"sideCarConfigs" : {
+						[ 
+							{"configpropName": "", "configpropValue": ""},
+							{"configpropName": "", "configpropValue": ""}
+						]	
+					}
+				},
+		]
+	],
+	
+	"RuleLevelSideCars" : [
+	
+		{
+			"RuleName" : "RuleName 1",
+			"PreRule" : [
+				PARSER, FOR, ENR
+			],
+			"PostRule" : [
+				PARSER, ENR
+			],
+		},
+		
+		{
+			"RuleName" : "RuleName 2",
+			"PreRule" : [
+				PARSER, ENR
+			],
+			"PostRule" : [
+				PARSER : {
+					
+				
+				}, ENR : {
+					
+				}, FORMAT
+			],
+		},
+	
+	],
+	
+	"PostRuleGrp" : [
+		PARSER, ENR
+	]
+	
+}

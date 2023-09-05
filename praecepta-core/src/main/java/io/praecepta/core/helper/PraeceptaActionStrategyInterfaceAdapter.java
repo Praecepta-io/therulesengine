@@ -1,0 +1,35 @@
+package io.praecepta.core.helper;
+
+
+import java.lang.reflect.Type;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+
+public class PraeceptaActionStrategyInterfaceAdapter<T> implements IPraeceptaInterfaceAdapter {
+
+    public T deserialize(JsonElement jsonElement, Type type,
+                         JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        Class klass = getObjectClass(PraeceptaActionTypeEnum.valueOf(jsonObject.get("actionStrategy").getAsString()).getClassName());
+        return jsonDeserializationContext.deserialize(jsonObject, klass);
+    }
+    public JsonElement serialize(Object jsonElement, Type type, JsonSerializationContext jsonSerializationContext) {
+       return jsonSerializationContext.serialize(jsonElement);
+    }
+    /****** Helper method to get the className of the object to be deserialized *****/
+    public Class getObjectClass(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            //e.printStackTrace();
+            throw new JsonParseException(e.getMessage());
+        }
+    }
+
+
+}

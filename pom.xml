@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.praecepta.common</groupId>
+	<artifactId>praecepta</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>praecepta-common</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<!-- <springframework.version>5.0.6.RELEASE</springframework.version> <springboot.version>2.0.1.RELEASE</springboot.version> -->
+
+		<springframework.version>4.3.7.RELEASE</springframework.version>
+		<springboot.version>1.5.2.RELEASE</springboot.version>
+
+		<junit.version>4.12</junit.version>
+
+		<slf4j.version>1.6.6</slf4j.version>
+		<common.version>${project.version}</common.version>
+
+		<logback.version>1.2.3</logback.version>
+
+		<java.version>1.8</java.version>
+		<kafka.version>3.4.0</kafka.version>
+		<activemq.version>5.18.1</activemq.version>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-to-slf4j</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+				<logViolationsToConsole>true</logViolationsToConsole>
+					<configLocation>checkStyle.xml</configLocation>
+					<configLocation>sun_checks.xml</configLocation>
+					<configLocation>praecepta-checkStyle.xml</configLocation>
+					<configLocation>google_checks.xml</configLocation>
+					<encoding>UTF-8</encoding>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>true</failsOnError>
+					<linkXRef>false</linkXRef>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin> -->
+		</plugins>
+	</build>
+
+	<modules>
+		<module>praecepta-core</module>
+		<module>praecepta-dao</module>
+		
+		<module>praecepta-rules-core</module>
+		<module>praecepta-rules-sidecars-to</module>
+		
+		<module>praecepta-rules-dao</module>
+		<module>praecepta-rules-setup</module>
+		<module>praecepta-rules-evaluators</module>
+		<module>praecepta-rules-actions</module>
+		
+		<module>praecepta-rules-engine</module>
+		
+		<module>praecepta-rules-dto</module>
+		
+    </modules>
+</project>
