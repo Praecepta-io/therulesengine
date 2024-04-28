@@ -1,3 +1,4 @@
+## Author - Rajasrikar Rao Punugoti
 # Praecepta - The Rules Engine - https://www.praecepta.io/
 Efficient, Salable, Reliable and Cost Effective Orchestration Business Rules Engine for Polyglot Software Systems
 
@@ -10,7 +11,7 @@ Praecepta is a modern and intelligent globally distributed multi tenanat busines
 
 $${\color{blue}**Microservices Architecture**}$$
 
-$${\color{green}Rule SetUp, Execution, Software As A Service [SAAS]}$$
+$${\color{green}Rule SetUp, Execution, Software As A Service [SAAS]}$$ 
 
 Highly scalable, elastic multi-tenant and decoupled responsive microservices that can operate in any environment or platform can bootstrap Rule space setup and exection engine in an effective manner. It also offers a powerful Software as a Service (SaaS) layer which can quickly deliver the needs of end users.
 
@@ -39,4 +40,17 @@ $${\color{green}No-Code, Connectors, Sidecars}$$
 Out of the box configuration driven connectors make data ingestion from Relational, NoSQL and Real time Streaming sources easy. Sophisticated and fully functional modern operational UI provided to visualize and define the initialization of rules engine set up and execution [no programming language is required]. Orchstrate to Parse, Enrich and Format using extensibile sidecar mechanism for pre and post rule space execution.
 
 ![image](https://github.com/Praecepta-io/therulesengine/assets/122503259/00748801-33ed-4b99-afd3-626280699ff8)
+
+
+# Using Praecepta Application
+
+- [x] Code Checkout :
+
+- [x] Building The Application :
+       
+- [x] Running The Application :
+
+
+> [!NOTE]
+> This Code is Licensed to use Open Souce Projects Only
 
