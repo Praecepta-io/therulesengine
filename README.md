@@ -44,13 +44,115 @@ Out of the box configuration driven connectors make data ingestion from Relation
 
 # Using Praecepta Application
 
+- [x] Softwares Required :
+1. `Java Development Kit [JDK] 8`
+2. `Maven 3.2.5`
+3. `Git Tools`
 - [x] Code Checkout :
-
+1. `Create a new Folder with Name - Praecepta in 'C' folder`
+2. `Open Command Prompt and type --> cd C:\Praecepta`
+3. `git clone https://github.com/Praecepta-io/therulesengine.git`
 - [x] Building The Application :
-       
-- [x] Running The Application :
+1. `Go to folder --> cd C:\Praecepta\therulesengine`
+2. `Execute command --> mvn clean install`      
+- [x] Running The Application With Different Options:
+1. `Rules Set Up On A Default Port and Rules Set Up Properties File`
+- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-rules-api\target`
+- `Execute Following Commoand --> java  -cp xploretech-rules-api-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleGroupApiLauncher`
+- `Open API Swagger --> http://localhost:4567/swaggerJson/ruleSpaceController and http://localhost:4567/swaggerJson/ruleGroupController`
+2. `Rules Set Up On A Port Specified and Rules Set Up Properties File Provided`
+- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-rules-api\target`
+- `Execute Following Commoand --> java -Dserver.port=8080 -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-rules-api-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleGroupApiLauncher`
+- `Open API Swagger --> http://localhost:8080/swaggerJson/ruleSpaceController and http://localhost:8080/swaggerJson/ruleGroupController`
+3. `Run Rules Execution by Passing the Rules Input in An API call`
+- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-orchestration-rules-executors\target`
+- `Execute Following Commoand --> java -cp xploretech-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleExecutorApiLauncher`
+- `Open API Swagger --> http://localhost:4567/swaggerJson/ruleExecutionController`
+4. `Run Rules Execution by Passing the Rules Input in An API call With a Specified Port and Rules Set Up Properties File Provided`
+- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-orchestration-rules-executors\target`
+- `Execute Following Commoand --> java -Dserver.port=8080 -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleExecutorApiLauncher`
+- `Open API Swagger --> http://localhost:8080/swaggerJson/ruleExecutionController`
+5. `Run Rules Execution by Passing the Rules Input in a Message Broker`
+- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-rules-executors\target`
+- `Execute Following Commoand --> java -cp xploretech-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rules.executor.XploretechRulesExecutorLauncher`
+6. `Run Rules Execution by Passing the Rules Input in a Message Broker with Different Data Collector and Rules Set Up Properties File Provided`
+- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-rules-executors\target`
+- `Execute Following Commoand --> java -Dxploretech.rule.data.collector.props.location=data-collector.properties -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-rules-
+executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rules.executor.XploretechRulesExecutorLauncher`
 
+### Sample Rule Set Up Property File
+````
+# SQL_DB, FILE_SYSTEM, CACHE, NO_SQL_DB, REST_API 
+rule_loader_type=FILE_SYSTEM
 
+#--------- Start here for SQL DB Specific --------------
+
+# Mandatory Field if <b>rule_loader_type</b> is SQL_DB
+# Supported SQL DB's are MySQL, Oracle, H2, Postgres, SQLServer
+SQL_DB.type=
+
+SQL_DB.connection_props.MySQL.db.driver=com.mysql.jdbc.Driver
+SQL_DB.connection_props.MySQL.db.url=jdbc:mysql://127.0.0.1:3306/praecepta?autoReconnect=true
+SQL_DB.connection_props.MySQL.db.username=root
+SQL_DB.connection_props.MySQL.db.password=root
+SQL_DB.connection_props.MySQL.db.dialect=org.hibernate.dialect.MySQLDialect
+SQL_DB.connection_props.MySQL.show_sql=true
+SQL_DB.connection_props.MySQL.model.packages=org.xploretech.rules.hub.dbbased.model
+
+# DB Connection Props. 
+# All DB Props should be prefix with --> SQL_DB.connection_props.<SQL_DB.type>
+#SQL_DB.connection_props.MySQL.ip=
+#SQL_DB.connection_props.MySQL.port=
+#SQL_DB.connection_props.MySQL.user_name=
+
+#--------- End here for SQL DB Specific --------------
+
+#--------- Start here for File System Specific --------------
+
+# Mandatory Field if <b>rule_loader_type</b> is FILE_SYSTEM
+# Supported File Systems are Windows, Unix
+FILE_SYSTEM.type=Windows
+
+# File System Props. 
+# All File System prefix with --> FILE_SYSTEM.connection_props.<FILE_SYSTEM.type>
+FILE_SYSTEM.connection_props.Windows.folder_name=G:\\Praecepta\\IntegrationTest
+FILE_SYSTEM.connection_props.Windows.file_name=praeceptaMetaData.json
+
+#--------- End here for File System Specific --------------
+
+#--------- Start here for No SQL Specific --------------
+
+# Mandatory Field if <b>rule_loader_type</b> is NO_SQL_DB
+# Supported File Systems are MongoDb, Cassandra, ElasticSearch, DynamoDb
+NO_SQL_DB.type=
+
+# File System Props. 
+# All File System prefix with --> FILE_SYSTEM.connection_props.<FILE_SYSTEM.type>
+NO_SQL_DB.connection_props.ElasticSearch.ip=
+NO_SQL_DB.connection_props.ElasticSearch.port=
+NO_SQL_DB.connection_props.ElasticSearch.user_name=
+NO_SQL_DB.connection_props.ElasticSearch.password=
+
+#--------- End here for No SQL Specific --------------
+````
+### Sample Data Collector Property File
+````
+# KAFKA, AMQ,REST
+data_collector_type=KAFKA
+
+#collector type KAFKA props
+KAFKA.connection_props.bootstrap.servers=localhost:9092
+KAFKA.connection_props.port=9092
+KAFKA.connection_props.userName=test
+KAFKA.connection_props.password=test
+KAFKA.connection_props.max.timeout=200
+KAFKA.connection_props.key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+KAFKA.connection_props.value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+KAFKA.connection_props.group.id=test_xploretech
+KAFKA.connection_props.kafka.receiver.topic=TEST.TOPIC
+KAFKA.connection_props.max.poll.records=10
+KAFKA.connection_props.auto.offset.reset=earliest
+````
 > [!NOTE]
 > This Code is Licensed to use Open Souce Projects Only
 
