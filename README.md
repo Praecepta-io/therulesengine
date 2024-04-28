@@ -57,28 +57,50 @@ Out of the box configuration driven connectors make data ingestion from Relation
 2. `Execute command --> mvn clean install`      
 - [x] Running The Application With Different Options:
 1. `Rules Set Up On A Default Port and Rules Set Up Properties File`
-- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-rules-api\target`
-- `Execute Following Commoand --> java  -cp xploretech-rules-api-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleGroupApiLauncher`
-- `Open API Swagger --> http://localhost:4567/swaggerJson/ruleSpaceController and http://localhost:4567/swaggerJson/ruleGroupController`
+   
+| Description | Command |
+| --- | --- |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-rules-api\target` |
+| `Execute Following Commoand ` | `java  -cp xploretech-rules-api-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleGroupApiLauncher` |
+| `Open API Swagger ` | `http://localhost:4567/swaggerJson/ruleSpaceController and http://localhost:4567/swaggerJson/ruleGroupController` |
+
 2. `Rules Set Up On A Port Specified and Rules Set Up Properties File Provided`
-- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-rules-api\target`
-- `Execute Following Commoand --> java -Dserver.port=8080 -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-rules-api-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleGroupApiLauncher`
-- `Open API Swagger --> http://localhost:8080/swaggerJson/ruleSpaceController and http://localhost:8080/swaggerJson/ruleGroupController`
+   
+| Description | Command |
+| --- | --- |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-rules-api\target` |
+| `Execute Following Commoand ` | `java -Dserver.port=8080 -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-rules-api-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleGroupApiLauncher` |
+| `Open API Swagger ` | `http://localhost:8080/swaggerJson/ruleSpaceController and http://localhost:8080/swaggerJson/ruleGroupController` |
+
 3. `Run Rules Execution by Passing the Rules Input in An API call`
-- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-orchestration-rules-executors\target`
-- `Execute Following Commoand --> java -cp xploretech-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleExecutorApiLauncher`
-- `Open API Swagger --> http://localhost:4567/swaggerJson/ruleExecutionController`
+   
+| Description | Command |
+| --- | --- |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-orchestration-rules-executors\target` |
+| `Execute Following Commoand ` | `java -cp xploretech-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleExecutorApiLauncher` |
+| `Open API Swagger ` | `http://localhost:4567/swaggerJson/ruleExecutionController` |
+
 4. `Run Rules Execution by Passing the Rules Input in An API call With a Specified Port and Rules Set Up Properties File Provided`
-- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-orchestration-rules-executors\target`
-- `Execute Following Commoand --> java -Dserver.port=8080 -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleExecutorApiLauncher`
-- `Open API Swagger --> http://localhost:8080/swaggerJson/ruleExecutionController`
+   
+| Description | Command |
+| --- | --- |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-orchestration-rules-executors\target` |
+| `Execute Following Commoand ` | `java -Dserver.port=8080 -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleExecutorApiLauncher` |
+| `Open API Swagger ` | `http://localhost:8080/swaggerJson/ruleExecutionController` |
+
 5. `Run Rules Execution by Passing the Rules Input in a Message Broker`
-- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-rules-executors\target`
-- `Execute Following Commoand --> java -cp xploretech-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rules.executor.XploretechRulesExecutorLauncher`
+   
+| Description | Command |
+| --- | --- |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-rules-executors\target` |
+| `Execute Following Commoand ` | `java -cp xploretech-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rules.executor.XploretechRulesExecutorLauncher` |
+
 6. `Run Rules Execution by Passing the Rules Input in a Message Broker with Different Data Collector and Rules Set Up Properties File Provided`
-- `Open Command Prompt from and run --> cd C:\Praecepta\therulesengine\xploretech-rules-executors\target`
-- `Execute Following Commoand --> java -Dxploretech.rule.data.collector.props.location=data-collector.properties -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-rules-
-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rules.executor.XploretechRulesExecutorLauncher`
+   
+| Description | Command |
+| --- | --- |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-rules-executors\target` |
+| `Execute Following Commoand ` | `java -Dxploretech.rule.data.collector.props.location=data-collector.properties -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rules.executor.XploretechRulesExecutorLauncher` |
 
 ### Sample Rule Set Up Property File
 ````
