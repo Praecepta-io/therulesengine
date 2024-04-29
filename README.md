@@ -2,14 +2,17 @@
 # Praecepta - The Rules Engine - https://www.praecepta.io/
 Efficient, Salable, Reliable and Cost Effective Orchestration Business Rules Engine for Polyglot Software Systems
 
-# What is Praecepta
+<details>
+<summary><h1>What is Praecepta</h1></summary>
 Praecepta is a modern and intelligent globally distributed multi tenanat business rules engine that’s easy to set up, deploy and manage. Use Praecepta to easily build personalized complex business rules using out of the box services to productize and run across any technology or platform.
 
 ![image](https://github.com/Praecepta-io/therulesengine/assets/122503259/244671cc-903d-404a-bd17-9d71fbc53f59)
+</details>
 
-# Why Praecepta
+<details>
+<summary><h1>Why Praecepta</h1></summary>
 
-$${\color{blue}**Microservices Architecture**}$$
+<h3>$${\color{blue}Microservices Architecture}$$</h3>
 
 $${\color{green}Rule SetUp, Execution, Software As A Service [SAAS]}$$ 
 
@@ -17,7 +20,7 @@ Highly scalable, elastic multi-tenant and decoupled responsive microservices tha
 
 ![image](https://github.com/Praecepta-io/therulesengine/assets/122503259/c15d10e5-85aa-4dae-9aec-95b3134996a9)
 
-$${\color{blue}**Installation and Deployment Model**}$$
+<h3>$${\color{blue}Installation and Deployment Model}$$</h3>
 
 $${\color{green}Cloud, Hybrid, On-Prem}$$
 
@@ -25,7 +28,7 @@ Services are containerized for supporting the autonomy strategy of independently
 
 ![image](https://github.com/Praecepta-io/therulesengine/assets/122503259/dee44efd-b8e0-4e5a-b61b-8e457bca58ce)
 
-$${\color{blue}**Seamless Integration**}$$
+<h3>$${\color{blue}Seamless Integration}$$</h3>
 
 $${\color{green}Java, .Net, Python, NodeJs}$$
 
@@ -33,7 +36,7 @@ System composed of independent and collaborating encapsulated REST API services 
 
 ![image](https://github.com/Praecepta-io/therulesengine/assets/122503259/19eb6280-071c-46ee-bcd5-24c335d16436)
 
-$${\color{blue}**Accelerate Product Delivery**}$$
+<h3>$${\color{blue}Accelerate Product Delivery}$$</h3>
 
 $${\color{green}No-Code, Connectors, Sidecars}$$
 
@@ -41,8 +44,10 @@ Out of the box configuration driven connectors make data ingestion from Relation
 
 ![image](https://github.com/Praecepta-io/therulesengine/assets/122503259/00748801-33ed-4b99-afd3-626280699ff8)
 
+</details>
 
-# Using Praecepta Application
+<details open>
+<summary><h1>Using Praecepta Application</h1></summary>
 
 - [x] Softwares Required :
 1. `Java Development Kit [JDK] 8`
@@ -101,6 +106,8 @@ Out of the box configuration driven connectors make data ingestion from Relation
 | --- | --- |
 | `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-rules-executors\target` |
 | `Execute Following Commoand ` | `java -Dxploretech.rule.data.collector.props.location=data-collector.properties -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rules.executor.XploretechRulesExecutorLauncher` |
+
+</details>
 
 ### Sample Rule Set Up Property File
 ````
