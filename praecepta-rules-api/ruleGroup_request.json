@@ -1,0 +1,49 @@
+{
+  "ruleGroupName": "group13",
+  "criteriaList": [{
+    "ruleName": "ruleName1",
+    "actionList": [{
+      "actionStrategy": "ADD_TO_PAYLOAD",
+      "actionAttributeName": "attribute1",
+      "valueToAssign": "10",
+      "sourceValueAttributeName": "attribute2"
+    }],
+    "conditions": {
+      "conditionInfo": {
+        "attributeName": "emp.name",
+        "operatorType": "EQUAL_CHARS",
+        "valueToCompare": "vara",
+        "joinOperatorType": "AND",
+        "nextConditionInfo": {
+          "attributeName": "emp.sql",
+          "operatorType": "GREATER_THAN_EQUAL_NUMBER",
+          "valueToCompare": 123456.78
+        }
+      },
+      "joinOperatorType": "AND",
+      "nextNestedCondition": {
+
+        "conditionInfo": {
+          "attributeName": "emp.email",
+          "operatorType": "EQUAL_CHARS",
+          "valueToCompare": "varam.kotapati@gmail.com",
+          "joinOperatorType": "AND",
+          "nextConditionInfo": {
+            "attributeName": "emp.dob",
+            "operatorType": "EQUAL_DATE",
+            "valueToCompare": "2020-10-19",
+            "additionalParameters": {
+              "fromDateFormat": "yyyy-MM-dd"
+            }
+          }
+        }
+      }
+
+    },
+    "failureActionList": [{
+      "actionStrategy": "ADD_TO_PAYLOAD",
+      "actionAttributeName": "attribute_new",
+      "valueToAssign": "50"
+    }]
+  }]
+}

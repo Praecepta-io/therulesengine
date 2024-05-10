@@ -1,0 +1,20 @@
+#start mongo db
+C:\Program Files\MongoDB\Server\6.0\bin\mongod.exe" --dbpath="c:\data\db
+
+#mongo db console
+mongosh.exe
+
+#display list of dbs
+show dbs
+
+#switch/create DB
+use percepta
+
+#find all
+db.rulegroup.find({});
+
+#delete all
+db.rulegroup.deleteMany({});
+
+#find by appName
+db.rulegroup.find({"ruleSpaceKey.appName":"App1"});

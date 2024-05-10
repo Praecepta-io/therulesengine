@@ -1,0 +1,40 @@
+Rule Hierarchy :
+
+--> Rule Group Name 
+		--> PreProcess [Orchestrating with APIs / Source Data from DB / For that matter Any Data Sink]
+		--> Sequential or Parallel
+		--> Sequential Order Type - Ascending Or Descending
+		--> Assign Default attribute and values that can be used in the Process. Or Source it from any Source. Names assigned can be used for Value comparison in Rules
+		--> Define new temporory attributes and their data types
+			-->  List Of Rules
+				--> eachRule 
+					--> Order Id. Note : For Parallel, Default Zero will be assigned to all  [Same Order ids will be Executed in Parallel]. 
+					--> Criteria 
+						--> each Condition/Predicate
+							--> conditionType [SingleConditon or MultiCondition]
+								--> SingleConditon
+									--> payLoadAttributeName
+									--> conditionOperator
+									--> valueToCompare or defaultAttributeDefined [In Line 7]
+								--> MultiCondition
+									--> SingleConditon
+									--> payLoadAttributeName
+									--> conditionOperator
+									--> valueToCompare or defaultAttributeDefined [In Line 7]
+									--> joinOperatorForNextCondition	
+								--> NestedCondition
+									--> Criteria Hierarchy [Line 12 to 20]
+									--> joinOperatorForNextCondition
+					--> onCriteriaMatch
+						--> Actions
+							--> each Action
+								--> Action type [Assign value to a temporory attribute or Change the value of an attribute in Payload or add to header]
+									--> attributeName 
+									--> valueToAssign 			
+					--> onCriteriaMisMatch
+						--> Actions
+							--> each Action
+								--> Action type [Assign value to a temporory attribute or Change the value of an attribute in Payload or add to header]
+									--> attributeName 
+									--> valueToAssign
+		--> PostProcess [Orchestrating APIs or Choreograhy to Downstreams using Flow set up or Any connectors (push to DB or Any Persistant layer) ]		

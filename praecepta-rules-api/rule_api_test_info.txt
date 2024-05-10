@@ -1,0 +1,12 @@
+RULE EXECUTION URL:
+http://localhost:4567/ruleExecutionController/BRB/001/App1/V2/group13
+
+RULE EXECUTION DISBALE URL:
+http://localhost:4567/ruleExecutionController/disableRuleExecutor
+
+RULE EXECUTION ENABLE URL:
+http://localhost:4567/ruleExecutionController/enableRuleExecutor
+
+SWAGGER URL:
+http://localhost:4567/swaggerJson/ruleExecutionController
+

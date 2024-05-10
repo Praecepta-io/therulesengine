@@ -1,0 +1,48 @@
+package org.xploretech.rest.api;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.xploretech.rest.api.annotation.XploretechExposeAsRestService;
+import org.xploretech.rest.api.builder.XploretechSparkApiServiceBuilder;
+import org.xploretech.rest.api.config.TestConfig;
+import org.xploretech.rest.api.model.XploretechRestServiceInterceptorModel;
+
+import spark.Filter;
+
+/**
+ * 
+ * @author rajas
+ * 
+ * @Autowired
+    GenericApplicationContext applicationContext;
+    
+    public List<String> getBeansWithAnnotation(Class<?> annotationClass) {
+        return BeanUtils.getBeansWithAnnotation(applicationContext, annotationClass);
+    }
+ *
+ */
+public class RajaRestlauncherTest {
+
+	public static void main( String[] args )
+    {
+//		System.setProperty("server.port", "8080");
+		
+    	AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(TestConfig.class);
+    	
+    	Map<String,Object> beans = context.getBeansWithAnnotation(XploretechExposeAsRestService.class);
+    	
+    	Map<XploretechRestServiceInterceptorModel, List<Filter>> restPreInterceptors = (Map<XploretechRestServiceInterceptorModel, List<Filter>>) context.getBean("restPreInterceptors");
+    	
+    	Map<XploretechRestServiceInterceptorModel, List<Filter>> restPostInterceptors = (Map<XploretechRestServiceInterceptorModel, List<Filter>>) context.getBean("restPostInterceptors");
+    	
+    	System.out.println(beans.size());
+    	
+    	XploretechSparkApiServiceBuilder.buildServices(beans, restPreInterceptors, restPostInterceptors);
+    }
+
+	
+	
+	
+}

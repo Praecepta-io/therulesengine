@@ -1,0 +1,32 @@
+{
+  "ruleGrpName": "group2",
+  "preRuleGrpSideCars": [
+    {
+      "order": 0,
+      "sideCarType": "PARSER",
+      "type": "JSON",
+      "sideCarConfigs": {
+        "additionalProp1": "prop1"
+      }
+    }
+  ],
+  "postRuleGrpSideCars": [
+    {
+      "order": 0,
+      "sideCarType": "ENRICHER",
+      "type": "API"
+    }
+  ],
+  "ruleLevelSideCars": [
+    {
+      "ruleName": "rule1",
+      "preRuleSideCars": [
+        {
+          "order": 0,
+          "sideCarType": "ENRICHER",
+          "type": "API"
+        }
+      ]
+    }
+  ]
+}

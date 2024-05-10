@@ -1,0 +1,683 @@
+package org.xploretech.rules.hub;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.xploretech.core.helper.ObjectHelper;
+import org.xploretech.rules.hub.dao.IXploretechRuleGroupDao;
+import org.xploretech.rules.hub.dao.IXploretechRuleSideCarsDao;
+import org.xploretech.rules.hub.dao.IXploretechRuleSpaceDao;
+import org.xploretech.rules.hub.dao.models.XploretechRuleGroup;
+import org.xploretech.rules.hub.dao.models.XploretechRuleSideCars;
+import org.xploretech.rules.hub.dao.models.XploretechRuleSpace;
+import org.xploretech.rules.hub.dao.models.XploretechRuleSpaceCompositeKey;
+import org.xploretech.rules.hub.datastore.XploretechPivotalRulesHubStore;
+import org.xploretech.rules.hub.helper.XploretechPivotalRulesHubContextHolder;
+import org.xploretech.rules.hub.helper.XploretechVersionHelper;
+
+public class XploretechPivotalRulesHubManager implements IXploretechPivotalRulesHubManager{
+	
+	private final static Logger logger = LoggerFactory.getLogger(XploretechPivotalRulesHubManager.class);
+	
+	private XploretechPivotalRulesHubStore pivotalRuleHubStore;
+	
+	@Autowired(required = false)
+	private IXploretechRuleSpaceDao ruleSpaceDao;
+
+	@Autowired(required = false)
+	private IXploretechRuleGroupDao ruleGroupDao;
+
+	@Autowired(required = false)
+	private IXploretechRuleSideCarsDao ruleSideCarsDao;
+
+	public XploretechPivotalRulesHubManager(IXploretechRuleSpaceDao ruleSpaceDao, IXploretechRuleGroupDao ruleGroupDao) {
+		this.ruleSpaceDao = ruleSpaceDao;
+		this.ruleGroupDao = ruleGroupDao;
+	}
+	public XploretechPivotalRulesHubManager(IXploretechRuleSpaceDao ruleSpaceDao, IXploretechRuleGroupDao ruleGroupDao,IXploretechRuleSideCarsDao ruleSideCarsDao) {
+		this.ruleSpaceDao = ruleSpaceDao;
+		this.ruleGroupDao = ruleGroupDao;
+		this.ruleSideCarsDao=ruleSideCarsDao;
+	}
+
+	@Override
+	public XploretechRuleSpace createRuleSpace(XploretechRuleSpaceCompositeKey key) {
+		logger.info("Inside the Create Rule Space for Key {}", key);
+
+		XploretechRuleSpace ruleSpace = null;
+		
+		if(key != null) {
+			
+			ruleSpace = new XploretechRuleSpace();
+			ruleSpace.setRuleSpaceKey(key);
+
+			createRuleSpace(ruleSpace);
+		}
+		return ruleSpace;
+	}
+
+	@Override
+	public void createRuleSpace(XploretechRuleSpace ruleSpace) {
+		logger.debug("Inside the Create Rule Space");
+
+		if(ruleSpace != null && !ObjectHelper.isObjectEmpty(ruleSpace.getRuleSpaceKey()) ){
+			String version = ruleSpace.getRuleSpaceKey().getVersion();
+			
+			if(version == null) {
+				
+				XploretechRuleSpaceCompositeKey key = IXploretechRuleSpaceDao.getKeyFromRuleSapce(ruleSpace);
+				
+				if(key != null) {
+					// Get the Latest version exist in DB for this Key
+					version = getLatestVersionForAKey(key);
+					
+					logger.info("Here is the Latest Version - {} - Available in DB for Rule Space", version);
+					
+					if(ObjectHelper.isObjectEmpty(version)) {
+						
+						// Generate a New Version if there is no Version at all in DB for Create
+						version = XploretechVersionHelper.defaultVersion();
+						
+						logger.info("Since there is no Version Available in DB, Here is the Default Verison Created Generated", version);
+					}
+				}
+			}
+			
+			logger.info("Here is the Version {} to be used for Create Rule Space", version);
+			createRuleSpace(ruleSpace, version);
+		}
+				
+		
+	}
+
+	@Override
+	public void createRuleSpace(XploretechRuleSpace ruleSpace, String version) {
+		logger.info("Inside the Create Rule Space with Version {}", version);
+		
+		if(ruleSpace != null && !ObjectHelper.isObjectEmpty(ruleSpace.getRuleSpaceKey()) && !ObjectHelper.isObjectEmpty(version)) {
+			
+			ruleSpace.getRuleSpaceKey().setVersion(version);
+			
+			performRuleSpaceUpsert(ruleSpace, true);
+		}
+	}
+	
+	@Override
+	public void updateRuleSpace(XploretechRuleSpace ruleSpace) {
+		
+		logger.info("Inside Default Update Rule Space method ");
+		// Default assume to create a new version always
+//		updateRuleSpace(ruleSpace, false);
+		updateRuleSpace(ruleSpace, true);
+	}
+
+	@Override
+	public void updateRuleSpace(XploretechRuleSpace ruleSpaceToUpdate, boolean overrideTheCurrentVersion) {
+		logger.info("Inside Update Rule Space method with Override Version Falg {}", overrideTheCurrentVersion);
+		
+		// If the Override the current version is false, then - Get the next version for the Key and Create it
+		if(!overrideTheCurrentVersion) {
+			
+			// Check the current Version exist in DB and Increment it to get a new version for it
+			String veriosnToUpdate = getNextVersionForAKey(ruleSpaceToUpdate.getRuleSpaceKey());
+			
+			ruleSpaceToUpdate.getRuleSpaceKey().setVersion(veriosnToUpdate);
+			
+			// Create New Incremented Version of the Space
+			createRuleSpace(ruleSpaceToUpdate);
+			
+		} else { // If the Override the current version is true, then - Update that version, if it already exist in DB
+			
+			XploretechRuleSpace ruleSpaceInPersistantLayer = 
+					fetchRuleSpace(ruleSpaceToUpdate.getRuleSpaceKey(), ruleSpaceToUpdate.getRuleSpaceKey().getVersion());
+			
+			// Checking whether the version exist in DB or not
+			if(ruleSpaceInPersistantLayer != null){
+				
+				performRuleSpaceUpsert(ruleSpaceToUpdate, false);
+			}
+		}
+		
+	}
+
+	private void performRuleSpaceUpsert(XploretechRuleSpace ruleSpace, boolean isAnInsert) {
+		logger.debug(" Inside performRuleSpaceUpsert with Upsert Falg {} ", isAnInsert);
+		
+		Collection<XploretechRuleGroup> ruleGrpsToUpdate = ruleSpace.getXploretechRuleGrps();
+		ruleSpace.setActive(true);
+		ruleSpace.setXploretechRuleGrps(null);
+		
+		if(!isAnInsert) {
+			ruleSpaceDao.update(ruleSpace);
+		} else {
+			ruleSpaceDao.insert(ruleSpace);
+		}
+		
+		logger.info(" Rule Space Dao Call is Performed  ");
+				
+		if(!ObjectHelper.isObjectEmpty(ruleGrpsToUpdate)) {
+			logger.info(" Rule Groups Are Aavilable and About to Trigger Dao Call");
+			
+			ruleGrpsToUpdate.stream().forEach( eachRuleGrp -> {
+				
+				if(!isAnInsert) {
+					updateRuleGrp(ruleSpace.getRuleSpaceKey(), 
+						ruleSpace.getRuleSpaceKey().getVersion(), eachRuleGrp.getRuleGroupName(), eachRuleGrp);
+				} else {
+					createRuleGrp(eachRuleGrp);
+				}
+				
+				logger.info(" Rule Group Dao Call Trigger is Performed for Rule Group Name {} with Space Key {} ", eachRuleGrp.getRuleGroupName(), ruleSpace.getRuleSpaceKey());
+			});
+		}
+	}
+
+	@Override
+	public void updateRuleSpace(XploretechRuleSpaceCompositeKey key, XploretechRuleSpace ruleSpaceToUpdate) {
+		
+		if(key != null && ruleSpaceToUpdate != null && !ObjectHelper.isObjectEmpty(ruleSpaceToUpdate.getRuleSpaceKey())) {
+			
+			if(key.equals(ruleSpaceToUpdate.getRuleSpaceKey())) {
+				
+				//This is the Current Version in DB
+				String currentVersion = ruleSpaceToUpdate.getRuleSpaceKey().getVersion();
+				
+				//This is the Version to be updated
+				String veriosnToUpdate = key.getVersion();
+				
+				if(veriosnToUpdate == null || !ObjectHelper.stringEquals(currentVersion, veriosnToUpdate)) {
+					
+					XploretechRuleSpace ruleSpaceInPersistantLayer = 
+							fetchRuleSpace(ruleSpaceToUpdate.getRuleSpaceKey(), currentVersion);
+					
+					// Checking whether the current version exist in DB or not
+					if(ruleSpaceInPersistantLayer != null){
+						
+						if(veriosnToUpdate == null) {
+							veriosnToUpdate = XploretechVersionHelper.generateNextVersionNumber(currentVersion);
+						}
+						// Assigning new version passed in the Key to Rule Space to be updated
+						ruleSpaceToUpdate.getRuleSpaceKey().setVersion(veriosnToUpdate);
+						
+						performRuleSpaceUpsert(ruleSpaceToUpdate, false);
+						
+					} else {
+						// Create it
+						createRuleSpace(ruleSpaceToUpdate);
+					}
+				}
+				
+			}
+		}
+	}
+
+	@Override
+	public List<XploretechRuleSpace> fetchRuleSpace(XploretechRuleSpaceCompositeKey key) {
+
+		if(key != null) {
+			return ruleSpaceDao.fetchByKey(key);
+		}
+		return Collections.emptyList();
+	}
+
+	@Override
+	public XploretechRuleSpace fetchRuleSpace(XploretechRuleSpaceCompositeKey key, String version) {
+		logger.info(" Fetching the Rule Space for Key {} and Version {}", key, version);
+		
+		if(validateMandatorySpaceKeyAndVersion(key, version)) {
+			
+			key.setVersion(version);
+			
+			XploretechRuleSpace ruleSpaceFromDb = ruleSpaceDao.fetchByKeyAndVersion(key, version);
+			
+			if(ruleSpaceFromDb != null) {
+				logger.info(" Rule Space Exist in DB for Key {} and Version {}", key, version);
+				
+				List<XploretechRuleGroup> ruleGrps = ruleGroupDao.fetchByKey(key);
+				
+				if(!ObjectHelper.isObjectEmpty(ruleGrps)) { 
+					logger.info(" Rule Groups also Presetn in DB for Key {} and Version {}", key, version);
+					ruleSpaceFromDb.setXploretechRuleGrps(ruleGrps);
+				}
+			}
+			
+			logger.warn(" There is no Rule Space Exists for Key {} and Version {}", key, version);
+			return ruleSpaceFromDb;
+		}
+		
+		return null;
+	}
+
+	boolean validateMandatorySpaceKeyAndVersion(XploretechRuleSpaceCompositeKey key, String version) {
+		logger.debug(" Inside validating  Key {} and Version {}", key, version);
+		
+		if(!ObjectHelper.isObjectEmpty(key) && !ObjectHelper.isStringEmpty(version)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public void deleteRuleSpace(XploretechRuleSpaceCompositeKey key, String version) {
+		logger.info(" Deleting the Rule Space for Key {} and Version {}", key, version);
+		
+		ruleSpaceDao.deleteByKeyAndVersion(key, version);
+		
+	}
+
+	@Override
+	public void deleteRuleSpace(XploretechRuleSpaceCompositeKey key, XploretechRuleSpace ruleSpace) {
+		logger.debug(" Inside Delete Rule Space and Key ");
+
+		if(ruleSpace != null && !ObjectHelper.isObjectEmpty(ruleSpace.getRuleSpaceKey()) ){
+			String version = ruleSpace.getRuleSpaceKey().getVersion();
+			
+			logger.debug(" Inside Delete Rule Space and Key Having version {} ", version);
+			
+			if(!ObjectHelper.isStringEmpty(version)) {
+				
+				XploretechRuleSpaceCompositeKey compositeKeyFromRuleSpace = IXploretechRuleSpaceDao.getKeyFromRuleSapce(ruleSpace);
+				
+				if(key != null && compositeKeyFromRuleSpace.equals(key)) {
+					
+					logger.info(" Inside Delete Rule Space and Key Having version {} With Key Mathc to delete ", version);
+					deleteRuleSpace(key, version);
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public void deleteRuleSpace(XploretechRuleSpace ruleSpace) {
+		logger.debug(" Inside Delete Rule Space");
+
+		if(ruleSpace != null && !ObjectHelper.isObjectEmpty(ruleSpace.getRuleSpaceKey()) ){
+			String version = ruleSpace.getRuleSpaceKey().getVersion();
+			
+			logger.debug(" Inside Delete Rule Space and Having version {} ", version);
+			
+			if(!ObjectHelper.isStringEmpty(version)) {
+				
+				XploretechRuleSpaceCompositeKey key = IXploretechRuleSpaceDao.getKeyFromRuleSapce(ruleSpace);
+				
+				if(key != null) {
+					logger.info(" Inside Delete Rule Space With non empty Key Having ");
+					deleteRuleSpace(key, version);
+				}
+			}else {
+				deleteRuleSpace(ruleSpace.getRuleSpaceKey(), version);
+			}
+		}
+		
+	}
+
+	@Override
+	public String getLatestVersionForAKey(XploretechRuleSpaceCompositeKey key) {
+		return null;
+	}
+	
+	@Override
+	public String getNextVersionForAKey(XploretechRuleSpaceCompositeKey key) {
+		
+		String currentVersion = getLatestVersionForAKey(key);
+		
+		return XploretechVersionHelper.generateNextVersionNumber(currentVersion);
+		
+	}
+
+	@Override
+	public boolean createRuleGrp(XploretechRuleSpaceCompositeKey spaceKey, String version, String ruleGrpName,
+			XploretechRuleGroup ruleGrp) {
+
+		logger.info(" Create Rule Group for Space Key With Version {}, Rule Group Name {}", String.join("@@", spaceKey.toString(), version), ruleGrpName);
+				
+		if(isTheRuleSpaceExist(spaceKey, version)) {
+			
+			if(ruleGrp != null && !ObjectHelper.isObjectEmpty(ruleGrp.getXploretechCriterias())) {
+				
+				XploretechRuleSpaceCompositeKey spaceKeyFromGrp = ruleGrp.getRuleSpaceKey();
+				
+				if(spaceKey.equals(spaceKeyFromGrp)) {
+					
+					if(!ObjectHelper.isObjectEmpty(ruleGrpName)) {
+						ruleGrp.setRuleGroupName(ruleGrpName);
+						spaceKeyFromGrp.setVersion(version);
+						ruleGrp.setActive(true);
+						ruleGroupDao.insert(ruleGrp);
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean createRuleGrp(XploretechRuleGroup ruleGrp) {
+		
+		if(ruleGrp != null && ruleGrp.getRuleSpaceKey() != null) {
+			return createRuleGrp(ruleGrp.getRuleSpaceKey(), ruleGrp.getRuleSpaceKey().getVersion(), ruleGrp.getRuleGroupName(), ruleGrp);
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean updateRuleGrp(XploretechRuleSpaceCompositeKey spaceKey, String version, String ruleGrpName,
+			XploretechRuleGroup ruleGrp) {
+
+		XploretechRuleGroup ruleGrpFromDb = fetchRuleGrp(spaceKey, version, ruleGrpName);
+
+		if (ruleGrpFromDb != null) {
+
+			ruleGrp.setRuleGroupName(ruleGrpName);
+			spaceKey.setVersion(version);
+
+			if (!ObjectHelper.isObjectEmpty(ruleGrp.getRuleSpaceKey())) {
+				ruleGrp.setRuleSpaceKey(ruleGrp.getRuleSpaceKey());
+			}
+
+			ruleGroupDao.update(ruleGrp);
+		}else {
+			logger.debug(" Creating new rule group for key {} with Rule groupName-{}",spaceKey,ruleGrpName);
+			ruleGrp.setRuleGroupName(ruleGrpName);
+			spaceKey.setVersion(version);
+			ruleGrp.setRuleSpaceKey(spaceKey);
+			ruleGrp.setUniqueId(null);
+			ruleGrp.setActive(true);
+			ruleGroupDao.insert(ruleGrp);
+		}
+		return false;
+	}
+
+	private boolean isTheRuleSpaceExist(XploretechRuleSpaceCompositeKey spaceKey, String version) {
+		logger.debug(" Inside Rule Space Exist Or not");
+		
+		XploretechRuleSpace ruleSpace =  fetchRuleSpace(spaceKey, version);
+		
+		if(ruleSpace != null) {
+			logger.info("  Rule Space Exist for Space Key {} and Version {} ", spaceKey, version);
+			return true;
+		}
+		logger.info("  Rule Space Doesn't Exist for Space Key {} and Version {} ", spaceKey, version);
+		
+		return false;
+	}
+
+	@Override
+	public XploretechRuleGroup fetchRuleGrp(XploretechRuleSpaceCompositeKey spaceKey, String version,
+			String ruleGrpName) {
+		logger.debug(" Inside Fetch Rule Group ");
+		
+		if(isTheRuleSpaceExist(spaceKey, version)) {
+		
+			logger.info(" Fetching Rule Group for Space Key With Version {}, Rule Group Name {}", String.join("@@", spaceKey.toString(), version), ruleGrpName);
+			if(spaceKey != null && !ObjectHelper.isObjectEmpty(version) && !ObjectHelper.isObjectEmpty(ruleGrpName)) {
+				
+				spaceKey.setVersion(version);
+				
+				return ruleGroupDao.fetchByKeyAndName(spaceKey, ruleGrpName);
+			}
+		}
+		
+		
+		return null;
+	}
+
+	@Override
+	public List<XploretechRuleGroup> fetchRuleGrps(XploretechRuleSpaceCompositeKey spaceKey, String version) {
+		
+		if(isTheRuleSpaceExist(spaceKey, version)) {
+			
+			if(spaceKey != null && !ObjectHelper.isObjectEmpty(version)) {
+				
+				spaceKey.setVersion(version);
+				
+				return ruleGroupDao.fetchByKey(spaceKey);
+			}
+		}
+		
+		return null;
+	}
+
+	@Override
+	public boolean deleteRuleGrp(XploretechRuleSpaceCompositeKey spaceKey, String version, String ruleGrpName) {
+
+
+		XploretechRuleGroup ruleGrpFromDb = fetchRuleGrp(spaceKey, version, ruleGrpName);
+
+		if (ruleGrpFromDb != null) {
+			
+			return ruleGroupDao.deleteByKeyAndName(spaceKey, ruleGrpName);
+
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteRuleGrps(XploretechRuleSpaceCompositeKey spaceKey, String version) {
+		
+		List<XploretechRuleGroup> ruleGrpsFromDb = fetchRuleGrps(spaceKey, version);
+		
+		if(!ObjectHelper.isObjectEmpty(ruleGrpsFromDb)) {
+			spaceKey.setVersion(version);
+			
+			ruleGroupDao.deleteById(spaceKey);
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean deleteRuleGrp(XploretechRuleGroup ruleGrp) {
+		
+		if(ruleGrp != null && !ObjectHelper.isObjectEmpty(ruleGrp.getRuleGroupName()) && !ObjectHelper.isObjectEmpty(ruleGrp.getRuleSpaceKey()) 
+				&& !ObjectHelper.isObjectEmpty(ruleGrp.getRuleSpaceKey().getVersion()) ) {
+			
+			return deleteRuleGrp(ruleGrp.getRuleSpaceKey(), ruleGrp.getRuleSpaceKey().getVersion(), ruleGrp.getRuleGroupName());
+		}
+		
+		return false;
+	}
+	@Override
+	public boolean createRuleSideCars(XploretechRuleSpaceCompositeKey spaceKey, String version, String ruleGrpName,
+			XploretechRuleSideCars sideCars) {
+
+		logger.info(" Create Rule SideCar for Space Key With Version {}, Rule Group Name {}",
+				String.join("@@", spaceKey.toString(), version), ruleGrpName);
+
+		if (sideCars != null && !ObjectHelper.isObjectEmpty(sideCars.getRuleGroupSideCars())) {
+
+			XploretechRuleSpaceCompositeKey spaceKeyFromSideCar = sideCars.getRuleSpaceKey();
+
+			if (spaceKey.equals(spaceKeyFromSideCar)) {
+
+				if (!ObjectHelper.isObjectEmpty(ruleGrpName)) {
+					sideCars.getRuleGroupSideCars().setRuleGrpName(ruleGrpName);
+					spaceKeyFromSideCar.setVersion(version);
+					sideCars.setActive(true);
+					ruleSideCarsDao.insert(sideCars);
+				}
+			}
+		}
+
+		return false;
+	}
+	@Override
+	public boolean createRuleSideCars(XploretechRuleSideCars ruleSideCar) {
+		if(ruleSideCar != null && ruleSideCar.getRuleSpaceKey() != null) {
+			ruleSideCar.setActive(true);
+			return createRuleSideCars(ruleSideCar.getRuleSpaceKey(), ruleSideCar.getRuleSpaceKey().getVersion(), ruleSideCar.getRuleGroupSideCars().getRuleGrpName(), ruleSideCar);
+		}
+		return false;
+	}
+	@Override
+	public boolean updateRuleSideCars(XploretechRuleSpaceCompositeKey spaceKey, String version, String ruleGrpName,
+			XploretechRuleSideCars ruleSideCar) {
+		XploretechRuleSideCars ruleSideCarFrmDB = fetchRuleSideCars(spaceKey, version, ruleGrpName);
+
+		if (ruleSideCarFrmDB != null) {
+
+			ruleSideCar.getRuleGroupSideCars().setRuleGrpName(ruleGrpName);
+			spaceKey.setVersion(version);
+
+			if (!ObjectHelper.isObjectEmpty(ruleSideCar.getRuleSpaceKey())) {
+				ruleSideCar.setRuleSpaceKey(ruleSideCar.getRuleSpaceKey());
+			}
+			ruleSideCarsDao.update(ruleSideCar);
+		}else {
+			logger.debug(" Creating new rule side car for key {} with Rule groupName-{}",spaceKey,ruleGrpName);
+			ruleSideCar.getRuleGroupSideCars().setRuleGrpName(ruleGrpName);
+			spaceKey.setVersion(version);
+			ruleSideCar.setRuleSpaceKey(spaceKey);
+			ruleSideCarsDao.insert(ruleSideCar);
+		}
+		return false;
+	}
+
+	@Override
+	public XploretechRuleSideCars fetchRuleSideCars(XploretechRuleSpaceCompositeKey spaceKey, String version,
+			String ruleGrpName) {
+		logger.debug(" Inside Fetch Rule Side Cars info ");
+
+		logger.info(" Fetching Rule SideCar info for Space Key With Version {}, Rule Group Name {}",
+				String.join("@@", spaceKey.toString(), version), ruleGrpName);
+
+		if (spaceKey != null && !ObjectHelper.isObjectEmpty(version) && !ObjectHelper.isObjectEmpty(ruleGrpName)) {
+
+			spaceKey.setVersion(version);
+
+			return ruleSideCarsDao.fetchByKeyAndName(spaceKey, ruleGrpName);
+		}
+
+		return null;
+	}
+	@Override
+	public List<XploretechRuleSideCars> fetchRuleSideCars(XploretechRuleSpaceCompositeKey spaceKey, String version) {
+		if(spaceKey != null && !ObjectHelper.isObjectEmpty(version)) {
+
+			spaceKey.setVersion(version);
+
+			return ruleSideCarsDao.fetchByKey(spaceKey);
+		}
+		return null;
+	}
+	@Override
+	public boolean deleteSideCars(XploretechRuleSpaceCompositeKey spaceKey, String version, String ruleGrpName) {
+		XploretechRuleSideCars ruleSideCarFromDB = fetchRuleSideCars(spaceKey, version, ruleGrpName);
+
+		if (ruleSideCarFromDB != null) {
+
+			return ruleSideCarsDao.deleteByKeyAndName(spaceKey, ruleGrpName);
+
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteRuleSideCars(XploretechRuleSpaceCompositeKey spaceKey, String version) {
+		List<XploretechRuleSideCars> ruleSideCarsFrmDB = fetchRuleSideCars(spaceKey, version);
+
+		if (!ObjectHelper.isObjectEmpty(ruleSideCarsFrmDB)) {
+			spaceKey.setVersion(version);
+
+			ruleSideCarsDao.deleteById(spaceKey);
+		}
+
+		return false;
+	}
+	@Override
+	public boolean deleteRuleSideCars(XploretechRuleSideCars ruleSideCar) {
+		if(ruleSideCar != null && !ObjectHelper.isObjectEmpty(ruleSideCar.getRuleGroupSideCars().getRuleGrpName()) && !ObjectHelper.isObjectEmpty(ruleSideCar.getRuleSpaceKey())
+				&& !ObjectHelper.isObjectEmpty(ruleSideCar.getRuleSpaceKey().getVersion()) ) {
+
+			return deleteSideCars(ruleSideCar.getRuleSpaceKey(), ruleSideCar.getRuleSpaceKey().getVersion(), ruleSideCar.getRuleGroupSideCars().getRuleGrpName());
+		}
+		return false;
+	}
+	
+	/**
+	 * this should be called with Active spaces, groups and keys only
+	 */
+	@Override
+	public void fetchActiveUniverse() {
+		
+		Map<XploretechRuleSpaceCompositeKey, Map<String, XploretechRuleSpace>> ruleSpacesMap = new HashMap<>();
+		Map<XploretechRuleSpaceCompositeKey, Map<String, Collection<XploretechRuleGroup>>> ruleGrpMap = new HashMap<>();
+		Map<XploretechRuleSpaceCompositeKey, Map<String, Collection<XploretechRuleSideCars>>> ruleSideCarMap = new HashMap<>();
+		
+		Collection<XploretechRuleSpace> activeRuleSpaces = ruleSpaceDao.fetchAll();
+		
+		if(!ObjectHelper.isObjectEmpty(activeRuleSpaces)) {
+			
+			activeRuleSpaces.stream().forEach( eachSpace -> {
+				
+				XploretechRuleSpaceCompositeKey spaceKey = IXploretechRuleSpaceDao.getKeyFromRuleSapce(eachSpace);
+				
+				ruleSpacesMap.putIfAbsent(spaceKey, new HashMap<String, XploretechRuleSpace>());
+				
+				Map<String, XploretechRuleSpace> versionToRuleSpaceMap = ruleSpacesMap.get(spaceKey);
+				
+				versionToRuleSpaceMap.put(spaceKey.getVersion(), eachSpace);
+			});
+		}
+		
+		Collection<XploretechRuleGroup> activeRuleGrps = ruleGroupDao.fetchAll();
+		
+		if(!ObjectHelper.isObjectEmpty(activeRuleGrps)) {
+			
+			activeRuleGrps.stream().forEach( eachGrp -> {
+				
+				XploretechRuleSpaceCompositeKey spaceKey = IXploretechRuleGroupDao.getKeyFromRuleGroup(eachGrp);
+				
+				ruleGrpMap.putIfAbsent(spaceKey, new HashMap<String, Collection<XploretechRuleGroup>>());
+				
+				Map<String, Collection<XploretechRuleGroup>> versionToRuleGrpMap = ruleGrpMap.get(spaceKey);
+				
+				versionToRuleGrpMap.putIfAbsent(spaceKey.getVersion(), new ArrayList<>());
+				
+				Collection<XploretechRuleGroup> ruleGrpsForAVersion = versionToRuleGrpMap.get(spaceKey.getVersion());
+				
+				ruleGrpsForAVersion.add(eachGrp);
+				
+				versionToRuleGrpMap.put(spaceKey.getVersion(), ruleGrpsForAVersion);
+			});
+		}
+
+		Collection<XploretechRuleSideCars> activeSidecCars = ruleSideCarsDao.fetchAll();
+		
+		if(!ObjectHelper.isObjectEmpty(activeSidecCars)) {
+			
+			activeSidecCars.stream().forEach( eachSideCar -> {
+				
+				XploretechRuleSpaceCompositeKey spaceKey = IXploretechRuleSideCarsDao.getKeyFromSideCar(eachSideCar);
+				
+				ruleSideCarMap.putIfAbsent(spaceKey, new HashMap<String, Collection<XploretechRuleSideCars>>());
+				
+				Map<String, Collection<XploretechRuleSideCars>> versionToSideCarMap = ruleSideCarMap.get(spaceKey);
+				
+				versionToSideCarMap.putIfAbsent(spaceKey.getVersion(), new ArrayList<>());
+				
+				Collection<XploretechRuleSideCars> ruleSideCarsForAVersion = versionToSideCarMap.get(spaceKey.getVersion());
+				
+				ruleSideCarsForAVersion.add(eachSideCar);
+				
+				versionToSideCarMap.put(spaceKey.getVersion(), ruleSideCarsForAVersion);
+			});
+		}
+		
+		pivotalRuleHubStore = new XploretechPivotalRulesHubStore(ruleSpacesMap, ruleGrpMap, ruleSideCarMap);
+		
+		XploretechPivotalRulesHubContextHolder.addHubStore(pivotalRuleHubStore);
+		
+	}
+	
+}

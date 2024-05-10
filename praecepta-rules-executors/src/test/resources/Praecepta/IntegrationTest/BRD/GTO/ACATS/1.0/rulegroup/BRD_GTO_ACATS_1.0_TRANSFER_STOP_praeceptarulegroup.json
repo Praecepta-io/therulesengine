@@ -1,0 +1,45 @@
+{
+  "ruleGroupName": "TRANSFER_STOP",
+  "active": true,
+  "xploretechCriterias": [
+    {
+    "predicates": {
+      "multiCondition": {
+        "condition": {
+          "subjectName": "emp.dob",
+          "conditionOperator": "GREATER_THAN_DATE",
+          "valueToCompare": "2000-01-01",
+          "parameters": {
+            "fromDateFormat": "yyyy-MM-dd"
+          }
+        },
+        "nextConditionJoinOperator": "AND",
+        "nextCondition": {
+          "condition": {
+            "subjectName": "emp.name",
+            "conditionOperator": "EQUAL_CHARS",
+            "valueToCompare": "Vara"
+          }
+        }
+      }
+    },
+
+    "actionToPerform": [{
+      "actionStrategy": "ADD_TO_PAYLOAD",
+      "actionAttributeName": "ageValidation",
+      "valueToAssign": true
+    }],
+    "actionToPerformOnFailure": [{
+      "actionStrategy": "ADD_TO_PAYLOAD",
+      "actionAttributeName": "ageValidation",
+      "valueToAssign": false
+    }],
+    "ruleName": "ageValidation"
+  }],
+  "ruleSpaceKey": {
+    "spaceName":"BRD",
+      "clientId":"GTO",
+      "appName":"ACATS",
+      "version":"1.0"
+  }
+}

@@ -1,0 +1,11 @@
+RULE EXECUTION URL:
+http://localhost:4567/ruleGroupController/ruleGroups/RBC/TRADE_EXECUTION/RISK_CALCULATOR/V1/STOP_TRADE_EXECUTION
+
+RULE EXECUTION DISBALE URL:
+http://localhost:4567/ruleGroupController/getRuleGroups/RBC/TRADE_EXECUTION/RISK_CALCULATOR/V1
+
+SWAGGER URL:
+http://localhost:4567/swaggerJson/ruleSpaceController
+
+http://localhost:4567/swaggerJson/ruleGroupController
+
