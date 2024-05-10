@@ -65,47 +65,47 @@ Out of the box configuration driven connectors make data ingestion from Relation
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-rules-api\target` |
-| `Execute Following Commoand ` | `java  -cp praecepta-rules-api-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleGroupApiLauncher` |
-| `Open API Swagger ` | `http://localhost:4567/swaggerJson/ruleSpaceController and http://localhost:4567/swaggerJson/ruleGroupController` |
+| Open Command Prompt from and run | cd C:\Praecepta\therulesengine\praecepta-rules-api\target |
+| Execute Following Commoand | java  -cp praecepta-rules-api-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleGroupApiLauncher |
+| Open API Swagger | http://localhost:4567/swaggerJson/ruleSpaceController and http://localhost:4567/swaggerJson/ruleGroupController |
 
 2. `Rules Set Up On A Port Specified and Rules Set Up Properties File Provided`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-rules-api\target` |
-| `Execute Following Commoand ` | `java -Dserver.port=8080 -Dpraecepta.rule.load.props.location=setup.properties -cp praecepta-rules-api-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleGroupApiLauncher` |
-| `Open API Swagger ` | `http://localhost:8080/swaggerJson/ruleSpaceController and http://localhost:8080/swaggerJson/ruleGroupController` |
+| Open Command Prompt from and run | cd C:\Praecepta\therulesengine\praecepta-rules-api\target |
+| Execute Following Commoand | java -Dserver.port=8080 -Dpraecepta.rule.load.props.location=setup.properties -cp praecepta-rules-api-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleGroupApiLauncher |
+| Open API Swagger | http://localhost:8080/swaggerJson/ruleSpaceController and http://localhost:8080/swaggerJson/ruleGroupController |
 
 3. `Run Rules Execution by Passing the Rules Input in An API call`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-orchestration-rules-executors\target` |
-| `Execute Following Commoand ` | `java -cp praecepta-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher` |
-| `Open API Swagger ` | `http://localhost:4567/swaggerJson/ruleExecutionController` |
+| Open Command Prompt from and run | cd C:\Praecepta\therulesengine\praecepta-orchestration-rules-executors\target |
+| Execute Following Commoand | java -cp praecepta-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher |
+| Open API Swagger | http://localhost:4567/swaggerJson/ruleExecutionController |
 
 4. `Run Rules Execution by Passing the Rules Input in An API call With a Specified Port and Rules Set Up Properties File Provided`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-orchestration-rules-executors\target` |
-| `Execute Following Commoand ` | `java -Dserver.port=8080 -Dpraecepta.rule.load.props.location=setup.properties -cp praecepta-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher` |
-| `Open API Swagger ` | `http://localhost:8080/swaggerJson/ruleExecutionController` |
+| Open Command Prompt from and run | cd C:\Praecepta\therulesengine\praecepta-orchestration-rules-executors\target |
+| Execute Following Commoand | java -Dserver.port=8080 -Dpraecepta.rule.load.props.location=setup.properties -cp praecepta-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher |
+| Open API Swagger | http://localhost:8080/swaggerJson/ruleExecutionController |
 
 5. `Run Rules Execution by Passing the Rules Input in a Message Broker`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-rules-executors\target` |
-| `Execute Following Commoand ` | `java -cp praecepta-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher` |
+| Open Command Prompt from and run | cd C:\Praecepta\therulesengine\praecepta-rules-executors\target |
+| Execute Following Commoand | java -cp praecepta-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher |
 
 6. `Run Rules Execution by Passing the Rules Input in a Message Broker with Different Data Collector and Rules Set Up Properties File Provided`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-rules-executors\target` |
-| `Execute Following Commoand ` | `java -Dpraecepta.rule.data.collector.props.location=data-collector.properties -Dpraecepta.rule.load.props.location=setup.properties -cp praecepta-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher` |
+| Open Command Prompt from and run | cd C:\Praecepta\therulesengine\praecepta-rules-executors\target |
+| Execute Following Commoand | java -Dpraecepta.rule.data.collector.props.location=data-collector.properties -Dpraecepta.rule.load.props.location=setup.properties -cp praecepta-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher |
 
 </details>
 
