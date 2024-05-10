@@ -65,47 +65,47 @@ Out of the box configuration driven connectors make data ingestion from Relation
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-rules-api\target` |
-| `Execute Following Commoand ` | `java  -cp xploretech-rules-api-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleGroupApiLauncher` |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-rules-api\target` |
+| `Execute Following Commoand ` | `java  -cp praecepta-rules-api-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleGroupApiLauncher` |
 | `Open API Swagger ` | `http://localhost:4567/swaggerJson/ruleSpaceController and http://localhost:4567/swaggerJson/ruleGroupController` |
 
 2. `Rules Set Up On A Port Specified and Rules Set Up Properties File Provided`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-rules-api\target` |
-| `Execute Following Commoand ` | `java -Dserver.port=8080 -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-rules-api-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleGroupApiLauncher` |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-rules-api\target` |
+| `Execute Following Commoand ` | `java -Dserver.port=8080 -Dpraecepta.rule.load.props.location=setup.properties -cp praecepta-rules-api-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleGroupApiLauncher` |
 | `Open API Swagger ` | `http://localhost:8080/swaggerJson/ruleSpaceController and http://localhost:8080/swaggerJson/ruleGroupController` |
 
 3. `Run Rules Execution by Passing the Rules Input in An API call`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-orchestration-rules-executors\target` |
-| `Execute Following Commoand ` | `java -cp xploretech-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleExecutorApiLauncher` |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-orchestration-rules-executors\target` |
+| `Execute Following Commoand ` | `java -cp praecepta-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher` |
 | `Open API Swagger ` | `http://localhost:4567/swaggerJson/ruleExecutionController` |
 
 4. `Run Rules Execution by Passing the Rules Input in An API call With a Specified Port and Rules Set Up Properties File Provided`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-orchestration-rules-executors\target` |
-| `Execute Following Commoand ` | `java -Dserver.port=8080 -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rest.api.XploretechRuleExecutorApiLauncher` |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-orchestration-rules-executors\target` |
+| `Execute Following Commoand ` | `java -Dserver.port=8080 -Dpraecepta.rule.load.props.location=setup.properties -cp praecepta-orchestration-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher` |
 | `Open API Swagger ` | `http://localhost:8080/swaggerJson/ruleExecutionController` |
 
 5. `Run Rules Execution by Passing the Rules Input in a Message Broker`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-rules-executors\target` |
-| `Execute Following Commoand ` | `java -cp xploretech-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rules.executor.XploretechRulesExecutorLauncher` |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-rules-executors\target` |
+| `Execute Following Commoand ` | `java -cp praecepta-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher` |
 
 6. `Run Rules Execution by Passing the Rules Input in a Message Broker with Different Data Collector and Rules Set Up Properties File Provided`
    
 | Description | Command |
 | --- | --- |
-| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\xploretech-rules-executors\target` |
-| `Execute Following Commoand ` | `java -Dxploretech.rule.data.collector.props.location=data-collector.properties -Dxploretech.rule.load.props.location=setup.properties -cp xploretech-rules-executors-0.0.1-SNAPSHOT.jar;lib/* org.xploretech.rules.executor.XploretechRulesExecutorLauncher` |
+| `Open Command Prompt from and run ` | `cd C:\Praecepta\therulesengine\praecepta-rules-executors\target` |
+| `Execute Following Commoand ` | `java -Dpraecepta.rule.data.collector.props.location=data-collector.properties -Dpraecepta.rule.load.props.location=setup.properties -cp praecepta-rules-executors-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher` |
 
 </details>
 
@@ -124,9 +124,9 @@ SQL_DB.connection_props.MySQL.db.driver=com.mysql.jdbc.Driver
 SQL_DB.connection_props.MySQL.db.url=jdbc:mysql://127.0.0.1:3306/praecepta?autoReconnect=true
 SQL_DB.connection_props.MySQL.db.username=root
 SQL_DB.connection_props.MySQL.db.password=root
-SQL_DB.connection_props.MySQL.db.dialect=org.hibernate.dialect.MySQLDialect
+SQL_DB.connection_props.MySQL.db.dialect=io.hibernate.dialect.MySQLDialect
 SQL_DB.connection_props.MySQL.show_sql=true
-SQL_DB.connection_props.MySQL.model.packages=org.xploretech.rules.hub.dbbased.model
+SQL_DB.connection_props.MySQL.model.packages=io.praecepta.rules.hub.dbbased.model
 
 # DB Connection Props. 
 # All DB Props should be prefix with --> SQL_DB.connection_props.<SQL_DB.type>
@@ -175,9 +175,9 @@ KAFKA.connection_props.port=9092
 KAFKA.connection_props.userName=test
 KAFKA.connection_props.password=test
 KAFKA.connection_props.max.timeout=200
-KAFKA.connection_props.key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
-KAFKA.connection_props.value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
-KAFKA.connection_props.group.id=test_xploretech
+KAFKA.connection_props.key.deserializer=io.apache.kafka.common.serialization.StringDeserializer
+KAFKA.connection_props.value.deserializer=io.apache.kafka.common.serialization.StringDeserializer
+KAFKA.connection_props.group.id=test_praecepta
 KAFKA.connection_props.kafka.receiver.topic=TEST.TOPIC
 KAFKA.connection_props.max.poll.records=10
 KAFKA.connection_props.auto.offset.reset=earliest
