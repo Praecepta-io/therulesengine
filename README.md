@@ -2,14 +2,14 @@
 # Praecepta - The Rules Engine - https://www.praecepta.io/
 Efficient, Salable, Reliable and Cost Effective Orchestration Business Rules Engine for Polyglot Software Systems
 
-<details>
+<details open>
 <summary><h1>What is Praecepta</h1></summary>
 Praecepta is a modern and intelligent globally distributed multi tenanat business rules engine that’s easy to set up, deploy and manage. Use Praecepta to easily build personalized complex business rules using out of the box services to productize and run across any technology or platform.
 
 ![image](https://github.com/Praecepta-io/therulesengine/assets/122503259/244671cc-903d-404a-bd17-9d71fbc53f59)
 </details>
 
-<details>
+<details open>
 <summary><h1>Why Praecepta</h1></summary>
 
 <h3>$${\color{blue}Microservices Architecture}$$</h3>
