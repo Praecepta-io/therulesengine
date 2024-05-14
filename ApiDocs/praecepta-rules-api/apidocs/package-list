@@ -1,0 +1,7 @@
+io.praecepta.rest.api
+io.praecepta.rest.api.config
+io.praecepta.rest.api.controller
+io.praecepta.rest.api.service
+io.praecepta.rest.api.service.impl
+io.praecepta.rest.constants
+io.praecepta.rest.enums

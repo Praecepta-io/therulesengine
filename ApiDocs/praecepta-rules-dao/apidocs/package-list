@@ -1,0 +1,11 @@
+io.praecepta.rules.hub.dao
+io.praecepta.rules.hub.dao.helper
+io.praecepta.rules.hub.dao.models
+io.praecepta.rules.hub.dbbased.dao
+io.praecepta.rules.hub.dbbased.dao.converters
+io.praecepta.rules.hub.dbbased.model
+io.praecepta.rules.hub.filebased.dao
+io.praecepta.rules.hub.filebased.util
+io.praecepta.rules.hub.jvmbased.dao
+io.praecepta.rules.hub.nosqlbased.dao
+io.praecepta.rules.hub.nosqlbased.service

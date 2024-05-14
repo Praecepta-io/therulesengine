@@ -1,0 +1,4 @@
+io.praecepta.data.injestor.common.exception
+io.praecepta.data.injestors.common.enums
+io.praecepta.data.injestors.common.impl
+io.praecepta.data.injestors.common.intf

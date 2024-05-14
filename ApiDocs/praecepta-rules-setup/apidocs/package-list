@@ -1,0 +1,15 @@
+io.praecepta.rules.builders
+io.praecepta.rules.builders.enums
+io.praecepta.rules.builders.exceptions
+io.praecepta.rules.hub
+io.praecepta.rules.hub.config.condition
+io.praecepta.rules.hub.config.condition.file
+io.praecepta.rules.hub.config.condition.nosql
+io.praecepta.rules.hub.config.condition.sql
+io.praecepta.rules.hub.dao
+io.praecepta.rules.hub.datastore
+io.praecepta.rules.hub.helper
+io.praecepta.rules.hub.spring.config
+io.praecepta.rules.hub.spring.file.config
+io.praecepta.rules.hub.spring.nosql.config
+io.praecepta.rules.hub.spring.sql.config

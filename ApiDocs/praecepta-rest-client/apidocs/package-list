@@ -1,0 +1,6 @@
+io.praecepta.rest.client
+io.praecepta.rest.client.builder
+io.praecepta.rest.client.config
+io.praecepta.rest.client.dto
+io.praecepta.rest.client.enums
+io.praecepta.rest.client.wrapper

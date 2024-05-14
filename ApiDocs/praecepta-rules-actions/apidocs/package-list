@@ -1,0 +1,6 @@
+io.praecepta.rules.actions
+io.praecepta.rules.actions.enums
+io.praecepta.rules.actions.impl
+io.praecepta.rules.factor.actions
+io.praecepta.rules.factor.actions.impl
+io.praecepta.rules.registry

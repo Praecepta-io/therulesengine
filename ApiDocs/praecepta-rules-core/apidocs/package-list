@@ -1,0 +1,5 @@
+io.praecepta.rules.actions.enums
+io.praecepta.rules.enums
+io.praecepta.rules.model
+io.praecepta.rules.model.filter
+io.praecepta.rules.model.projection

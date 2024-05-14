@@ -1,0 +1,8 @@
+io.praecepta.rest.api.annotation
+io.praecepta.rest.api.builder
+io.praecepta.rest.api.interceptor
+io.praecepta.rest.api.model
+io.praecepta.rest.api.service
+io.praecepta.rest.api.swagger
+io.praecepta.rest.constants
+io.praecepta.rest.enums

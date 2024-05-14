@@ -1,0 +1,6 @@
+io.praecepta.data.collectors.common.dto
+io.praecepta.data.configs.common
+io.praecepta.data.configs.common.db
+io.praecepta.data.configs.common.enums
+io.praecepta.data.configs.common.exception
+io.praecepta.data.configs.common.kafka

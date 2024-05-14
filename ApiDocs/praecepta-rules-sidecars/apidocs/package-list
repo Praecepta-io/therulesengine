@@ -1,0 +1,15 @@
+io.praecepta.rules.sidecars
+io.praecepta.rules.sidecars.enricher
+io.praecepta.rules.sidecars.enricher.helper
+io.praecepta.rules.sidecars.enricher.impl
+io.praecepta.rules.sidecars.enums
+io.praecepta.rules.sidecars.formatter
+io.praecepta.rules.sidecars.formatter.attribute
+io.praecepta.rules.sidecars.formatter.attribute.impl
+io.praecepta.rules.sidecars.formatter.impl
+io.praecepta.rules.sidecars.helper
+io.praecepta.rules.sidecars.parser
+io.praecepta.rules.sidecars.parser.dataconverter
+io.praecepta.rules.sidecars.parser.exception
+io.praecepta.rules.sidecars.parser.impl
+io.praecepta.rules.sidecars.parser.registry

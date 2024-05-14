@@ -1,0 +1,6 @@
+io.praecepta.dao
+io.praecepta.dao.intf
+io.praecepta.dao.model
+io.praecepta.hibernate.dao
+io.praecepta.hibernate.dao.intf
+io.praecepta.hibernate.spring.config

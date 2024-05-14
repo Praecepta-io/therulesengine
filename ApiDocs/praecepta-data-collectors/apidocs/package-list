@@ -1,0 +1,5 @@
+io.praecepta.data.collectors.common
+io.praecepta.data.collectors.common.collector
+io.praecepta.data.collectors.common.configs
+io.praecepta.data.collectors.common.configs.kafka
+io.praecepta.data.collectors.common.exception
