@@ -66,7 +66,7 @@ Out of the box configuration driven connectors make data ingestion from Relation
 | Description | Command |
 | --- | --- |
 | Open Command Prompt from and run | cd C:\Praecepta\therulesengine\praecepta-rules-api\target |
-| Execute Following Commoand | java  -cp praecepta-rules-api-0.0.1-SNAPSHOT.jar;lib/* io.praecepta.rest.api.PraeceptaRuleGroupApiLauncher |
+| Execute Following Commoand | java  -cp praecepta-rules-api-1.0.1.jar;lib/* io.praecepta.rest.api.PraeceptaRuleGroupApiLauncher |
 | Open API Swagger | http://localhost:4567/swaggerJson/ruleSpaceController and http://localhost:4567/swaggerJson/ruleGroupController |
 
 2. `Rules Set Up On A Port Specified and Rules Set Up Properties File Provided`
