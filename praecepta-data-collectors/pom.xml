@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>io.praecepta.common</groupId>
 		<artifactId>praecepta</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</parent>
 
 	<groupId>io.praecepta.data.collectors</groupId>

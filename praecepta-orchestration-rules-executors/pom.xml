@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>io.praecepta.common</groupId>
 		<artifactId>praecepta</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</parent>
 	<groupId>io.praecepta.rules.executors</groupId>
 	<artifactId>praecepta-orchestration-rules-executors</artifactId>
@@ -83,7 +83,7 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.praecepta.common</groupId>
+			<groupId>io.praecepta.common.restservice</groupId>
 			<artifactId>praecepta-common-sparkrest-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
