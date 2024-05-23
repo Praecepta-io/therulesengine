@@ -12,7 +12,7 @@
   <property name="LOG_FILE" value="Praecepta-orchestration-rules-engine" />
   
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOG_FILE}.log</file>
+		<file>log\${LOG_FILE}.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
 			<fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>

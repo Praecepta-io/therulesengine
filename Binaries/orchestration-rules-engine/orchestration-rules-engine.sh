@@ -1,1 +1,1 @@
-java -Dlogback.configurationFile=log/praecepta-orchestration-rules-engine-logback.xml  -DLOG_LEVEL=INFO -cp praecepta-orchestration-rules-executors-1.0.1.jar:lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher
+java -Dlogback.configurationFile=log/praecepta-orchestration-rules-engine-logback.xml  -DLOG_LEVEL=INFO  -cp praecepta-orchestration-rules-executors-1.0.1.jar:lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher

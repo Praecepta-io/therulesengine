@@ -1,1 +1,1 @@
-java -Dlogback.configurationFile=log/praecepta-choreographic-rules-engine-logback.xml  -DLOG_LEVEL=INFO  -cp praecepta-rules-executors-1.0.1.jar:lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher
+java -Dlogback.configurationFile=log/praecepta-choreographic-rules-engine-logback.xml  -DLOG_LEVEL=INFO   -cp praecepta-rules-executors-1.0.1.jar:lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher
