@@ -42,6 +42,9 @@ import io.praecepta.rules.model.projection.PraeceptaActionDetails;
 public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(PraeceptaRuleGroupServiceImpl.class);
+	public static final String MULTI_NESTED = "multiNested";
+	public static final String SIMPLE = "simple";
+	public static final String MULTI = "multi";
 	@Autowired
 	IPraeceptaPivotalRulesHubManager pivotalRuleHubManager;
 
@@ -187,6 +190,7 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 	@Override
 	public String addOrUpdateRuleGroup(String spaceName, String clientId, String appName, String version, MultiNestedConditionGroupInfo ruleGroup) {
 		PraeceptaRuleGroup praeceptaRuleGroup = new PraeceptaRuleGroup(spaceName, clientId, appName);
+		praeceptaRuleGroup.setRuleGroupType(MULTI_NESTED);
 		praeceptaRuleGroup.getRuleSpaceKey().setVersion(version);
 		List<PraeceptaCriteria> criteriaList = new ArrayList<>();
 
@@ -227,6 +231,7 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 	@Override
 	public String addOrUpdateRuleGroup(String spaceName, String clientId, String appName, String version, SimpleConditionGroupInfo ruleGroup) {
 		PraeceptaRuleGroup praeceptaRuleGroup = new PraeceptaRuleGroup(spaceName, clientId, appName);
+		praeceptaRuleGroup.setRuleGroupType(SIMPLE);
 		praeceptaRuleGroup.getRuleSpaceKey().setVersion(version);
 		List<PraeceptaCriteria> criteriaList = new ArrayList<>();
 		for(SimpleConditionCriteriaInfo criteriaInfo : ruleGroup.getSimpleConditionCriteriaInfos()){
@@ -266,11 +271,9 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 	private Collection<PraeceptaActionDetails> convertActionInfo(Collection<RuleActionInfo> criteriaInfo) {
 		Collection<PraeceptaActionDetails> actions = new ArrayList<>();
 		for (RuleActionInfo actionInfo : criteriaInfo) {
-			if (actionInfo.getActionStrategy().equals(PraeceptaActionStrategyType.ADD_TO_PAYLOAD)) {
 				PraeceptaActionDetails simpleAction = new PraeceptaActionDetails();
 				BeanUtils.copyProperties(actionInfo, simpleAction);
 				actions.add(simpleAction);
-			}
 		}
 		return actions;
 	}
@@ -284,6 +287,7 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 
 
 		PraeceptaRuleGroup praeceptaRuleGroup = new PraeceptaRuleGroup(spaceName, clientId, appName);
+		praeceptaRuleGroup.setRuleGroupType(MULTI);
 		praeceptaRuleGroup.getRuleSpaceKey().setVersion(version);
 		List<PraeceptaCriteria> criteriaList = new ArrayList<>();
 		for(MultiConditionCriteriaInfo criteriaInfo : ruleGroup.getMultiConditionCriteriaInfos()){

@@ -29,6 +29,9 @@ public class PraeceptaRuleGroup implements IModel{
 	private Collection<PraeceptaActionDetails> actionToPerformOnFailure;
 	
 	private PraeceptaRuleSpaceCompositeKey ruleSpaceKey;
+
+	private String ruleGroupType;
+
 	public PraeceptaRuleGroup(){
 
 	}
@@ -111,6 +114,14 @@ public class PraeceptaRuleGroup implements IModel{
 
 	public void setRuleSpaceKey(PraeceptaRuleSpaceCompositeKey ruleSpaceKey) {
 		this.ruleSpaceKey = ruleSpaceKey;
+	}
+
+	public String getRuleGroupType() {
+		return ruleGroupType;
+	}
+
+	public void setRuleGroupType(String ruleGroupType) {
+		this.ruleGroupType = ruleGroupType;
 	}
 
 	public List<PraeceptaCriteria> getPraeceptaOrderedCriterias() {
