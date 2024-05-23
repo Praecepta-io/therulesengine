@@ -33,10 +33,10 @@ public class PraeceptaDateBetweenConditionalEvaluator<INPUT extends PraeceptaSim
 				Date fromDate = getFromDate(input);
 				Date toDate = getToDate(input);
 				
-				Date endDate = getDateObject(input.getParameters().get(MetaDataAttributes.END_DATE.getDescription()).toString(), 
+				Date endDate = getDateObject(input.getParameters().get(MetaDataAttributes.MIDDLE_DATE.getDescription()).toString(), 
 						getEndDateFormat(input.getParameters()), getEndTimeZone(input.getParameters()));
 				
-				return fromDate.after(toDate) && fromDate.before(endDate);
+				return fromDate.before(endDate) && toDate.after(endDate);
 			}
 		}
 		return false;

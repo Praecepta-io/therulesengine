@@ -33,7 +33,7 @@ public class PraeceptaRuleExecutorConfigBuilder {
 
 	public static PraeceptaRuleExecutorConfigBuilder buildWithPropsFileLocation(String dataCollectorPropsFile) {
 
-		if (!PraeceptaObjectHelper.isStringEmpty(dataCollectorPropsFile)) {
+		if (PraeceptaObjectHelper.isStringEmpty(dataCollectorPropsFile)) {
 
 			buildWithPropsClasspath(null);
 			

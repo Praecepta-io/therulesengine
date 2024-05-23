@@ -5,6 +5,7 @@ public enum MetaDataAttributes {
 	TO_DATE_FORMAT("toDateFormat"),
 	END_DATE_FORMAT("endDateFormat"),
 	END_DATE("endDate"),
+	MIDDLE_DATE("middleDate"),
 	FROM_TIME_ZONE("fromTimeZone"),
 	TO_TIME_ZONE("toTimeZone"),
 	END_TIME_ZONE("endTimeZone"),

@@ -10,6 +10,7 @@ import java.util.TimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.praecepta.core.helper.PraeceptaObjectHelper;
 import io.praecepta.rules.evaluators.PraeceptaAbstractConditionalEvaluator;
 import io.praecepta.rules.model.filter.ConditionOperatorType;
 import io.praecepta.rules.model.filter.MetaDataAttributes;
@@ -53,18 +54,23 @@ public class PraeceptaDateEqualConditionalEvaluator<INPUT extends PraeceptaSimpl
 		return getDateObject(date, format, DEFAULT_TIME_ZONE);
 	}
 	protected final Date getDateObject(String date, String format, String timezone) {
-		DateFormat simpleDateFormat = new SimpleDateFormat(format);
-		if(timezone == null) {
-			timezone = DEFAULT_TIME_ZONE;
+		
+		if(!PraeceptaObjectHelper.isObjectEmpty(format)) {
+			DateFormat simpleDateFormat = new SimpleDateFormat(format);
+			if(timezone == null) {
+				timezone = DEFAULT_TIME_ZONE;
+			}
+			simpleDateFormat.setTimeZone(TimeZone.getTimeZone(timezone));
+			try {
+				return simpleDateFormat.parse(date);
+			} catch (ParseException e) {
+				LOG.error("Exception Occured while converting date  from % to % format", date, format);
+				LOG.error("Date Format exceotion : " , e.getMessage());
+				return null;
+			}
 		}
-		simpleDateFormat.setTimeZone(TimeZone.getTimeZone(timezone));
-		try {
-			return simpleDateFormat.parse(date);
-		} catch (ParseException e) {
-			LOG.error("Exception Occured while converting date  from % to % format", date, format);
-			LOG.error("Date Format exceotion : " , e.getMessage());
-			return null;
-		}
+		LOG.error("Empty Date format Provided. Make sure to pass the Date format for evaluation");
+		return null;
 	}
 	
 	protected final String getFromTimeZone(Map<String,Object> parameters) {

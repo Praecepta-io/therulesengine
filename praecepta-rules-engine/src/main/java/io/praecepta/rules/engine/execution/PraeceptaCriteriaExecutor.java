@@ -238,7 +238,7 @@ public class PraeceptaCriteriaExecutor {
 
 	}
 
-	private static boolean evaluateASimpleCondition(PraeceptaSimpleCondition simpleCondition, PraeceptaRequestStore ruleStore) {
+	public static boolean evaluateASimpleCondition(PraeceptaSimpleCondition simpleCondition, PraeceptaRequestStore ruleStore) {
 		
 		boolean simpleConditionResult = false;
 		
@@ -267,7 +267,7 @@ public class PraeceptaCriteriaExecutor {
 		return simpleConditionResult;
 	}
 	
-	private static boolean evaluateAMultiCondition(PraeceptaMultiCondition multiCondition, PraeceptaRequestStore ruleStore) {
+	public static boolean evaluateAMultiCondition(PraeceptaMultiCondition multiCondition, PraeceptaRequestStore ruleStore) {
 		
 		boolean multiConditionResult = false;
 		
@@ -298,7 +298,7 @@ public class PraeceptaCriteriaExecutor {
 		return multiConditionResult;
 	}
 	
-	private static boolean evaluateAMultiNestedCondition(PraeceptaMultiNestedCondition multiNestedCondition, PraeceptaRequestStore ruleStore) {
+	public static boolean evaluateAMultiNestedCondition(PraeceptaMultiNestedCondition multiNestedCondition, PraeceptaRequestStore ruleStore) {
 		
 		logger.info(" Triggering a Multi Nested Condition ");
 		
@@ -329,7 +329,7 @@ public class PraeceptaCriteriaExecutor {
 		return multiNestedConditionResult;
 	}
 	
-	private static boolean stimulateARule(PraeceptaMultiNestedCondition multiNestedCondition, PraeceptaRequestStore ruleStore) {
+	public static boolean stimulateARule(PraeceptaMultiNestedCondition multiNestedCondition, PraeceptaRequestStore ruleStore) {
 		
 		logger.info(" Triggering a Criteria ");
 		
