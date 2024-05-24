@@ -1,0 +1,22 @@
+Save Rule Space:
+  URL:	http://localhost:4567/ruleSpaceController/ruleSpace
+
+ Request:	{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"}
+
+Save Rule Group:
+
+	Simple Condition:
+		URL: http://localhost:4567/ruleGroupController/ruleGroups/HDFC/001/App1/V1
+		Request: {"ruleGroupName":"Simple Condition Group","ruleSpaceInfo":{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},"simpleConditionCriteriaInfos":[{"ruleName":"Age Validation","conditionInfo":{"conditionInfoList":[{"attributeName":"age","operatorType":"GREATER_THAN_NUMBER","valueToCompare":"40","attributeToCompare":""}]},"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"false"}]}]}
+
+
+	Multi Condition: http://localhost:4567/ruleGroupController/multiRuleGroups/HDFC/001/App1/V1
+	Request: {"ruleGroupName":"Multi Condition","ruleSpaceInfo":{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},"multiConditionCriteriaInfos":[{"ruleName":"Rule1","multiConditionList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"LESS_THAN_EQUAL_NUMBER"},{"attributeName":"Blood Pressure","valueToCompare":"130","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}]},{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"GREATER_THAN_EQUAL_NUMBER"},{"attributeName":"blood pressure","valueToCompare":"140","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}],"joinOperatorType":"OR"}]}],"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"false"}]}]}
+
+	Multi Nested Condition: http://localhost:4567/ruleGroupController/multiNestedRuleGroups/HDFC/001/App1/V1
+	Request:{"ruleGroupName":"Multi Nested Condition","ruleSpaceInfo":{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},"multiNestedConditionCriteriaInfos":[{"ruleName":"","multiNestedConditionList":[{"multiConditionsList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"LESS_THAN_EQUAL_NUMBER"},{"attributeName":"blood pressure","valueToCompare":"130","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}]}]},{"joinOperatorType":"AND","conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"GREATER_THAN_EQUAL_NUMBER"},{"attributeName":"blood pressure","valueToCompare":"140","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}]}]}]},{"multiConditionsList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"LESS_THAN_EQUAL_NUMBER"},{"attributeName":"sugar levels","valueToCompare":"110","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_NUMBER"}]}]},{"joinOperatorType":"OR","conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"GREATER_THAN_EQUAL_NUMBER"},{"attributeName":"sugar levels","valueToCompare":"130","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_NUMBER"}]}]}],"joinOperatorType":"OR"}],"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}]}]}
+
+	Save Sidecar:
+	URL: http://localhost:4567/sidecarController/saveSidecars/HDFC/001/App1/V1/Multi Nested Condition
+
+	Request: {"ruleGrpName":"Multi Nested Condition","preRuleGrpSideCars":[{"order":"0","sideCarType":"PARSER","type":"JSON"}],"postRuleGrpSideCars":[{"order":"0","sideCarType":"FORMATTER","type":"YML"}],"ruleLevelSideCarsInfo":[{"preRuleSideCars":[{"order":"0","sideCarType":"PARSER","type":"JSON"}],"ruleName":"Rule1","postRuleSideCars":[{"order":"0","sideCarType":"PARSER","type":"JSON"}]}]}
