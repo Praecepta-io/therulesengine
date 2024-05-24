@@ -1,22 +1,63 @@
-Save Rule Space:
-  URL:	http://localhost:4567/ruleSpaceController/ruleSpace
+Rule Space:
+    Save:
+        URL:	http://localhost:4567/ruleSpaceController/ruleSpace
+        Request:	{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"}
+    Get:
+        URL: http://localhost:4567/ruleSpaceController/ruleSpaceList
+        Response: [{"spaceName":"ICICI","clientId":"001","appName":"App1","version":"V1"},{"spaceName":"ICICI","clientId":"005","appName":"App2","version":"V1"},{"spaceName":"ICICI","clientId":"006","appName":"App1","version":"V5"},{"spaceName":"ICICI","clientId":"010","appName":"App1","version":"V1"},{"version":"V1.M1.P1"},{"version":"V1.M1.P1"},{"version":"V1.M1.P1"},{"spaceName":"ICICI","clientId":"001","appName":"TestApp","version":"V1"},{"spaceName":"ICICI","clientId":"050","appName":"Test","version":"V5"},{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},{"spaceName":"HSBC","clientId":"001","appName":"App1","version":"V1"}]
 
- Request:	{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"}
+Rule Group:
+    Save
+	    Simple Condition:
+		    URL: http://localhost:4567/ruleGroupController/ruleGroups/HDFC/001/App1/V1
+		    Request: {"ruleGroupName":"Simple Condition Group","ruleSpaceInfo":{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},"simpleConditionCriteriaInfos":[{"ruleName":"Age Validation","conditionInfo":{"conditionInfoList":[{"attributeName":"age","operatorType":"GREATER_THAN_NUMBER","valueToCompare":"40","attributeToCompare":""}]},"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"false"}]}]}
+            Method: POST
 
-Save Rule Group:
+	    Multi Condition:
+	        URL: http://localhost:4567/ruleGroupController/multiRuleGroups/HDFC/001/App1/V1
+	        Request: {"ruleGroupName":"Multi Condition","ruleSpaceInfo":{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},"multiConditionCriteriaInfos":[{"ruleName":"Rule1","multiConditionList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"LESS_THAN_EQUAL_NUMBER"},{"attributeName":"Blood Pressure","valueToCompare":"130","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}]},{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"GREATER_THAN_EQUAL_NUMBER"},{"attributeName":"blood pressure","valueToCompare":"140","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}],"joinOperatorType":"OR"}]}],"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"false"}]}]}
+            Method: POST
 
-	Simple Condition:
-		URL: http://localhost:4567/ruleGroupController/ruleGroups/HDFC/001/App1/V1
-		Request: {"ruleGroupName":"Simple Condition Group","ruleSpaceInfo":{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},"simpleConditionCriteriaInfos":[{"ruleName":"Age Validation","conditionInfo":{"conditionInfoList":[{"attributeName":"age","operatorType":"GREATER_THAN_NUMBER","valueToCompare":"40","attributeToCompare":""}]},"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"false"}]}]}
+	    Multi Nested Condition:
+	        URL: http://localhost:4567/ruleGroupController/multiNestedRuleGroups/HDFC/001/App1/V1
+	        Request:{"ruleGroupName":"Multi Nested Condition","ruleSpaceInfo":{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},"multiNestedConditionCriteriaInfos":[{"ruleName":"","multiNestedConditionList":[{"multiConditionsList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"LESS_THAN_EQUAL_NUMBER"},{"attributeName":"blood pressure","valueToCompare":"130","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}]}]},{"joinOperatorType":"AND","conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"GREATER_THAN_EQUAL_NUMBER"},{"attributeName":"blood pressure","valueToCompare":"140","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}]}]}]},{"multiConditionsList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"LESS_THAN_EQUAL_NUMBER"},{"attributeName":"sugar levels","valueToCompare":"110","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_NUMBER"}]}]},{"joinOperatorType":"OR","conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"GREATER_THAN_EQUAL_NUMBER"},{"attributeName":"sugar levels","valueToCompare":"130","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_NUMBER"}]}]}],"joinOperatorType":"OR"}],"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}]}]}
+            Method: POST
+    Get:
+        URL: http://localhost:4567/ruleGroupController/ruleGroups/ICICI/001/App1/V1/simplecondition withmetadata
+        Request: {"ruleGroupName":"simplecondition withmetadata","active":true,"xploretechCriterias":[{"predicates":{"multiCondition":{"condition":{"subjectName":"name","conditionOperator":"EQUAL_CHARS","definedAttributeToCompare":"","valueToCompare":"vara","parameters":{"metadata1":"metadataval"},"nextConditionJoinOperator":"AND","nextCondition":{"subjectName":"email","conditionOperator":"EQUAL_CHARS","definedAttributeToCompare":"alternateEmail","valueToCompare":"","parameters":{"metadata2":"metadataval2","metadata3":"metadataval3"}}}}},"actionToPerform":[{"actionAttributeName":"simplecondition_withmetadata_status","valueToAssign":"true","sourceValueAttributeName":"","additionalParameters":{"null":"val"}}],"actionToPerformOnFailure":[{"actionAttributeName":"simplecondition_withmetadata_status","valueToAssign":"","sourceValueAttributeName":"simplecondition_withmetadata_status_fail","additionalParameters":{"null":"val"}}],"orderNumber":0,"ruleName":"Rule1"}],"ruleSpaceKey":{"spaceName":"ICICI","clientId":"001","appName":"App1","version":"V1"},"spaceName":"ICICI","clientName":"001","appName":"App1"}
+        Method: GET
+    Delete:
+        URL: http://localhost:4567/ruleGroupController/ruleGroups/ICICI/001/App1/V1/simplecondition withmetadata
+        Method: POST
+    Update:
+        Simple Condition:
+            URL: http://localhost:4567/ruleGroupController/updateRuleGroup/ICICI/005/App2/V1
+            Method: POST
+            Request: {"ruleGroupName":"Simple Group1","ruleSpaceInfo":{"spaceName":"ICICI","clientId":"005","appName":"App2","version":"V1"},"simpleConditionCriteriaInfos":[{"ruleName":"Rule1","conditionInfo":{"conditionInfoList":[{"attributeName":"name","operatorType":"EQUAL_CHARS","valueToCompare":"vara1","attributeToCompare":""}]},"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"status","valueToAssign":"true1"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"status","valueToAssign":"false1"}]}]}
+        Multi Condition:
+            URL: http://localhost:4567/ruleGroupController/updateMultiRuleGroup/ICICI/005/App2/V1
+            Method: POST
+            Request: {"ruleGroupName":"Multi condition group1","ruleSpaceInfo":{"spaceName":"ICICI","clientId":"005","appName":"App2","version":"V1"},"multiConditionCriteriaInfos":[{"ruleName":"Rule1","multiConditionList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"name","valueToCompare":"vara","attributeToCompare":"","operatorType":"EQUAL_CHARS"},{"attributeName":"email","valueToCompare":"vara@gmail.com","attributeToCompare":"","joinOperatorType":"AND","operatorType":"EQUAL_CHARS"}]},{"conditionInfoList":[{"attributeName":"sal","valueToCompare":"10000","attributeToCompare":"","operatorType":"EQUAL_CHARS"}],"joinOperatorType":"AND"}]}],"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"status","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"status","valueToAssign":"false5"}]}]}
+        Multi Nested Condition:
+            URL: http://localhost:4567/ruleGroupController/updateMultiNestedRuleGroup/ICICI/005/App2/V1
+            Method: POST
+            Request: {"ruleGroupName":"Multi Nested Group1","ruleSpaceInfo":{"spaceName":"ICICI","clientId":"005","appName":"App2","version":"V1"},"multiNestedConditionCriteriaInfos":[{"ruleName":"Rule1","multiNestedConditionList":[{"multiConditionsList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"name","valueToCompare":"vara","attributeToCompare":"","operatorType":"EQUAL_CHARS"},{"attributeName":"email","valueToCompare":"vara@gmail.com","attributeToCompare":"","joinOperatorType":"OR","operatorType":"EQUAL_CHARS"}]}]},{"joinOperatorType":"OR","conditionInfo":[{"conditionInfoList":[{"attributeName":"sal2","valueToCompare":"10000","attributeToCompare":"","operatorType":"EQUAL_CHARS"}]}]}]},{"multiConditionsList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"name1","valueToCompare":"vara1","attributeToCompare":"","operatorType":"EQUAL_CHARS"},{"attributeName":"email1","valueToCompare":"vara2@gmail.com","attributeToCompare":"","joinOperatorType":"AND","operatorType":"EQUAL_CHARS"}]}]},{"joinOperatorType":"AND","conditionInfo":[{"conditionInfoList":[{"attributeName":"sal7","valueToCompare":"10001","attributeToCompare":"","operatorType":"EQUAL_CHARS"}]}]}],"joinOperatorType":"OR"}],"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"status","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"status","valueToAssign":"false1"}]}]}
 
+ SideCar:
+    Save:
+        URL: http://localhost:4567/sidecarController/saveSidecars/ICICI/005/App2/V1/Simple Group1
+        Request:  {"ruleGrpName":"Simple Group1","preRuleGrpSideCars":[{"order":"0","sideCarType":"PARSER","type":"JSON","sideCarConfigs":{"metadat1":"matadatavalue1"}}],"postRuleGrpSideCars":[{"order":"0","sideCarType":"FORMATTER","type":"XML"}],"ruleLevelSideCarsInfo":[{"preRuleSideCars":[{"order":"0","sideCarType":"PARSER","type":"DELIMITER"}],"ruleName":"Rule1","postRuleSideCars":[{"order":"0","sideCarType":"FORMATTER","type":"XML"}]}]}
+        Method: POST
+   GET:
+        URL: http://localhost:4567/sidecarController/getSidecars/ICICI/005/App2/V1/Simple%20Group1
+        Response: {"ruleGrpName":"Simple Group1","preRuleGrpSideCars":[{"order":0,"sideCarType":"PARSER","type":"JSON","sideCarConfigs":{"metadat1":"matadatavalue1"}}],"postRuleGrpSideCars":[{"order":0,"sideCarType":"FORMATTER","type":"XML"}],"ruleLevelSideCarsInfo":[{"ruleName":"Rule1","preRuleSideCars":[{"order":0,"sideCarType":"PARSER","type":"DELIMITER"}],"postRuleSideCars":[{"order":0,"sideCarType":"FORMATTER","type":"XML"}]}]}
+        Method: GET
 
-	Multi Condition: http://localhost:4567/ruleGroupController/multiRuleGroups/HDFC/001/App1/V1
-	Request: {"ruleGroupName":"Multi Condition","ruleSpaceInfo":{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},"multiConditionCriteriaInfos":[{"ruleName":"Rule1","multiConditionList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"LESS_THAN_EQUAL_NUMBER"},{"attributeName":"Blood Pressure","valueToCompare":"130","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}]},{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"GREATER_THAN_EQUAL_NUMBER"},{"attributeName":"blood pressure","valueToCompare":"140","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}],"joinOperatorType":"OR"}]}],"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"false"}]}]}
+   DELETE:
+        URL: http://localhost:4567/sidecarController/deleteSidecars/ICICI/001/App1/V1/Simple%20Rule%20Group%201
+        Method: DELETE
 
-	Multi Nested Condition: http://localhost:4567/ruleGroupController/multiNestedRuleGroups/HDFC/001/App1/V1
-	Request:{"ruleGroupName":"Multi Nested Condition","ruleSpaceInfo":{"spaceName":"HDFC","clientId":"001","appName":"App1","version":"V1"},"multiNestedConditionCriteriaInfos":[{"ruleName":"","multiNestedConditionList":[{"multiConditionsList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"LESS_THAN_EQUAL_NUMBER"},{"attributeName":"blood pressure","valueToCompare":"130","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}]}]},{"joinOperatorType":"AND","conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"GREATER_THAN_EQUAL_NUMBER"},{"attributeName":"blood pressure","valueToCompare":"140","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_EQUAL_NUMBER"}]}]}]},{"multiConditionsList":[{"conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"LESS_THAN_EQUAL_NUMBER"},{"attributeName":"sugar levels","valueToCompare":"110","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_NUMBER"}]}]},{"joinOperatorType":"OR","conditionInfo":[{"conditionInfoList":[{"attributeName":"age","valueToCompare":"40","attributeToCompare":"","operatorType":"GREATER_THAN_EQUAL_NUMBER"},{"attributeName":"sugar levels","valueToCompare":"130","attributeToCompare":"","joinOperatorType":"AND","operatorType":"GREATER_THAN_NUMBER"}]}]}],"joinOperatorType":"OR"}],"actionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}],"failureActionList":[{"sourceValueAttributeName":"","actionAttributeName":"Medical Test Required","valueToAssign":"true"}]}]}
-
-	Save Sidecar:
-	URL: http://localhost:4567/sidecarController/saveSidecars/HDFC/001/App1/V1/Multi Nested Condition
-
-	Request: {"ruleGrpName":"Multi Nested Condition","preRuleGrpSideCars":[{"order":"0","sideCarType":"PARSER","type":"JSON"}],"postRuleGrpSideCars":[{"order":"0","sideCarType":"FORMATTER","type":"YML"}],"ruleLevelSideCarsInfo":[{"preRuleSideCars":[{"order":"0","sideCarType":"PARSER","type":"JSON"}],"ruleName":"Rule1","postRuleSideCars":[{"order":"0","sideCarType":"PARSER","type":"JSON"}]}]}
+   UPDATE:
+        URL: http://localhost:4567/sidecarController/updateSidecars/ICICI/005/App2/V1/Simple Group1
+        Request: {"ruleGrpName":"Simple Group1","preRuleGrpSideCars":[{"order":"0","sideCarType":"PARSER","type":"JSON","sideCarConfigs":{"metadat1":"matadatavalue1"}}],"postRuleGrpSideCars":[{"order":"0","sideCarType":"FORMATTER","type":"XML"}],"ruleLevelSideCarsInfo":[{"preRuleSideCars":[{"order":"0","sideCarType":"PARSER","type":"DELIMITER"}],"ruleName":"Rule1","postRuleSideCars":[{"order":"0","sideCarType":"FORMATTER","type":"XML"}]}]}
+        Method: POST
