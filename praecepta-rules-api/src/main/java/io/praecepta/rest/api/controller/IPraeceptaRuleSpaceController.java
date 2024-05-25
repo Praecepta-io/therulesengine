@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @Path("/ruleSpaceController")
 public interface IPraeceptaRuleSpaceController extends IPraeceptaApiService {
 
-    @PraeceptaExposeAsRestServiceMethod(post = true, functionPath = "/addRuleSpace", methodName = ServiceAndMethodNames.ADD_RULE_SPACE_METHOD_NAME)
+    @PraeceptaExposeAsRestServiceMethod(post = true, functionPath = "/ruleSpace", methodName = ServiceAndMethodNames.ADD_RULE_SPACE_METHOD_NAME)
     @Operation(operationId = ServiceAndMethodNames.ADD_RULE_SPACE_METHOD_NAME)
     @POST
     @Path("/ruleSpace")

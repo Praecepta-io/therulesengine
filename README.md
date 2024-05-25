@@ -184,4 +184,3 @@ KAFKA.connection_props.auto.offset.reset=earliest
 ````
 > [!NOTE]
 > This Code is Licensed to use Open Souce Projects Only
-

@@ -89,10 +89,10 @@ public interface IPraeceptaRuleGroupController extends IPraeceptaApiService{
 	@Path("/updateMultiNestedRuleGroup/{spacename}/{clientid}/{appname}/{version}")
 	public Object updateMultiNestedRuleGroup(@PathParam(value = "spacename")String spaceName, @PathParam(value = "clientid")String clientId, @PathParam(value = "appname")String appName, @PathParam(value = "version")String version, MultiNestedConditionGroupInfo request );
 
-	@PraeceptaExposeAsRestServiceMethod(delete = true, functionPath = "/ruleGroups/:spacename/:clientid/:appname/:version/:rulegroupname", methodName = ServiceAndMethodNames.DELETE_RULE_GROUP_METHOD_NAME)
+	@PraeceptaExposeAsRestServiceMethod(delete = true, functionPath = "/ruleGroups/:spacename/:clientid/:appname/:version/:groupname", methodName = ServiceAndMethodNames.DELETE_RULE_GROUP_METHOD_NAME)
 	@Operation(operationId = ServiceAndMethodNames.DELETE_RULE_GROUP_METHOD_NAME)
     @DELETE
-	@Path("/ruleGroups/{spacename}/{clientid}/{appname}/{version}/{rulegroupname}")
-	public Object deleteRuleGroup(@PathParam(value = "spacename")String spaceName,@PathParam(value = "clientid")String clientId,@PathParam(value = "appname")String appName,@PathParam(value = "version")String version, @PathParam(value = "rulegroupname") String rulegroupname);
+	@Path("/ruleGroups/{spacename}/{clientid}/{appname}/{version}/{groupname}")
+	public Object deleteRuleGroup(@PathParam(value = "spacename")String spaceName,@PathParam(value = "clientid")String clientId,@PathParam(value = "appname")String appName,@PathParam(value = "version")String version, @PathParam(value = "groupname") String rulegroupname);
 	
 }
