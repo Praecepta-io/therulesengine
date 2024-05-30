@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  
   <parent>
 		<groupId>io.praecepta.common</groupId>
 		<artifactId>praecepta</artifactId>
@@ -91,11 +92,6 @@
       <version>4.3.7.RELEASE</version>
       <scope>test</scope>
     </dependency>
-	  <dependency>
-		  <groupId>io.praecepta.rest.client</groupId>
-		  <artifactId>praecepta-rest-client</artifactId>
-		  <version>1.0.1</version>
-	  </dependency>
   </dependencies>
 
 
