@@ -1,22 +1,23 @@
 package io.praecepta.rules.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.web.client.RestTemplate;
+
 import io.praecepta.rest.client.builder.PraeceptaRestClientBuilder;
 import io.praecepta.rest.client.config.PraeceptaWebServiceClientConfig;
 import io.praecepta.rest.client.dto.PraeceptaWsRequestResponseHolder;
 import io.praecepta.rest.client.wrapper.PraeceptaRestClientWrapper;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class RuleGroupFetchRestClient {
+public class SidecarDeleteRestClient {
     public static void main(String[] args) {
         String hostName = System.getProperty("server.hostName", "http://localhost:4567");
 
         PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
 
-        config.setEndpointUrl(hostName+ "/ruleGroupController/ruleGroups/{space}/{client}/{appName}/{version}/{groupName}");
-        config.setRequestType("GET");
+        config.setEndpointUrl(hostName+ "/sidecarController/deleteSidecars/{space}/{client}/{appName}/{version}/{groupName}");
+        config.setRequestType("DELETE");
         config.setConnectionTimeOut(10000L);
         config.setReadTimeOut(7500L);
 
@@ -32,9 +33,9 @@ public class RuleGroupFetchRestClient {
         pathParams.put("client","001");
         pathParams.put("appName","App1");
         pathParams.put("version", "V1");
-        pathParams.put("groupName", "Multi Nested Condition");
+        pathParams.put("groupName", "Simple Condition Group");
 
-        PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.GET,
+        PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.DELETE,
                 null, null, pathParams, null, null);
 
         restClientWrapper.performOperation(wsReqResHolder, simpleRestBuilder.getWsClientConfig());

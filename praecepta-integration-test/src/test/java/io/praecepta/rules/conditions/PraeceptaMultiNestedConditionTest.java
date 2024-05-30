@@ -1,9 +1,9 @@
 package io.praecepta.rules.conditions;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 import io.praecepta.core.helper.GsonHelper;
 import io.praecepta.rules.engine.execution.PraeceptaCriteriaExecutor;

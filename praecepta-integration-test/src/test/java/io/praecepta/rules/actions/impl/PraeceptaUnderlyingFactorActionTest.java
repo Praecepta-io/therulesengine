@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import io.praecepta.core.data.PraeceptaRequestStore;
 import io.praecepta.rules.actions.PraeceptaActionHolder;
-import io.praecepta.rules.actions.impl.PraeceptaValueAssignAction;
 import io.praecepta.rules.enums.PraeceptaRuleRequestStoreType;
 import io.praecepta.rules.factor.actions.PraeceptaUnderlyingFactorAction;
 import io.praecepta.rules.model.PraeceptaActionResult.ACTION_EXECUTION_STATUS;

@@ -1,13 +1,14 @@
 package io.praecepta.rules.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.web.client.RestTemplate;
+
 import io.praecepta.rest.client.builder.PraeceptaRestClientBuilder;
 import io.praecepta.rest.client.config.PraeceptaWebServiceClientConfig;
 import io.praecepta.rest.client.dto.PraeceptaWsRequestResponseHolder;
 import io.praecepta.rest.client.wrapper.PraeceptaRestClientWrapper;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MultiNestedRuleGroupCreationRestClient {
     public static void main(String[] args) {

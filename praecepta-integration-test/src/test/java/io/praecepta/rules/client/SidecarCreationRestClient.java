@@ -1,21 +1,22 @@
 package io.praecepta.rules.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.web.client.RestTemplate;
+
 import io.praecepta.rest.client.builder.PraeceptaRestClientBuilder;
 import io.praecepta.rest.client.config.PraeceptaWebServiceClientConfig;
 import io.praecepta.rest.client.dto.PraeceptaWsRequestResponseHolder;
 import io.praecepta.rest.client.wrapper.PraeceptaRestClientWrapper;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class SimpleRuleGroupCreationRestClient {
+public class SidecarCreationRestClient {
     public static void main(String[] args) {
         String hostName = System.getProperty("server.hostName", "http://localhost:4567");
 
         PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
 
-        config.setEndpointUrl(hostName+ "/ruleGroupController/ruleGroups/{space}/{client}/{appName}/{version}");
+        config.setEndpointUrl(hostName+ "/sidecarController/saveSidecars/{space}/{client}/{appName}/{version}/{groupName}");
         config.setRequestType("POST");
         config.setConnectionTimeOut(10000L);
         config.setReadTimeOut(7500L);
@@ -26,13 +27,14 @@ public class SimpleRuleGroupCreationRestClient {
                 (PraeceptaRestClientWrapper<RestTemplate>) simpleRestBuilder.buildClient();
 
 
-        String inputJson = "{\"ruleGroupName\":\"Simple Condition Group\",\"ruleSpaceInfo\":{\"spaceName\":\"PNB\",\"clientId\":\"001\",\"appName\":\"App1\",\"version\":\"V1\"},\"simpleConditionCriteriaInfos\":[{\"ruleName\":\"Age Validation\",\"conditionInfo\":{\"conditionInfoList\":[{\"attributeName\":\"age\",\"operatorType\":\"GREATER_THAN_NUMBER\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\"}]},\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}";
+        String inputJson = "{\"ruleGrpName\":\"Simple Condition Group\",\"preRuleGrpSideCars\":[{\"order\":\"0\",\"sideCarType\":\"PARSER\",\"type\":\"JSON\",\"sideCarConfigs\":{\"metadat1\":\"matadatavalue1\"}}],\"postRuleGrpSideCars\":[{\"order\":\"0\",\"sideCarType\":\"FORMATTER\",\"type\":\"XML\"}],\"ruleLevelSideCarsInfo\":[{\"preRuleSideCars\":[{\"order\":\"0\",\"sideCarType\":\"PARSER\",\"type\":\"DELIMITER\"}],\"ruleName\":\"Rule1\",\"postRuleSideCars\":[{\"order\":\"0\",\"sideCarType\":\"FORMATTER\",\"type\":\"XML\"}]}]}";
 
         Map<String,String> pathParams = new HashMap<>();
         pathParams.put("space","PNB");
         pathParams.put("client","001");
         pathParams.put("appName","App1");
         pathParams.put("version", "V1");
+        pathParams.put("groupName","Simple Condition Group");
 
         PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.POST,
                 inputJson, null, pathParams, null, null);
