@@ -182,5 +182,53 @@ KAFKA.connection_props.kafka.receiver.topic=TEST.TOPIC
 KAFKA.connection_props.max.poll.records=10
 KAFKA.connection_props.auto.offset.reset=earliest
 ````
+
+### Rule Space Examples
+
+* [Rule Space Creation](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/RuleSpaceCreationRestClient.java)  
+
+
+* [Rule Space Fetch](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/RuleSpaceFetchRestClient.java)
+
+### Rule Group Examples
+
+* [A Simple Condition Rule Group Creation](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/SimpleRuleGroupCreationRestClient.java)
+
+
+* [A Simple Condition Rule Group Update](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/SimpleRuleGroupUpdateRestClient.java)
+
+
+* [A Multi Condition Rule Group Creation](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/MultiRuleGroupCreationRestClient.java)
+
+
+* [A Multi Condition Rule Group Update](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/MultiRuleGroupUpdateRestClient.java)
+
+
+* [A Multi Nested Condition Rule Group Creation](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/MultiNestedRuleGroupCreationRestClient.java)
+
+
+* [A Multi Nested Condition Rule Group Update](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/MultiNestedRuleGroupUpdateRestClient.java)  
+
+
+* [Rule Group Fetch](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/RuleGroupFetchRestClient.java)
+
+
+* [Rule Group Delete](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/RuleGroupDeleteRestClient.java)
+
+### Rule Side Car Examples
+
+* [Rule Side Car Creation](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/SidecarCreationRestClient.java)
+
+
+* [Rule Side Car Update](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/SidecarUpdateRestClient.java)
+
+
+* [Rule Side Car Fetch](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/SidecarFetchRestClient.java)
+
+
+* [Rule Side Car Delete](https://github.com/Praecepta-io/therulesengine/blob/main/praecepta-integration-test/src/test/java/io/praecepta/rules/client/SidecarDeleteRestClient.java)
+
+
+
 > [!NOTE]
 > This Code is Licensed to use Open Souce Projects Only
