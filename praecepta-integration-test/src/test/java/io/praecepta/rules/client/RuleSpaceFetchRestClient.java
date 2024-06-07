@@ -14,7 +14,6 @@ public class RuleSpaceFetchRestClient {
         PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
 
         config.setEndpointUrl(hostName+ "/ruleSpaceController/ruleSpaceList");
-        config.setRequestType("GET");
         config.setConnectionTimeOut(10000L);
         config.setReadTimeOut(7500L);
 

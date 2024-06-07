@@ -17,7 +17,6 @@ public class SidecarFetchRestClient {
         PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
 
         config.setEndpointUrl(hostName+ "/sidecarController/getSidecars/{space}/{client}/{appName}/{version}/{groupName}");
-        config.setRequestType("GET");
         config.setConnectionTimeOut(10000L);
         config.setReadTimeOut(7500L);
 
@@ -29,7 +28,7 @@ public class SidecarFetchRestClient {
 
 
         Map<String,String> pathParams = new HashMap<>();
-        pathParams.put("space","PNB");
+        pathParams.put("space","KOTAK");
         pathParams.put("client","001");
         pathParams.put("appName","App1");
         pathParams.put("version", "V1");

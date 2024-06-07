@@ -17,7 +17,6 @@ public class SidecarCreationRestClient {
         PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
 
         config.setEndpointUrl(hostName+ "/sidecarController/saveSidecars/{space}/{client}/{appName}/{version}/{groupName}");
-        config.setRequestType("POST");
         config.setConnectionTimeOut(10000L);
         config.setReadTimeOut(7500L);
 
@@ -30,7 +29,7 @@ public class SidecarCreationRestClient {
         String inputJson = "{\"ruleGrpName\":\"Simple Condition Group\",\"preRuleGrpSideCars\":[{\"order\":\"0\",\"sideCarType\":\"PARSER\",\"type\":\"JSON\",\"sideCarConfigs\":{\"metadat1\":\"matadatavalue1\"}}],\"postRuleGrpSideCars\":[{\"order\":\"0\",\"sideCarType\":\"FORMATTER\",\"type\":\"XML\"}],\"ruleLevelSideCarsInfo\":[{\"preRuleSideCars\":[{\"order\":\"0\",\"sideCarType\":\"PARSER\",\"type\":\"DELIMITER\"}],\"ruleName\":\"Rule1\",\"postRuleSideCars\":[{\"order\":\"0\",\"sideCarType\":\"FORMATTER\",\"type\":\"XML\"}]}]}";
 
         Map<String,String> pathParams = new HashMap<>();
-        pathParams.put("space","PNB");
+        pathParams.put("space","KOTAK");
         pathParams.put("client","001");
         pathParams.put("appName","App1");
         pathParams.put("version", "V1");

@@ -14,7 +14,6 @@ public class RuleSpaceCreationRestClient {
         PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
 
         config.setEndpointUrl(hostName+ "/ruleSpaceController/ruleSpace");
-        config.setRequestType("POST");
         config.setConnectionTimeOut(10000L);
         config.setReadTimeOut(7500L);
 

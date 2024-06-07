@@ -17,7 +17,6 @@ public class MultiRuleGroupUpdateRestClient {
         PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
 
         config.setEndpointUrl(hostName+ "/ruleGroupController/updateMultiRuleGroup/{space}/{client}/{appName}/{version}");
-        config.setRequestType("POST");
         config.setConnectionTimeOut(10000L);
         config.setReadTimeOut(7500L);
 
@@ -30,7 +29,7 @@ public class MultiRuleGroupUpdateRestClient {
         String inputJson = "{\"ruleGroupName\":\"Multi Condition\",\"ruleSpaceInfo\":{\"spaceName\":\"HDFC\",\"clientId\":\"001\",\"appName\":\"App1\",\"version\":\"V1\"},\"multiConditionCriteriaInfos\":[{\"ruleName\":\"Rule7\",\"multiConditionList\":[{\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"LESS_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"Blood Pressure\",\"valueToCompare\":\"130\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}]},{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"blood pressure\",\"valueToCompare\":\"140\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}],\"joinOperatorType\":\"OR\"}]}],\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}";
 
         Map<String,String> pathParams = new HashMap<>();
-        pathParams.put("space","PNB");
+        pathParams.put("space","KOTAK");
         pathParams.put("client","001");
         pathParams.put("appName","App1");
         pathParams.put("version", "V1");

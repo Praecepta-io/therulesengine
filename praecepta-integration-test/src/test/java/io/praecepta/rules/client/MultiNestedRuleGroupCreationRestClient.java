@@ -17,7 +17,6 @@ public class MultiNestedRuleGroupCreationRestClient {
         PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
 
         config.setEndpointUrl(hostName+ "/ruleGroupController/multiNestedRuleGroups/{space}/{client}/{appName}/{version}");
-        config.setRequestType("POST");
         config.setConnectionTimeOut(10000L);
         config.setReadTimeOut(7500L);
 
@@ -30,7 +29,7 @@ public class MultiNestedRuleGroupCreationRestClient {
         String inputJson = "{\"ruleGroupName\":\"Multi Nested Condition\",\"ruleSpaceInfo\":{\"spaceName\":\"HDFC\",\"clientId\":\"001\",\"appName\":\"App1\",\"version\":\"V1\"},\"multiNestedConditionCriteriaInfos\":[{\"ruleName\":\"\",\"multiNestedConditionList\":[{\"multiConditionsList\":[{\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"LESS_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"blood pressure\",\"valueToCompare\":\"130\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}]}]},{\"joinOperatorType\":\"AND\",\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"blood pressure\",\"valueToCompare\":\"140\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}]}]}]},{\"multiConditionsList\":[{\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"LESS_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"sugar levels\",\"valueToCompare\":\"110\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_NUMBER\"}]}]},{\"joinOperatorType\":\"OR\",\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"sugar levels\",\"valueToCompare\":\"130\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_NUMBER\"}]}]}],\"joinOperatorType\":\"OR\"}],\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}]}]}";
 
         Map<String,String> pathParams = new HashMap<>();
-        pathParams.put("space","PNB");
+        pathParams.put("space","KOTAK");
         pathParams.put("client","001");
         pathParams.put("appName","App1");
         pathParams.put("version", "V1");

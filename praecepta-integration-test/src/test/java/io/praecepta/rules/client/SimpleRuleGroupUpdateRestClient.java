@@ -17,7 +17,6 @@ public class SimpleRuleGroupUpdateRestClient {
         PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
 
         config.setEndpointUrl(hostName+ "/ruleGroupController/updateRuleGroup/{space}/{client}/{appName}/{version}");
-        config.setRequestType("POST");
         config.setConnectionTimeOut(10000L);
         config.setReadTimeOut(7500L);
 
@@ -27,10 +26,10 @@ public class SimpleRuleGroupUpdateRestClient {
                 (PraeceptaRestClientWrapper<RestTemplate>) simpleRestBuilder.buildClient();
 
 
-        String inputJson = "{\"ruleGroupName\":\"Simple Condition Group\",\"ruleSpaceInfo\":{\"spaceName\":\"PNB\",\"clientId\":\"001\",\"appName\":\"App1\",\"version\":\"V1\"},\"simpleConditionCriteriaInfos\":[{\"ruleName\":\"Age Validation2\",\"conditionInfo\":{\"conditionInfoList\":[{\"attributeName\":\"age\",\"operatorType\":\"GREATER_THAN_NUMBER\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\"}]},\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}";
+        String inputJson = "{\"ruleGroupName\":\"Simple Condition Group\",\"ruleSpaceInfo\":{\"spaceName\":\"KOTAK\",\"clientId\":\"001\",\"appName\":\"App1\",\"version\":\"V1\"},\"simpleConditionCriteriaInfos\":[{\"ruleName\":\"Age Validation2\",\"conditionInfo\":{\"conditionInfoList\":[{\"attributeName\":\"age\",\"operatorType\":\"GREATER_THAN_NUMBER\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\"}]},\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}";
 
         Map<String,String> pathParams = new HashMap<>();
-        pathParams.put("space","PNB");
+        pathParams.put("space","KOTAK");
         pathParams.put("client","001");
         pathParams.put("appName","App1");
         pathParams.put("version", "V1");
