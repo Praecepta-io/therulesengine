@@ -1,12 +1,6 @@
 package io.praecepta.rest.api.controller;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
 import io.praecepta.rest.api.annotation.PraeceptaExposeAsRestService;
 import io.praecepta.rest.api.annotation.PraeceptaExposeAsRestServiceMethod;
@@ -26,9 +20,9 @@ public interface IPraeceptaSidecarController extends IPraeceptaApiService {
     Object getSidecars(@PathParam(value = "spacename")String spaceName, @PathParam(value = "clientid")String clientId, @PathParam(value = "appname")String appName, @PathParam(value = "version")String version, @PathParam(value = "groupname")String groupName);
 
 
-    @PraeceptaExposeAsRestServiceMethod(post = true, functionPath = "/saveSidecars/:spacename/:clientid/:appname/:version/:groupname", methodName = ServiceAndMethodNames.SIDE_CARS_SAVE_METHOD_NAME)
+    @PraeceptaExposeAsRestServiceMethod(put = true, functionPath = "/saveSidecars/:spacename/:clientid/:appname/:version/:groupname", methodName = ServiceAndMethodNames.SIDE_CARS_SAVE_METHOD_NAME)
     @Operation(operationId = ServiceAndMethodNames.SIDE_CARS_SAVE_METHOD_NAME)
-    @POST
+    @PUT
     @Produces("application/json")
     @Consumes("application/json")
     @Path("/saveSidecars/{spacename}/{clientid}/{appname}/{version}/{groupname}")

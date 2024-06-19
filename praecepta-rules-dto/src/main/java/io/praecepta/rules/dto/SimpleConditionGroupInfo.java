@@ -5,7 +5,6 @@ import java.util.Collection;
 public class SimpleConditionGroupInfo {
 
     private String ruleGroupName;
-    private RuleSpaceInfo ruleSpaceInfo;
 
     private Collection<SimpleConditionCriteriaInfo> simpleConditionCriteriaInfos;
 
@@ -25,11 +24,4 @@ public class SimpleConditionGroupInfo {
         this.ruleGroupName = ruleGroupName;
     }
 
-    public RuleSpaceInfo getRuleSpaceInfo() {
-        return ruleSpaceInfo;
-    }
-
-    public void setRuleSpaceInfo(RuleSpaceInfo ruleSpaceInfo) {
-        this.ruleSpaceInfo = ruleSpaceInfo;
-    }
 }

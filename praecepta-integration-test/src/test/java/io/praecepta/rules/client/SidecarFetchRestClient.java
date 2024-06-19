@@ -28,11 +28,11 @@ public class SidecarFetchRestClient {
 
 
         Map<String,String> pathParams = new HashMap<>();
-        pathParams.put("space","KOTAK");
+        pathParams.put("space","HDFC");
         pathParams.put("client","001");
-        pathParams.put("appName","App1");
+        pathParams.put("appName","Loan");
         pathParams.put("version", "V1");
-        pathParams.put("groupName", "Simple Condition Group");
+        pathParams.put("groupName", "Loan_Amount_Validation");
 
         PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.GET,
                 null, null, pathParams, null, null);

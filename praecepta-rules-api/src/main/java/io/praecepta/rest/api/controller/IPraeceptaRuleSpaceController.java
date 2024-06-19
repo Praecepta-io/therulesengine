@@ -1,12 +1,6 @@
 package io.praecepta.rest.api.controller;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
 import io.praecepta.rest.api.annotation.PraeceptaExposeAsRestService;
 import io.praecepta.rest.api.annotation.PraeceptaExposeAsRestServiceMethod;
@@ -19,9 +13,9 @@ import io.swagger.v3.oas.annotations.Operation;
 @Path("/ruleSpaceController")
 public interface IPraeceptaRuleSpaceController extends IPraeceptaApiService {
 
-    @PraeceptaExposeAsRestServiceMethod(post = true, functionPath = "/ruleSpace", methodName = ServiceAndMethodNames.ADD_RULE_SPACE_METHOD_NAME)
+    @PraeceptaExposeAsRestServiceMethod(put = true, functionPath = "/ruleSpace", methodName = ServiceAndMethodNames.ADD_RULE_SPACE_METHOD_NAME)
     @Operation(operationId = ServiceAndMethodNames.ADD_RULE_SPACE_METHOD_NAME)
-    @POST
+    @PUT
     @Path("/ruleSpace")
     @Consumes("application/json")
     @Produces("application/json")

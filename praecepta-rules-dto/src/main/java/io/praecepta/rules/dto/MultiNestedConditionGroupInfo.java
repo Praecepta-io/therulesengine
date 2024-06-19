@@ -5,7 +5,6 @@ import java.util.Collection;
 public class MultiNestedConditionGroupInfo {
 
     private String ruleGroupName;
-    private RuleSpaceInfo ruleSpaceInfo;
 
     private Collection<MultiNestedConditionCriteriaInfo> multiNestedConditionCriteriaInfos;
 
@@ -25,11 +24,4 @@ public class MultiNestedConditionGroupInfo {
         this.ruleGroupName = ruleGroupName;
     }
 
-    public RuleSpaceInfo getRuleSpaceInfo() {
-        return ruleSpaceInfo;
-    }
-
-    public void setRuleSpaceInfo(RuleSpaceInfo ruleSpaceInfo) {
-        this.ruleSpaceInfo = ruleSpaceInfo;
-    }
 }
