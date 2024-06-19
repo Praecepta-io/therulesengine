@@ -35,7 +35,7 @@ public class SidecarCreationRestClient {
         pathParams.put("version", "V1");
         pathParams.put("groupName","Simple Condition Group");
 
-        PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.POST,
+        PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.PUT,
                 inputJson, null, pathParams, null, null);
 
         restClientWrapper.performOperation(wsReqResHolder, simpleRestBuilder.getWsClientConfig());

@@ -34,7 +34,7 @@ public class MultiNestedRuleGroupCreationRestClient {
         pathParams.put("appName","App1");
         pathParams.put("version", "V1");
 
-        PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.POST,
+        PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.PUT,
                 inputJson, null, pathParams, null, null);
 
         restClientWrapper.performOperation(wsReqResHolder, simpleRestBuilder.getWsClientConfig());
