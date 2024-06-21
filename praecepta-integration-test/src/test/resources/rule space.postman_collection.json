@@ -1,0 +1,483 @@
+{
+	"info": {
+		"_postman_id": "8db7c9dd-342d-4919-959c-f13e4dde9ba0",
+		"name": "rule space",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30815160"
+	},
+	"item": [
+		{
+			"name": "rule group",
+			"item": [
+				{
+					"name": "sidecar",
+					"item": [
+						{
+							"name": "fetch sidecars",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4567/sidecarController/getSidecars/HDFC/001/Loan/V1/Loan_Amount_Validation",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4567",
+									"path": [
+										"sidecarController",
+										"getSidecars",
+										"HDFC",
+										"001",
+										"Loan",
+										"V1",
+										"Loan_Amount_Validation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add sidecar",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"ruleGrpName\":\"Simple Condition Group\",\"preRuleGrpSideCars\":[{\"order\":\"0\",\"sideCarType\":\"PARSER\",\"type\":\"JSON\",\"sideCarConfigs\":{\"metadat1\":\"matadatavalue1\"}}],\"postRuleGrpSideCars\":[{\"order\":\"0\",\"sideCarType\":\"FORMATTER\",\"type\":\"XML\"}],\"ruleLevelSideCarsInfo\":[{\"preRuleSideCars\":[{\"order\":\"0\",\"sideCarType\":\"PARSER\",\"type\":\"DELIMITER\"}],\"ruleName\":\"Rule1\",\"postRuleSideCars\":[{\"order\":\"0\",\"sideCarType\":\"FORMATTER\",\"type\":\"XML\"}]}]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4567/sidecarController/saveSidecars/HDFC/001/Loan/V1/Simple Condition Group",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4567",
+									"path": [
+										"sidecarController",
+										"saveSidecars",
+										"HDFC",
+										"001",
+										"Loan",
+										"V1",
+										"Simple Condition Group"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update sidecar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"ruleGrpName\":\"Simple Condition Group\",\"preRuleGrpSideCars\":[{\"order\":\"0\",\"sideCarType\":\"PARSER\",\"type\":\"JSON\",\"sideCarConfigs\":{\"metadat1\":\"matadatavalue1\"}}],\"postRuleGrpSideCars\":[{\"order\":\"0\",\"sideCarType\":\"FORMATTER\",\"type\":\"XML\"}],\"ruleLevelSideCarsInfo\":[{\"preRuleSideCars\":[{\"order\":\"0\",\"sideCarType\":\"PARSER\",\"type\":\"DELIMITER\"}],\"ruleName\":\"Rule1\",\"postRuleSideCars\":[{\"order\":\"0\",\"sideCarType\":\"FORMATTER\",\"type\":\"FIXED_LENGTH\"}]}]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4567/sidecarController/saveSidecars/HDFC/001/Loan/V1/Simple Condition Group",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4567",
+									"path": [
+										"sidecarController",
+										"saveSidecars",
+										"HDFC",
+										"001",
+										"Loan",
+										"V1",
+										"Simple Condition Group"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete sidecar",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4567/sidecarController/deleteSidecars/HDFC/001/Loan/V1/Simple Condition Group",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4567",
+									"path": [
+										"sidecarController",
+										"deleteSidecars",
+										"HDFC",
+										"001",
+										"Loan",
+										"V1",
+										"Simple Condition Group"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "fetch rule groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4567/ruleGroupController/getRuleGroups/HDFC/001/Loan/V1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"ruleGroupController",
+								"getRuleGroups",
+								"HDFC",
+								"001",
+								"Loan",
+								"V1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rule group by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4567/ruleGroupController/ruleGroups/HDFC/001/Loan/V1/Age_Sal_Amount_Validation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"ruleGroupController",
+								"ruleGroups",
+								"HDFC",
+								"001",
+								"Loan",
+								"V1",
+								"Age_Sal_Amount_Validation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add simple condition",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ruleGroupName\":\"Simple Condition Group\",\"simpleConditionCriteriaInfos\":[{\"ruleName\":\"Simple Condition\",\"conditionInfo\":{\"conditionInfoList\":[{\"attributeName\":\"age\",\"operatorType\":\"GREATER_THAN_NUMBER\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\"}]},\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4567/ruleGroupController/ruleGroups/HDFC/001/Loan/V1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"ruleGroupController",
+								"ruleGroups",
+								"HDFC",
+								"001",
+								"Loan",
+								"V1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update simple condition",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ruleGroupName\":\"Simple Condition Group\",\"simpleConditionCriteriaInfos\":[{\"ruleName\":\"Simple Condition1\",\"conditionInfo\":{\"conditionInfoList\":[{\"attributeName\":\"age\",\"operatorType\":\"GREATER_THAN_NUMBER\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\"}]},\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4567/ruleGroupController/updateRuleGroup/HDFC/001/Loan/V1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"ruleGroupController",
+								"updateRuleGroup",
+								"HDFC",
+								"001",
+								"Loan",
+								"V1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add multi condition",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ruleGroupName\":\"Multi Condition\",\"multiConditionCriteriaInfos\":[{\"ruleName\":\"Rule1\",\"multiConditionList\":[{\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"LESS_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"Blood Pressure\",\"valueToCompare\":\"130\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}]},{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"blood pressure\",\"valueToCompare\":\"140\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}],\"joinOperatorType\":\"OR\"}]}],\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4567/ruleGroupController/multiRuleGroups/HDFC/001/Loan/V1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"ruleGroupController",
+								"multiRuleGroups",
+								"HDFC",
+								"001",
+								"Loan",
+								"V1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update multi condition",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ruleGroupName\":\"Multi Condition\",\"multiConditionCriteriaInfos\":[{\"ruleName\":\"Rule2\",\"multiConditionList\":[{\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"LESS_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"Blood Pressure\",\"valueToCompare\":\"130\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}]},{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"blood pressure\",\"valueToCompare\":\"140\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}],\"joinOperatorType\":\"OR\"}]}],\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4567/ruleGroupController/updateMultiRuleGroup/HDFC/001/Loan/V1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"ruleGroupController",
+								"updateMultiRuleGroup",
+								"HDFC",
+								"001",
+								"Loan",
+								"V1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add multi nested condition",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ruleGroupName\":\"Multi Nested Condition\",\"multiNestedConditionCriteriaInfos\":[{\"ruleName\":\"\",\"multiNestedConditionList\":[{\"multiConditionsList\":[{\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"LESS_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"blood pressure\",\"valueToCompare\":\"130\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}]}]},{\"joinOperatorType\":\"AND\",\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"blood pressure\",\"valueToCompare\":\"140\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}]}]}]},{\"multiConditionsList\":[{\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"LESS_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"sugar levels\",\"valueToCompare\":\"110\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_NUMBER\"}]}]},{\"joinOperatorType\":\"OR\",\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"sugar levels\",\"valueToCompare\":\"130\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_NUMBER\"}]}]}],\"joinOperatorType\":\"OR\"}],\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}]}]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4567/ruleGroupController/multiNestedRuleGroups/HDFC/001/Loan/V1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"ruleGroupController",
+								"multiNestedRuleGroups",
+								"HDFC",
+								"001",
+								"Loan",
+								"V1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update multi nested condition",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ruleGroupName\":\"Multi Nested Condition\",\"multiNestedConditionCriteriaInfos\":[{\"ruleName\":\"\",\"multiNestedConditionList\":[{\"multiConditionsList\":[{\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"LESS_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"blood pressure\",\"valueToCompare\":\"130\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}]}]},{\"joinOperatorType\":\"AND\",\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"blood pressure\",\"valueToCompare\":\"140\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"}]}]}]},{\"multiConditionsList\":[{\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"LESS_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"sugar levels\",\"valueToCompare\":\"110\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_NUMBER\"}]}]},{\"joinOperatorType\":\"OR\",\"conditionInfo\":[{\"conditionInfoList\":[{\"attributeName\":\"age\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\",\"operatorType\":\"GREATER_THAN_EQUAL_NUMBER\"},{\"attributeName\":\"sugar levels\",\"valueToCompare\":\"130\",\"attributeToCompare\":\"\",\"joinOperatorType\":\"AND\",\"operatorType\":\"GREATER_THAN_NUMBER\"}]}]}],\"joinOperatorType\":\"OR\"}],\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}]}]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4567/ruleGroupController/updateMultiNestedRuleGroup/HDFC/001/Loan/V1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"ruleGroupController",
+								"updateMultiNestedRuleGroup",
+								"HDFC",
+								"001",
+								"Loan",
+								"V1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete rule group",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4567/ruleGroupController/ruleGroups/HDFC/001/Loan/V1/Multi Condition",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"ruleGroupController",
+								"ruleGroups",
+								"HDFC",
+								"001",
+								"Loan",
+								"V1",
+								"Multi Condition"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getRulespace",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4567/ruleSpaceController/ruleSpaceList",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4567",
+					"path": [
+						"ruleSpaceController",
+						"ruleSpaceList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add rule space",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"spaceName\": \"ICICI\",\r\n  \"clientId\": \"002\",\r\n  \"appName\": \"App2\",\r\n  \"version\": \"V1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4567/ruleSpaceController/ruleSpace",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4567",
+					"path": [
+						"ruleSpaceController",
+						"ruleSpace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete rule space",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4567/ruleSpaceController/ruleSpace/ICICI/002/App2/V1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4567",
+					"path": [
+						"ruleSpaceController",
+						"ruleSpace",
+						"ICICI",
+						"002",
+						"App2",
+						"V1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

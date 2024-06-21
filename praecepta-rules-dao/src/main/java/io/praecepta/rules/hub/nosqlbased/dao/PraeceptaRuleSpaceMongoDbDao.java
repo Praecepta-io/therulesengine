@@ -18,6 +18,7 @@ import io.praecepta.rules.hub.dao.IPraeceptaRuleSpaceDao;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleGroup;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpace;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpaceCompositeKey;
+import org.hibernate.criterion.Restrictions;
 
 public class PraeceptaRuleSpaceMongoDbDao implements  IPraeceptaRuleSpaceDao{
     MongoCollection<PraeceptaRuleSpace> collection;
@@ -33,7 +34,9 @@ public class PraeceptaRuleSpaceMongoDbDao implements  IPraeceptaRuleSpaceDao{
     @Override
     public Collection<PraeceptaRuleSpace> fetchAll() {
 
-        return iterateList(collection.find());
+        Document searchQuery = new Document();
+        searchQuery.put("active", true);
+        return iterateList(collection.find(searchQuery));
     }
 
     @Override
