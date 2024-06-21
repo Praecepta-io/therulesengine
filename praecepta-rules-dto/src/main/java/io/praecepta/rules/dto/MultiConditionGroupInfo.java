@@ -5,8 +5,6 @@ import java.util.Collection;
 public class MultiConditionGroupInfo {
 
     private String ruleGroupName;
-    private RuleSpaceInfo ruleSpaceInfo;
-
     private Collection<MultiConditionCriteriaInfo> multiConditionCriteriaInfos;
 
     public Collection<MultiConditionCriteriaInfo> getMultiConditionCriteriaInfos() {
@@ -25,11 +23,4 @@ public class MultiConditionGroupInfo {
         this.ruleGroupName = ruleGroupName;
     }
 
-    public RuleSpaceInfo getRuleSpaceInfo() {
-        return ruleSpaceInfo;
-    }
-
-    public void setRuleSpaceInfo(RuleSpaceInfo ruleSpaceInfo) {
-        this.ruleSpaceInfo = ruleSpaceInfo;
-    }
 }

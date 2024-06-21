@@ -23,9 +23,9 @@ public class RuleSpaceCreationRestClient {
                 (PraeceptaRestClientWrapper<RestTemplate>) simpleRestBuilder.buildClient();
 
 
-        String inputJson = "{\"spaceName\":\"KOTAK\",\"clientId\":\"001\",\"appName\":\"App1\",\"version\":\"V1\"}";
+        String inputJson = "{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"App1\",\"version\":\"V1\"}";
 
-        PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.POST,
+        PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.PUT,
                 inputJson, null, null, null, null);
 
         restClientWrapper.performOperation(wsReqResHolder, simpleRestBuilder.getWsClientConfig());

@@ -1,12 +1,6 @@
 package io.praecepta.rest.api.controller;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
 import io.praecepta.rest.api.annotation.PraeceptaExposeAsRestService;
 import io.praecepta.rest.api.annotation.PraeceptaExposeAsRestServiceMethod;
@@ -38,9 +32,9 @@ public interface IPraeceptaRuleGroupController extends IPraeceptaApiService{
     @Path("/ruleGroups/{spacename}/{clientid}/{appname}/{version}/{groupname}")
 	Object getRuleGroupByName(@PathParam(value = "spacename")String spaceName,@PathParam(value = "clientid")String clientId,@PathParam(value = "appname")String appName,@PathParam(value = "version")String version, @PathParam(value = "groupname") String groupname);
 	
-	@PraeceptaExposeAsRestServiceMethod(post = true, functionPath = "/ruleGroups/:spacename/:clientid/:appname/:version", methodName = ServiceAndMethodNames.ADD_RULE_GROUP_METHOD_NAME)
+	@PraeceptaExposeAsRestServiceMethod(put = true, functionPath = "/ruleGroups/:spacename/:clientid/:appname/:version", methodName = ServiceAndMethodNames.ADD_RULE_GROUP_METHOD_NAME)
 	@Operation(operationId = ServiceAndMethodNames.ADD_RULE_GROUP_METHOD_NAME)
-    @POST
+    @PUT
     @Path("/ruleGroups/{spacename}/{clientid}/{appname}/{version}")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -55,9 +49,9 @@ public interface IPraeceptaRuleGroupController extends IPraeceptaApiService{
 	@Path("/updateRuleGroup/{spacename}/{clientid}/{appname}/{version}")
 	public Object updateRuleGroup(@PathParam(value = "spacename")String spaceName, @PathParam(value = "clientid")String clientId, @PathParam(value = "appname")String appName, @PathParam(value = "version")String version, SimpleConditionGroupInfo request );
 
-	@PraeceptaExposeAsRestServiceMethod(post = true, functionPath = "/multiRuleGroups/:spacename/:clientid/:appname/:version", methodName = ServiceAndMethodNames.ADD_MULTI_RULE_GROUP_METHOD_NAME)
+	@PraeceptaExposeAsRestServiceMethod(put = true, functionPath = "/multiRuleGroups/:spacename/:clientid/:appname/:version", methodName = ServiceAndMethodNames.ADD_MULTI_RULE_GROUP_METHOD_NAME)
 	@Operation(operationId = ServiceAndMethodNames.ADD_MULTI_RULE_GROUP_METHOD_NAME)
-	@POST
+	@PUT
 	@Path("/multiRuleGroups/{spacename}/{clientid}/{appname}/{version}")
 	@Consumes("application/json")
 	@Produces("application/json")
@@ -72,9 +66,9 @@ public interface IPraeceptaRuleGroupController extends IPraeceptaApiService{
 	@Path("/updateMultiRuleGroup/{spacename}/{clientid}/{appname}/{version}")
 	public Object updateMultiRuleGroup(@PathParam(value = "spacename")String spaceName, @PathParam(value = "clientid")String clientId, @PathParam(value = "appname")String appName, @PathParam(value = "version")String version, MultiConditionGroupInfo request );
 
-	@PraeceptaExposeAsRestServiceMethod(post = true, functionPath = "/multiNestedRuleGroups/:spacename/:clientid/:appname/:version", methodName = ServiceAndMethodNames.ADD_MULTI_NESTED_RULE_GROUP_METHOD_NAME)
+	@PraeceptaExposeAsRestServiceMethod(put = true, functionPath = "/multiNestedRuleGroups/:spacename/:clientid/:appname/:version", methodName = ServiceAndMethodNames.ADD_MULTI_NESTED_RULE_GROUP_METHOD_NAME)
 	@Operation(operationId = ServiceAndMethodNames.ADD_MULTI_NESTED_RULE_GROUP_METHOD_NAME)
-	@POST
+	@PUT
 	@Path("/multiNestedRuleGroups/{spacename}/{clientid}/{appname}/{version}")
 	@Consumes("application/json")
 	@Produces("application/json")
