@@ -1,0 +1,29 @@
+{
+   "ruleGroupName":"Wire Transfer Fee Check",
+   "simpleConditionCriteriaInfos":[
+      {
+         "ruleName":"Fee Amount Calculation",
+         "conditionInfo":{
+            "conditionInfoList":[
+               {
+                  "attributeName":"transfer_amt_date",
+                  "operatorType":"GREATER_THAN_DATE",
+                  "valueToCompare":"Current_Date"
+               }
+            ]
+         },
+         "actionList":[
+            {
+               "actionAttributeName":"fee_amt",
+               "valueToAssign":"30"
+            }
+         ],
+         "failureActionList":[
+            {
+               "actionAttributeName":"fee_amt",
+               "valueToAssign":"0"
+            }
+         ]
+      }
+   ]
+}
