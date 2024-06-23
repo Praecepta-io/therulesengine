@@ -1,0 +1,57 @@
+{
+   "ruleGroupName":"Wire Transfer Stop",
+   "multiConditionCriteriaInfos":[
+      {
+         "ruleName":"Balance And Currency Check",
+         "multiConditionList":[
+            {
+               "conditionInfo":[
+                  {
+                     "conditionInfoList":[
+                        {
+                           "attributeName":"transfer_amt",
+                           "valueToCompare":"0",
+                           "operatorType":"LESS_THAN_EQUAL_NUMBER"
+                        },
+                        {
+                           "attributeName":"checking_acct_balance_amt",
+                           "attributeToCompare":"transfer_amt",
+                           "operatorType":"GREATER_THAN_EQUAL_NUMBER",
+                           "joinOperatorType":"AND"                           
+                        }
+                     ]
+                  },
+                  {
+                     "conditionInfoList":[
+                        {
+                           "attributeName":"transfer_amt",
+                           "valueToCompare":"0",
+                           "operatorType":"LESS_THAN_EQUAL_NUMBER"
+                        },
+                        {
+                           "attributeName":"savings_acct_balance_amt",
+                           "attributeToCompare":"transfer_amt",
+                           "operatorType":"GREATER_THAN_EQUAL_NUMBER",
+                           "joinOperatorType":"AND"                           
+                        }
+                     ],
+                     "joinOperatorType":"OR"
+                  }
+               ]
+            }
+         ],
+         "actionList":[
+            {
+               "actionAttributeName":"allow_transfer",
+               "valueToAssign":"true"
+            }
+         ],
+         "failureActionList":[
+            {
+               "actionAttributeName":"allow_transfer",
+               "valueToAssign":"false"
+            }
+         ]
+      }
+   ]
+}
