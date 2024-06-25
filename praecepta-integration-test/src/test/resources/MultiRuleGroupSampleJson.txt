@@ -2,7 +2,7 @@
    "ruleGroupName":"Wire Transfer Stop",
    "multiConditionCriteriaInfos":[
       {
-         "ruleName":"Balance And Currency Check",
+         "ruleName":"Balance Check",
          "multiConditionList":[
             {
                "conditionInfo":[
@@ -11,7 +11,7 @@
                         {
                            "attributeName":"transfer_amt",
                            "valueToCompare":"0",
-                           "operatorType":"LESS_THAN_EQUAL_NUMBER"
+                           "operatorType":"GREATER_THAN_EQUAL_NUMBER"
                         },
                         {
                            "attributeName":"checking_acct_balance_amt",
@@ -22,11 +22,12 @@
                      ]
                   },
                   {
+                     "joinOperatorType":"OR",
                      "conditionInfoList":[
                         {
                            "attributeName":"transfer_amt",
                            "valueToCompare":"0",
-                           "operatorType":"LESS_THAN_EQUAL_NUMBER"
+                           "operatorType":"GREATER_THAN_EQUAL_NUMBER"
                         },
                         {
                            "attributeName":"savings_acct_balance_amt",
@@ -34,8 +35,7 @@
                            "operatorType":"GREATER_THAN_EQUAL_NUMBER",
                            "joinOperatorType":"AND"                           
                         }
-                     ],
-                     "joinOperatorType":"OR"
+                     ]
                   }
                ]
             }
