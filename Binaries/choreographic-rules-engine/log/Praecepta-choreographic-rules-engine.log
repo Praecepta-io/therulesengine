@@ -1,0 +1,164 @@
+21:42:13.771 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Rule Props File to Use from Classpath praecepta-rule-load.properties 
+21:42:13.775 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Props Loaded  --> {SQL_DB.connection_props.MySQL.db.username=root, FILE_SYSTEM.connection_props.Windows.folder_name=F:\Praecepta\IntegrationTest, SQL_DB.type=, SQL_DB.connection_props.MySQL.db.password=root, NO_SQL_DB.connection_props.ElasticSearch.password=, NO_SQL_DB.type=, SQL_DB.connection_props.MySQL.db.driver=com.mysql.jdbc.Driver, SQL_DB.connection_props.MySQL.db.dialect=org.hibernate.dialect.MySQLDialect, SQL_DB.connection_props.MySQL.model.packages=org.xploretech.rules.hub.dbbased.model, NO_SQL_DB.connection_props.ElasticSearch.port=, SQL_DB.connection_props.MySQL.db.url=jdbc:mysql://127.0.0.1:3306/praecepta?autoReconnect=true, FILE_SYSTEM.type=Windows, rule_loader_type=FILE_SYSTEM, NO_SQL_DB.connection_props.ElasticSearch.user_name=, NO_SQL_DB.connection_props.ElasticSearch.ip=, SQL_DB.connection_props.MySQL.show_sql=true, FILE_SYSTEM.connection_props.Windows.file_name=praeceptaMetaData.json} 
+21:42:13.820 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Props Loaded from Hash Map --> {SQL_DB.connection_props.MySQL.show_sql=true, NO_SQL_DB.connection_props.ElasticSearch.user_name=, NO_SQL_DB.type=, NO_SQL_DB.connection_props.ElasticSearch.password=, FILE_SYSTEM.type=Windows, NO_SQL_DB.connection_props.ElasticSearch.port=, SQL_DB.connection_props.MySQL.db.dialect=org.hibernate.dialect.MySQLDialect, SQL_DB.type=, rule_loader_type=FILE_SYSTEM, FILE_SYSTEM.connection_props.Windows.folder_name=F:\Praecepta\IntegrationTest, FILE_SYSTEM.connection_props.Windows.file_name=praeceptaMetaData.json, SQL_DB.connection_props.MySQL.db.username=root, NO_SQL_DB.connection_props.ElasticSearch.ip=, SQL_DB.connection_props.MySQL.db.password=root, SQL_DB.connection_props.MySQL.db.url=jdbc:mysql://127.0.0.1:3306/praecepta?autoReconnect=true, SQL_DB.connection_props.MySQL.model.packages=org.xploretech.rules.hub.dbbased.model, SQL_DB.connection_props.MySQL.db.driver=com.mysql.jdbc.Driver}
+21:42:13.821 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Building the Rule Space 
+21:42:13.822 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Rule Persistant Type from Props File --> FILE_SYSTEM 
+21:42:13.823 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Rule Persistant Sub Type from Props File --> Windows 
+21:42:13.825 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Rule Builder Connection Props Prefix FILE_SYSTEM.connection_props.Windows 
+21:42:13.832 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Rule Builder Connection Props from Props File --> {FILE_SYSTEM.connection_props.Windows.folder_name=F:\Praecepta\IntegrationTest, FILE_SYSTEM.connection_props.Windows.file_name=praeceptaMetaData.json} 
+21:42:13.833 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Adding System Prop Key FILE_SYSTEM.connection_props.Windows.folder_name with Value F:\Praecepta\IntegrationTest
+21:42:13.833 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Adding System Prop Key FILE_SYSTEM.connection_props.Windows.file_name with Value praeceptaMetaData.json
+21:42:14.002 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Checking the Selector for Persistant Type FILE_SYSTEM 
+21:42:14.003 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantType SQL_DB and RULE_SET_UP_PERSISTANT_TYPE of rulePersistantType FILE_SYSTEM 
+21:42:14.004 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Checking the Selector for Persistant Type FILE_SYSTEM 
+21:42:14.004 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantType NO_SQL_DB and RULE_SET_UP_PERSISTANT_TYPE of rulePersistantType FILE_SYSTEM 
+21:42:14.004 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Checking the Selector for Persistant Type FILE_SYSTEM 
+21:42:14.005 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantType FILE_SYSTEM and RULE_SET_UP_PERSISTANT_TYPE of rulePersistantType FILE_SYSTEM 
+21:42:14.005 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Seletor Matched for Persistant Type 
+21:42:14.005 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  SubType Check is needed 
+21:42:14.006 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  SubType Passed Windows 
+21:42:14.006 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantSubType Windows and RULE_SET_UP_PERSISTANT_SUB_TYPE of rulePersistantSubType Windows 
+21:42:14.007 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Seletor Matched for Sub Persistant Type 
+21:42:14.027 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Checking the Selector for Persistant Type FILE_SYSTEM 
+21:42:14.028 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantType FILE_SYSTEM and RULE_SET_UP_PERSISTANT_TYPE of rulePersistantType FILE_SYSTEM 
+21:42:14.028 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Seletor Matched for Persistant Type 
+21:42:14.028 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  SubType Check is needed 
+21:42:14.028 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  SubType Passed Windows 
+21:42:14.028 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantSubType Windows and RULE_SET_UP_PERSISTANT_SUB_TYPE of rulePersistantSubType Windows 
+21:42:14.028 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Seletor Matched for Sub Persistant Type 
+21:42:14.245 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Hub Manager is not empty
+21:42:14.254 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder - Data Collector Props File to Use from Classpath praecepta-data-collector.properties 
+21:42:14.255 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder - Props Loaded  --> {KAFKA.connection_props.port=9092, KAFKA.connection_props.password=test, KAFKA.connection_props.auto.offset.reset=earliest, KAFKA.connection_props.bootstrap.servers=localhost:9092, KAFKA.connection_props.userName=test, data_collector_type=KAFKA, KAFKA.connection_props.kafka.receiver.topic=TEST.TOPIC, KAFKA.connection_props.group.id=test_xploretech, KAFKA.connection_props.value.deserializer=org.apache.kafka.common.serialization.StringDeserializer, KAFKA.connection_props.max.timeout=200, KAFKA.connection_props.key.deserializer=org.apache.kafka.common.serialization.StringDeserializer, KAFKA.connection_props.max.poll.records=10} 
+21:42:14.256 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Data Collector Type Type from Props File --> KAFKA 
+21:42:14.257 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Data Collector Connection Props Prefix KAFKA.connection_props 
+21:42:14.258 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder - Data Collector Connection Props from Props File --> {KAFKA.connection_props.max.poll.records=10, KAFKA.connection_props.password=test, KAFKA.connection_props.max.timeout=200, KAFKA.connection_props.key.deserializer=org.apache.kafka.common.serialization.StringDeserializer, KAFKA.connection_props.kafka.receiver.topic=TEST.TOPIC, KAFKA.connection_props.bootstrap.servers=localhost:9092, KAFKA.connection_props.value.deserializer=org.apache.kafka.common.serialization.StringDeserializer, KAFKA.connection_props.auto.offset.reset=earliest, KAFKA.connection_props.userName=test, KAFKA.connection_props.group.id=test_xploretech, KAFKA.connection_props.port=9092} 
+21:42:14.258 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.max.poll.records with Value 10
+21:42:14.259 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.password with Value test
+21:42:14.259 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.max.timeout with Value 200
+21:42:14.259 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.key.deserializer with Value org.apache.kafka.common.serialization.StringDeserializer
+21:42:14.259 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.kafka.receiver.topic with Value TEST.TOPIC
+21:42:14.259 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.bootstrap.servers with Value localhost:9092
+21:42:14.260 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.value.deserializer with Value org.apache.kafka.common.serialization.StringDeserializer
+21:42:14.260 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.auto.offset.reset with Value earliest
+21:42:14.260 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.userName with Value test
+21:42:14.260 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.group.id with Value test_xploretech
+21:42:14.260 [main] INFO  i.p.r.e.c.h.PraeceptaRuleExecutorConfigBuilder -  Adding System Prop Key KAFKA.connection_props.port with Value 9092
+21:42:14.265 [main] INFO  i.p.r.e.c.c.ConditionConfigSelector -  Checking the Selector for Data Collector Type KAFKA 
+21:42:14.266 [main] INFO  i.p.r.e.c.c.ConditionConfigSelector -  Comparing getCollectorType KAFKA and DATA_COLLECTOR_TYPE of dataCollectorType KAFKA 
+21:42:14.266 [main] INFO  i.p.r.e.c.c.ConditionConfigSelector -  Seletor Matched for Collector Type 
+21:42:14.270 [main] INFO  i.p.r.e.c.c.ConditionConfigSelector -  Checking the Selector for Data Collector Type KAFKA 
+21:42:14.271 [main] INFO  i.p.r.e.c.c.ConditionConfigSelector -  Comparing getCollectorType KAFKA and DATA_COLLECTOR_TYPE of dataCollectorType KAFKA 
+21:42:14.271 [main] INFO  i.p.r.e.c.c.ConditionConfigSelector -  Seletor Matched for Collector Type 
+21:42:14.316 [main] INFO  i.p.d.c.c.c.PraeceptaAbstractDataCollector - In Open Connection
+21:42:14.560 [main] INFO  o.a.k.c.consumer.ConsumerConfig - ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [localhost:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-test_xploretech-1
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = test_xploretech
+	group.instance.id = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 5
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.2
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+
+21:42:14.751 [main] WARN  o.a.k.c.consumer.ConsumerConfig - These configurations '[password, port, max.timeout, userName, kafka.receiver.topic]' were supplied but are not used yet.
+21:42:14.753 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka version: 3.4.0
+21:42:14.754 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka commitId: 2e1947d240607d53
+21:42:14.754 [main] INFO  o.a.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1719366134751
+21:42:14.760 [main] INFO  o.a.k.clients.consumer.KafkaConsumer - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Subscribed to topic(s): TEST.TOPIC
+21:42:14.760 [main] INFO  i.p.d.c.c.c.PraeceptaAbstractDataCollector - In Start Data Collector 
+21:42:14.778 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Rule Props File to Use from Classpath praecepta-rule-load.properties 
+21:42:14.779 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Props Loaded  --> {SQL_DB.connection_props.MySQL.db.username=root, FILE_SYSTEM.connection_props.Windows.folder_name=F:\Praecepta\IntegrationTest, SQL_DB.type=, SQL_DB.connection_props.MySQL.db.password=root, NO_SQL_DB.connection_props.ElasticSearch.password=, NO_SQL_DB.type=, SQL_DB.connection_props.MySQL.db.driver=com.mysql.jdbc.Driver, SQL_DB.connection_props.MySQL.db.dialect=org.hibernate.dialect.MySQLDialect, SQL_DB.connection_props.MySQL.model.packages=org.xploretech.rules.hub.dbbased.model, NO_SQL_DB.connection_props.ElasticSearch.port=, SQL_DB.connection_props.MySQL.db.url=jdbc:mysql://127.0.0.1:3306/praecepta?autoReconnect=true, FILE_SYSTEM.type=Windows, rule_loader_type=FILE_SYSTEM, NO_SQL_DB.connection_props.ElasticSearch.user_name=, NO_SQL_DB.connection_props.ElasticSearch.ip=, SQL_DB.connection_props.MySQL.show_sql=true, FILE_SYSTEM.connection_props.Windows.file_name=praeceptaMetaData.json} 
+21:42:14.779 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Props Loaded from Hash Map --> {SQL_DB.connection_props.MySQL.show_sql=true, NO_SQL_DB.connection_props.ElasticSearch.user_name=, NO_SQL_DB.type=, NO_SQL_DB.connection_props.ElasticSearch.password=, FILE_SYSTEM.type=Windows, NO_SQL_DB.connection_props.ElasticSearch.port=, SQL_DB.connection_props.MySQL.db.dialect=org.hibernate.dialect.MySQLDialect, SQL_DB.type=, rule_loader_type=FILE_SYSTEM, FILE_SYSTEM.connection_props.Windows.folder_name=F:\Praecepta\IntegrationTest, FILE_SYSTEM.connection_props.Windows.file_name=praeceptaMetaData.json, SQL_DB.connection_props.MySQL.db.username=root, NO_SQL_DB.connection_props.ElasticSearch.ip=, SQL_DB.connection_props.MySQL.db.password=root, SQL_DB.connection_props.MySQL.db.url=jdbc:mysql://127.0.0.1:3306/praecepta?autoReconnect=true, SQL_DB.connection_props.MySQL.model.packages=org.xploretech.rules.hub.dbbased.model, SQL_DB.connection_props.MySQL.db.driver=com.mysql.jdbc.Driver}
+21:42:17.071 [Thread-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Node -1 disconnected.
+21:42:17.075 [Thread-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Broker may not be available.
+21:42:17.079 [Thread-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Bootstrap broker localhost:9092 (id: -1 rack: null) disconnected
+21:42:19.180 [Thread-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Node -1 disconnected.
+21:42:19.182 [Thread-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Broker may not be available.
+21:42:19.183 [Thread-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Bootstrap broker localhost:9092 (id: -1 rack: null) disconnected
+21:42:21.302 [Thread-1] INFO  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Node -1 disconnected.
+21:42:21.302 [Thread-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Broker may not be available.
+21:42:21.303 [Thread-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-test_xploretech-1, groupId=test_xploretech] Bootstrap broker localhost:9092 (id: -1 rack: null) disconnected

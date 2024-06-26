@@ -1,0 +1,45 @@
+21:28:20.339 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Rule Props File to Use from Classpath praecepta-rule-load.properties 
+21:28:20.345 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Props Loaded  --> {SQL_DB.connection_props.MySQL.db.username=root, FILE_SYSTEM.connection_props.Windows.folder_name=F:\Praecepta\IntegrationTest, SQL_DB.type=, SQL_DB.connection_props.MySQL.db.password=root, NO_SQL_DB.connection_props.ElasticSearch.password=, NO_SQL_DB.type=, SQL_DB.connection_props.MySQL.db.driver=com.mysql.jdbc.Driver, SQL_DB.connection_props.MySQL.db.dialect=org.hibernate.dialect.MySQLDialect, SQL_DB.connection_props.MySQL.model.packages=org.xploretech.rules.hub.dbbased.model, NO_SQL_DB.connection_props.ElasticSearch.port=, SQL_DB.connection_props.MySQL.db.url=jdbc:mysql://127.0.0.1:3306/praecepta?autoReconnect=true, FILE_SYSTEM.type=Windows, rule_loader_type=FILE_SYSTEM, NO_SQL_DB.connection_props.ElasticSearch.user_name=, NO_SQL_DB.connection_props.ElasticSearch.ip=, SQL_DB.connection_props.MySQL.show_sql=true, FILE_SYSTEM.connection_props.Windows.file_name=praeceptaMetaData.json} 
+21:28:20.387 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Props Loaded from Hash Map --> {SQL_DB.connection_props.MySQL.show_sql=true, NO_SQL_DB.connection_props.ElasticSearch.user_name=, NO_SQL_DB.type=, NO_SQL_DB.connection_props.ElasticSearch.password=, FILE_SYSTEM.type=Windows, NO_SQL_DB.connection_props.ElasticSearch.port=, SQL_DB.connection_props.MySQL.db.dialect=org.hibernate.dialect.MySQLDialect, SQL_DB.type=, rule_loader_type=FILE_SYSTEM, FILE_SYSTEM.connection_props.Windows.folder_name=F:\Praecepta\IntegrationTest, FILE_SYSTEM.connection_props.Windows.file_name=praeceptaMetaData.json, SQL_DB.connection_props.MySQL.db.username=root, NO_SQL_DB.connection_props.ElasticSearch.ip=, SQL_DB.connection_props.MySQL.db.password=root, SQL_DB.connection_props.MySQL.db.url=jdbc:mysql://127.0.0.1:3306/praecepta?autoReconnect=true, SQL_DB.connection_props.MySQL.model.packages=org.xploretech.rules.hub.dbbased.model, SQL_DB.connection_props.MySQL.db.driver=com.mysql.jdbc.Driver}
+21:28:20.387 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Building the Rule Space 
+21:28:20.389 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Rule Persistant Type from Props File --> FILE_SYSTEM 
+21:28:20.391 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Rule Persistant Sub Type from Props File --> Windows 
+21:28:20.392 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Rule Builder Connection Props Prefix FILE_SYSTEM.connection_props.Windows 
+21:28:20.401 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Rule Builder Connection Props from Props File --> {FILE_SYSTEM.connection_props.Windows.folder_name=F:\Praecepta\IntegrationTest, FILE_SYSTEM.connection_props.Windows.file_name=praeceptaMetaData.json} 
+21:28:20.405 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Adding System Prop Key FILE_SYSTEM.connection_props.Windows.folder_name with Value F:\Praecepta\IntegrationTest
+21:28:20.405 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder -  Adding System Prop Key FILE_SYSTEM.connection_props.Windows.file_name with Value praeceptaMetaData.json
+21:28:20.584 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Checking the Selector for Persistant Type FILE_SYSTEM 
+21:28:20.584 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantType SQL_DB and RULE_SET_UP_PERSISTANT_TYPE of rulePersistantType FILE_SYSTEM 
+21:28:20.585 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Checking the Selector for Persistant Type FILE_SYSTEM 
+21:28:20.586 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantType NO_SQL_DB and RULE_SET_UP_PERSISTANT_TYPE of rulePersistantType FILE_SYSTEM 
+21:28:20.586 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Checking the Selector for Persistant Type FILE_SYSTEM 
+21:28:20.586 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantType FILE_SYSTEM and RULE_SET_UP_PERSISTANT_TYPE of rulePersistantType FILE_SYSTEM 
+21:28:20.587 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Seletor Matched for Persistant Type 
+21:28:20.587 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  SubType Check is needed 
+21:28:20.587 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  SubType Passed Windows 
+21:28:20.587 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantSubType Windows and RULE_SET_UP_PERSISTANT_SUB_TYPE of rulePersistantSubType Windows 
+21:28:20.587 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Seletor Matched for Sub Persistant Type 
+21:28:20.611 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Checking the Selector for Persistant Type FILE_SYSTEM 
+21:28:20.612 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantType FILE_SYSTEM and RULE_SET_UP_PERSISTANT_TYPE of rulePersistantType FILE_SYSTEM 
+21:28:20.612 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Seletor Matched for Persistant Type 
+21:28:20.612 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  SubType Check is needed 
+21:28:20.612 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  SubType Passed Windows 
+21:28:20.613 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Ccomparing getPersistantSubType Windows and RULE_SET_UP_PERSISTANT_SUB_TYPE of rulePersistantSubType Windows 
+21:28:20.613 [main] INFO  i.p.r.h.c.c.ConditionConfigSelector -  Seletor Matched for Sub Persistant Type 
+21:28:20.859 [main] INFO  i.p.r.builders.PraeceptaRuleBuilder - Hub Manager is not empty
+21:28:20.871 [main] INFO  i.p.r.a.b.PraeceptaSparkApiServiceBuilder -  Total Methods Size : 4
+21:28:20.872 [main] INFO  i.p.r.a.b.PraeceptaSparkApiServiceBuilder -  Here is the Parent Route : /ruleExecutionController for Service : ruleExecutionController
+21:28:20.885 [main] INFO  i.p.r.a.b.PraeceptaSparkApiServiceMethodBuilder -  Inside Add Get method function. Get Methods Size : 2
+21:28:20.890 [main] INFO  i.p.r.a.b.PraeceptaSparkApiServiceMethodBuilder -  Inside Add Post method function. Post Methods Size : 1
+21:28:20.892 [main] INFO  i.p.r.a.b.PraeceptaSparkApiServiceMethodBuilder -  Inside Add Put method function. Put Methods Size : 0
+21:28:20.894 [main] INFO  i.p.r.a.b.PraeceptaSparkApiServiceMethodBuilder -  Inside Add Patch method function. Patch Methods Size : 0
+21:28:20.895 [main] INFO  i.p.r.a.b.PraeceptaSparkApiServiceMethodBuilder -  Inside Add Delete method function. Delete Methods Size : 0 
+21:28:20.912 [Thread-1] INFO  org.eclipse.jetty.util.log - Logging initialized @926ms to org.eclipse.jetty.util.log.Slf4jLog
+21:28:20.982 [Thread-1] INFO  s.e.jetty.EmbeddedJettyServer - == Spark has ignited ...
+21:28:20.982 [Thread-1] INFO  s.e.jetty.EmbeddedJettyServer - >> Listening on 0.0.0.0:4567
+21:28:20.985 [Thread-1] INFO  org.eclipse.jetty.server.Server - jetty-9.4.48.v20220622; built: 2022-06-21T20:42:25.880Z; git: 6b67c5719d1f4371b33655ff2d047d24e171e49a; jvm 1.8.0_171-b11
+21:28:21.011 [Thread-1] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+21:28:21.012 [Thread-1] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+21:28:21.015 [Thread-1] INFO  org.eclipse.jetty.server.session - node0 Scavenging every 660000ms
+21:28:21.219 [Thread-1] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@20bd857c{HTTP/1.1, (http/1.1)}{0.0.0.0:4567}
+21:28:21.221 [Thread-1] INFO  org.eclipse.jetty.server.Server - Started @1235ms

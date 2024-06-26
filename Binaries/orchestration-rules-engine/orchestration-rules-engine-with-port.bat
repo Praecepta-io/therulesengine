@@ -32,7 +32,7 @@ echo "Prop File name" "%prop_file_name%"
 
 echo  "Port" "%port%"
 
-java -Dpraecepta.rule.load.props.location=%prop_file_name% -Dserver.port=%port%  -Dlogback.configurationFile=log/praecepta-orchestration-rules-engine-logback.xml  -DLOG_LEVEL=INFO -cp praecepta-orchestration-rules-executors-1.0.1.jar;lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher
+java -Dpraecepta.rule.load.props.location=%prop_file_name% -Dserver.port=%port%  -Dlogback.configurationFile=log/praecepta-orchestration-rules-engine-logback.xml  -DLOG_LEVEL=INFO -cp praecepta-orchestration-rules-executors-1.0.2.jar;lib/* io.praecepta.rest.api.PraeceptaRuleExecutorApiLauncher
 
 exit /b
 

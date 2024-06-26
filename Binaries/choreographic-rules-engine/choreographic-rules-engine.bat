@@ -19,13 +19,13 @@ echo %prop_file_name%
 )
 
 :defultPraecepta
-java -Dlogback.configurationFile=log/praecepta-choreographic-rules-engine-logback.xml  -DLOG_LEVEL=INFO  -cp praecepta-rules-executors-1.0.1.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher
+java -Dlogback.configurationFile=log/praecepta-choreographic-rules-engine-logback.xml  -DLOG_LEVEL=INFO  -cp praecepta-rules-executors-1.0.2.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher
 
 exit /b
 
 :customPraecepta
 
-java -Dpraecepta.rule.load.props.location=%prop_file_name% -Dlogback.configurationFile=log/praecepta-choreographic-rules-engine-logback.xml  -DLOG_LEVEL=INFO  -cp praecepta-rules-executors-1.0.1.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher
+java -Dpraecepta.rule.load.props.location=%prop_file_name% -Dlogback.configurationFile=log/praecepta-choreographic-rules-engine-logback.xml  -DLOG_LEVEL=INFO  -cp praecepta-rules-executors-1.0.2.jar;lib/* io.praecepta.rules.executor.PraeceptaRulesExecutorLauncher
 
 exit /b
 
