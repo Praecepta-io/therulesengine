@@ -325,8 +325,7 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 	 */
 	@Override
 	public boolean deleteRuleGroup(String spaceName, String clientId, String appName, String version, String ruleGroupName) {
-		pivotalRuleHubManager.deleteRuleGrp(new PraeceptaRuleSpaceCompositeKey(spaceName, clientId, appName), version, ruleGroupName);
-		return false;
+		return pivotalRuleHubManager.deleteRuleGrp(new PraeceptaRuleSpaceCompositeKey(spaceName, clientId, appName), version, ruleGroupName);
 	}
 
 	@Override

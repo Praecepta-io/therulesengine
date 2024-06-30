@@ -1,0 +1,43 @@
+{
+	"info": {
+		"_postman_id": "e76c6529-8b7c-4ba4-bf7c-f7c38ea091c1",
+		"name": "rule execution",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30815160"
+	},
+	"item": [
+		{
+			"name": "http://localhost:4567/ruleExecutionController",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"emp\":{\"name\":\"vara\",\"dob\":\"2020-10-19\",\"email\":\"varam.kotapati@gmail.com\",\"sql\":123456.79}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4567/ruleExecutionController/BRB/001/App1/V2/group13",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4567",
+					"path": [
+						"ruleExecutionController",
+						"BRB",
+						"001",
+						"App1",
+						"V2",
+						"group13"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
