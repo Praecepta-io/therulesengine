@@ -30,3 +30,6 @@ java -Dpraecepta.rule.load.props.location=%prop_file_name% -Dlogback.configurati
 
 exit /b
 
+
+
+
