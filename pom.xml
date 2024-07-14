@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.praecepta.common</groupId>
 	<artifactId>praecepta</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>praecepta-common</name>
@@ -22,7 +22,7 @@
 		<url>https://github.com/Praecepta-io/therulesengine</url>
 		<tag>HEAD</tag>
 	</scm>
-	
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/Praecepta-io/therulesengine/issues</url>
@@ -32,7 +32,7 @@
 		<system>GitHub Actions</system>
 		<url>https://github.com/Praecepta-io/therulesengine/actions</url>
 	</ciManagement>
-	
+
 	<licenses>
 		<license>
 			<name>Apache License 2.0</name>
@@ -40,7 +40,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<developers>
 		<developer>
 			<name>Rajasrikar Rao Punugoti</name>
@@ -79,8 +79,9 @@
 
 		<!-- <springframework.version>5.0.6.RELEASE</springframework.version> <springboot.version>2.0.1.RELEASE</springboot.version> -->
 
-		<springframework.version>4.3.7.RELEASE</springframework.version>
-		<springboot.version>1.5.2.RELEASE</springboot.version>
+<!-- 		<springframework.version>4.3.7.RELEASE</springframework.version> -->
+		<springframework.version>5.3.14</springframework.version>
+		<!-- <springboot.version>1.5.2.RELEASE</springboot.version> -->
 
 		<junit.version>4.12</junit.version>
 
@@ -119,6 +120,7 @@
 		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 		<sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
 		<version.checkstyle.plugin>3.1.1</version.checkstyle.plugin>
+		<jacoco.plugin>0.8.12</jacoco.plugin>
 
 		<sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
 
@@ -146,6 +148,10 @@
 		<module>praecepta-rules-sidecars</module>
 		<module>praecepta-rules-executors</module>
 		<module>praecepta-orchestration-rules-executors</module>
+		<module>praecepta-sql-parser</module>
+		<module>praecepta-dao-elasticsearch</module>
+		<module>praecepta-dto-elasticsearch</module>
+		<!-- <module>praecepta-rules-parser</module> -->
 	</modules>
 
 	<distributionManagement>
@@ -337,6 +343,11 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${version.compiler.plugin}</version>
 				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.plugin}</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -413,16 +424,36 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 			</plugin>
-			<!-- <plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
-				</configuration>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.sonatype.plugins</groupId> <artifactId>nexus-staging-maven-plugin</artifactId> 
+				<extensions>true</extensions> <configuration> <serverId>ossrh</serverId> 
+				<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl> <autoReleaseAfterClose>true</autoReleaseAfterClose> 
+				</configuration> </plugin> -->
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -508,5 +539,10 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<!-- <reporting> <plugins> <plugin> <groupId>org.jacoco</groupId> <artifactId>jacoco-maven-plugin</artifactId> 
+		<version>0.8.12</version> <reportSets> <reportSet> <reports> select non-aggregate 
+		reports <report>report</report> </reports> </reportSet> </reportSets> </plugin> 
+		</plugins> </reporting> -->
 
 </project>

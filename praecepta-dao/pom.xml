@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>io.praecepta.common</groupId>
 		<artifactId>praecepta</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 
 	<groupId>io.praecepta.dao</groupId>

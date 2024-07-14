@@ -1,0 +1,235 @@
+package io.praecepta.dao.elastic;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.elasticsearch.index.query.QueryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.mapping.ElasticsearchPersistentEntity;
+import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchPersistentEntity;
+import org.springframework.data.elasticsearch.core.query.Query;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.elasticsearch.repository.support.ElasticsearchEntityInformation;
+import org.springframework.data.elasticsearch.repository.support.MappingElasticsearchEntityInformation;
+import org.springframework.data.elasticsearch.repository.support.SimpleElasticsearchRepository;
+import org.springframework.data.util.ClassTypeInformation;
+import org.springframework.data.util.StreamUtils;
+import org.springframework.data.util.TypeInformation;
+
+import io.praecepta.core.helper.PraeceptaObjectHelper;
+import io.praecepta.dao.AbstractDao;
+import io.praecepta.dao.elastic.model.IPraeceptaEsEntityModel;
+
+public abstract class AbstractPraeceptaElasticDao<KEY extends Serializable , ENTITY extends IPraeceptaEsEntityModel<KEY>> extends AbstractDao<KEY, ENTITY> 
+		implements ElasticsearchRepository<ENTITY, KEY> 
+{
+
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractPraeceptaElasticDao.class); 
+	
+	private ElasticsearchOperations esOperations;
+	
+	private Class<ENTITY> entitytClazz;
+	
+	private SimpleElasticsearchRepository<ENTITY, KEY> simpleEsRepo;
+	
+	public AbstractPraeceptaElasticDao(ElasticsearchOperations esOperations) {
+		this.esOperations = esOperations;
+		
+		entitytClazz = getEntityClazz();
+		
+		buildSimpleEsOperations();
+	}
+	
+	private void buildSimpleEsOperations() {
+		
+		TypeInformation<ENTITY> typeInfo = ClassTypeInformation.from(entitytClazz);
+		
+		ElasticsearchPersistentEntity<ENTITY> simpleEsPersistentEntity = new SimpleElasticsearchPersistentEntity<>(typeInfo);
+		
+		ElasticsearchEntityInformation<ENTITY, KEY> mappingElasticsearchEntityInformation = new MappingElasticsearchEntityInformation<>(simpleEsPersistentEntity);
+		
+		simpleEsRepo = new SimpleElasticsearchRepository<>(mappingElasticsearchEntityInformation, esOperations);
+	}
+
+	@Override
+	public ENTITY fetchById(KEY id) {
+		
+		Optional<ENTITY> returnedEntity = findById(id);
+		
+		if(returnedEntity.isPresent()) {
+			return returnedEntity.get();
+		}
+		
+		return null;
+	}
+
+	@Override
+	public Collection<ENTITY> fetchAll() {
+		throw new UnsupportedOperationException("Fetch All is not Supported");
+	}
+
+	@Override
+	public Collection<ENTITY> findByExample(ENTITY entity) {
+		
+		Pageable pageable = PageRequest.of(0, 250).first();
+		
+		simpleEsRepo.searchSimilar(entity, entity.getEntityFieldNames(), pageable);
+		return null;
+	}
+
+	@Override
+	public void deleteAll(Collection<ENTITY> entities) {
+		
+		if(!PraeceptaObjectHelper.isObjectEmpty(entities)) {
+			
+		}
+	}
+
+	@Override
+	public void clear() {
+		simpleEsRepo.deleteAll();
+	}
+
+	@Override
+	public void deleteById(KEY id) {
+		simpleEsRepo.deleteById(id);
+	}
+
+	@Override
+	public void delete(ENTITY entity) {
+		simpleEsRepo.delete(entity);
+	}
+
+	@Override
+	protected void upsert(ENTITY entity) {
+		this.save(entity);		
+	}
+
+	@Override
+	protected void upsertAll(Collection<ENTITY> entities) {
+		this.saveAll(entities);
+		
+	}
+
+	@Override
+	protected Collection<ENTITY> fetchForUniqueKeys(Collection<KEY> ids) {
+		return fetchByIds(ids);
+	}
+
+	@Override
+	protected void deleteForUniqueKeys(Collection<KEY> ids) {
+		deleteByIds(ids);
+		
+	}
+	
+	@Override
+	public Iterable<ENTITY> findAll(Sort sort) {
+		return simpleEsRepo.findAll(sort);
+	}
+
+	@Override
+	public Page<ENTITY> findAll(Pageable pageable) {
+		return simpleEsRepo.findAll(pageable);
+	}
+
+	@Override
+	public <S extends ENTITY> S save(S entity) {
+		simpleEsRepo.save(entity);
+		return entity;
+	}
+
+	@Override
+	public <S extends ENTITY> Iterable<S> saveAll(Iterable<S> entities) {
+		
+		Collection<S> entityList = StreamUtils.createStreamFromIterator(entities.iterator()).collect(Collectors.toList());
+				
+		upsertAll((Collection<ENTITY>) entityList);
+		
+		return entities;
+	}
+
+	@Override
+	public Optional<ENTITY> findById(KEY id) {
+		return simpleEsRepo.findById(id);
+	}
+
+	@Override
+	public boolean existsById(KEY id) {
+		
+		ENTITY entity = fetchById(id);
+		
+		return (entity == null) ?  false : true;
+	}
+
+	@Override
+	public Iterable<ENTITY> findAll() {
+		throw new UnsupportedOperationException("Fetch All is not Supported");
+	}
+
+	@Override
+	public Iterable<ENTITY> findAllById(Iterable<KEY> ids) {
+		return  simpleEsRepo.findAllById(ids);
+	}
+
+	@Override
+	public long count() {
+		return simpleEsRepo.count();
+	}
+
+	@Override
+	public void deleteAll(Iterable<? extends ENTITY> entities) {
+		simpleEsRepo.deleteAll(entities);
+	}
+
+	@Override
+	public void deleteAll() {
+		simpleEsRepo.deleteAll();
+	}
+
+	@Override
+	public <S extends ENTITY> S indexWithoutRefresh(S entity) {
+		throw new UnsupportedOperationException("Index Refresh is not Supported");
+	}
+
+	@Override
+	public Iterable<ENTITY> search(QueryBuilder query) {
+		return search(query, null);
+	}
+
+	@Override
+	public Page<ENTITY> search(QueryBuilder query, Pageable pageable) {
+		return simpleEsRepo.search(query, pageable);
+	}
+
+	@Override
+	public Page<ENTITY> search(Query searchQuery) {
+		return simpleEsRepo.search(searchQuery);
+	}
+
+	@Override
+	public Page<ENTITY> searchSimilar(ENTITY entity, String[] fields, Pageable pageable) {
+		return null;
+	}
+
+	@Override
+	public void refresh() {
+	}
+	
+	abstract Class<ENTITY> getEntityClazz();
+	
+	protected ElasticsearchOperations getEsOperations() {
+		return esOperations;
+	}
+
+	protected SimpleElasticsearchRepository<ENTITY, KEY> getEsRepo() {
+		return simpleEsRepo;
+	}
+}
