@@ -61,6 +61,18 @@ public class PraeceptaAuditElement {
 			this.toValue = toValue;
 		}
 
+		@Override
+		public String toString() {
+			return "ValueHolder [fromValue=" + fromValue + ", toValue=" + toValue + "]";
+		}
+		
 	}
+
+	@Override
+	public String toString() {
+		return "PraeceptaAuditElement [elementType=" + elementType + ", valueHolder=" + valueHolder + "]";
+	}
+	
+	
 
 }

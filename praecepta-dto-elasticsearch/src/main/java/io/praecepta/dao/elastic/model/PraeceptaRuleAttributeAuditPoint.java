@@ -30,5 +30,11 @@ public class PraeceptaRuleAttributeAuditPoint {
 	public void setAuditElements(List<PraeceptaAuditElement> auditElements) {
 		this.auditElements = auditElements;
 	}
+
+	@Override
+	public String toString() {
+		return "PraeceptaRuleAttributeAuditPoint [attributeName=" + attributeName + ", auditElements=" + auditElements
+				+ "]";
+	}
 	
 }

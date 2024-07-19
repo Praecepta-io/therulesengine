@@ -34,4 +34,9 @@ public class PraeceptaRuleAuditPoint {
 		this.ruleAuditInfo = ruleAuditInfo;
 	}
 
+	@Override
+	public String toString() {
+		return "PraeceptaRuleAuditPoint [ruleName=" + ruleName + ", ruleAuditInfo=" + ruleAuditInfo + "]";
+	}
+
 }

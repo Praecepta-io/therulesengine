@@ -32,5 +32,11 @@ public class PraeceptaRuleGroupAuditPoint {
 		this.ruleOperationAuditPoints = ruleOperationAuditPoints;
 	}
 
+	@Override
+	public String toString() {
+		return "PraeceptaRuleGroupAuditPoint [ruleGrpName=" + ruleGrpName + ", ruleOperationAuditPoints="
+				+ ruleOperationAuditPoints + "]";
+	}
+
 }
 

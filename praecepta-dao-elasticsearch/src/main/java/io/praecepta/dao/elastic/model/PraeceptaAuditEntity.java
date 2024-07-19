@@ -173,8 +173,10 @@ public class PraeceptaAuditEntity implements IPraeceptaEsEntityModel<String> {
 	@Override
 	public String toString() {
 		return "PraeceptaAuditEntity [id=" + id + ", spaceName=" + spaceName + ", clientId=" + clientId + ", appName="
-				+ appName + ", version=" + version + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy
-				+ ", createdDate=" + createdDate + ", updateDate=" + updateDate + "]";
+				+ appName + ", ruleGroupName=" + ruleGroupName + ", version=" + version + ", createdBy=" + createdBy
+				+ ", ruleGroupAuditPoint=" + ruleGroupAuditPoint + ", updatedBy=" + updatedBy + ", createdDate="
+				+ createdDate + ", updateDate=" + updateDate + ", entityFieldNameAndValue=" + entityFieldNameAndValue
+				+ "]";
 	}
 
 	@Override
