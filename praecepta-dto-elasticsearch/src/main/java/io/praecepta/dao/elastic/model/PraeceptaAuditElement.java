@@ -33,31 +33,31 @@ public class PraeceptaAuditElement {
 	}
 
 	public static class ValueHolder {
-		private Object fromValue;
+		private String fromValue;
 
-		private Object toValue;
+		private String toValue;
 		
 		public ValueHolder() {
 		}
 		
-		public ValueHolder(Object fromValue, Object toValue) {
+		public ValueHolder(String fromValue, String toValue) {
 			this.fromValue = fromValue;
 			this.toValue = toValue;
 		}
 
-		public Object getFromValue() {
+		public String getFromValue() {
 			return fromValue;
 		}
 
-		public void setFromValue(Object fromValue) {
+		public void setFromValue(String fromValue) {
 			this.fromValue = fromValue;
 		}
 
-		public Object getToValue() {
+		public String getToValue() {
 			return toValue;
 		}
 
-		public void setToValue(Object toValue) {
+		public void setToValue(String toValue) {
 			this.toValue = toValue;
 		}
 
