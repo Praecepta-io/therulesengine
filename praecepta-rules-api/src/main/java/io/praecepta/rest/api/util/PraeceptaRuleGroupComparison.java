@@ -15,43 +15,38 @@ import io.praecepta.rules.model.filter.PraeceptaMultiCondition;
 import io.praecepta.rules.model.filter.PraeceptaMultiNestedCondition;
 import io.praecepta.rules.model.filter.PraeceptaSimpleCondition;
 import io.praecepta.rules.model.projection.PraeceptaActionDetails;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
 public class PraeceptaRuleGroupComparison {
 
     public static PraeceptaRuleGroupAuditPoint compare(PraeceptaRuleGroup existingRuleGroup, PraeceptaRuleGroup updatedRuleGroup){
-        Map<String, PraeceptaCriteria> ruleCriteriasMap = getCriteriasByRuleName(updatedRuleGroup.getPraeceptaCriterias());
-        Map<String, PraeceptaCriteria> existingRuleCriteriasMap = getCriteriasByRuleName(existingRuleGroup.getPraeceptaCriterias());
+        Map<String, PraeceptaCriteria> ruleCriteriasMap = getCriteriaListByRuleName(updatedRuleGroup.getPraeceptaCriterias());
+        Map<String, PraeceptaCriteria> existingRuleCriteriasMap = getCriteriaListByRuleName(existingRuleGroup.getPraeceptaCriterias());
 
-        Collection<PraeceptaCriteria> deletedCriterias = deletedCriterias(existingRuleCriteriasMap, ruleCriteriasMap);
-        Collection<PraeceptaCriteria> newCriterias = newCriterias(existingRuleCriteriasMap, ruleCriteriasMap);
+        Collection<PraeceptaCriteria> deletedCriteriaList = getDeletedCriteriaList(existingRuleCriteriasMap, ruleCriteriasMap);
+        Collection<PraeceptaCriteria> newCriteriaList = getNewCriteriaList(existingRuleCriteriasMap, ruleCriteriasMap);
 
 
-        Map<PraeceptaCriteria, PraeceptaCriteria> modifiedCriterias = modifiedCriterias(existingRuleCriteriasMap, ruleCriteriasMap);
+        Map<PraeceptaCriteria, PraeceptaCriteria> modifiedCriteriaList = getModifiedCriteriaList(existingRuleCriteriasMap, ruleCriteriasMap);
 
         PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = new PraeceptaRuleGroupAuditPoint(updatedRuleGroup.getRuleGroupName());
         Map<AUDIT_OPERATION_TYPE, List<PraeceptaRuleAuditPoint>> ruleOperationAuditPoints = new HashMap<>();
         List<PraeceptaRuleAuditPoint> addedRulesAudit = new ArrayList<>();
-        newCriterias.forEach(criteria->{
-            addedRulesAudit.add(getRuleAuditPoint(null, criteria));
-        });
+        newCriteriaList.forEach(criteria-> addedRulesAudit.add(getRuleAuditPoint(null, criteria)));
         if(addedRulesAudit.size() > 0) {
             ruleOperationAuditPoints.put(AUDIT_OPERATION_TYPE.ADD, addedRulesAudit);
         }
         List<PraeceptaRuleAuditPoint> deletedRulesAudit = new ArrayList<>();
-        deletedCriterias.forEach(criteria->{
-            addedRulesAudit.add(getRuleAuditPoint(criteria, null));
-        });
+        deletedCriteriaList.forEach(criteria-> deletedRulesAudit.add(getRuleAuditPoint(criteria, null)));
 
         if(deletedRulesAudit.size() > 0) {
             ruleOperationAuditPoints.put(AUDIT_OPERATION_TYPE.DELETE, deletedRulesAudit);
         }
 
         List<PraeceptaRuleAuditPoint> modifiedRulesAudit = new ArrayList<>();
-        modifiedCriterias.forEach((existingCriteria, newCriteria)->{
-            modifiedRulesAudit.add(getRuleAuditPoint(existingCriteria, newCriteria));
-        });
+        modifiedCriteriaList.forEach((existingCriteria, newCriteria)-> modifiedRulesAudit.add(getRuleAuditPoint(existingCriteria, newCriteria)));
 
         if(modifiedRulesAudit.size() > 0) {
             ruleOperationAuditPoints.put(AUDIT_OPERATION_TYPE.UPDATE, modifiedRulesAudit);
@@ -66,7 +61,8 @@ public class PraeceptaRuleGroupComparison {
 
 
     private static PraeceptaRuleAuditPoint getRuleAuditPoint(PraeceptaCriteria existingCriteria, PraeceptaCriteria newCriteria) {
-        PraeceptaRuleAuditPoint praeceptaRuleAuditPoint = new PraeceptaRuleAuditPoint(existingCriteria.getRuleName());
+
+        PraeceptaRuleAuditPoint praeceptaRuleAuditPoint = new PraeceptaRuleAuditPoint(existingCriteria != null? existingCriteria.getRuleName(): newCriteria.getRuleName());
 
         Map<AUDIT_POINT_TYPE, List<PraeceptaRuleAttributeAuditPoint>> ruleAditMap = new HashMap<>();
         if(existingCriteria != null && newCriteria != null) {
@@ -90,18 +86,10 @@ public class PraeceptaRuleGroupComparison {
 
     private static List<PraeceptaRuleAttributeAuditPoint> getActionAuditPoint(Collection<PraeceptaActionDetails> existingActionToPerform, Collection<PraeceptaActionDetails> actionToPerform) {
         List<PraeceptaRuleAttributeAuditPoint> attributeAuditPoints = new ArrayList<>();
-        Map<String, PraeceptaActionDetails> existingActionMap = new HashMap<>();
-        if(existingActionToPerform != null) {
-            existingActionToPerform.forEach(action -> {
-                existingActionMap.put(action.getActionAttributeName(), action);
-            });
-        }
 
         Map<String, PraeceptaActionDetails> updatedActionMap = new HashMap<>();
         if(actionToPerform != null) {
-            actionToPerform.forEach(action -> {
-                updatedActionMap.put(action.getActionAttributeName(), action);
-            });
+            actionToPerform.forEach(action -> updatedActionMap.put(action.getActionAttributeName(), action));
         }
 
         if(existingActionToPerform != null && actionToPerform != null){
@@ -109,8 +97,8 @@ public class PraeceptaRuleGroupComparison {
                 PraeceptaRuleAttributeAuditPoint actionAttributeAudit = new PraeceptaRuleAttributeAuditPoint(action.getActionAttributeName());
                 if(updatedActionMap.get(action.getActionAttributeName()) == null){
                     List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-                    populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy(), null), auditElements);
-                    populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(action.getValueToAssign(), null), auditElements);
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy()!= null?action.getActionStrategy().toString():null, null), auditElements);
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(action.getValueToAssign()!=null? action.getValueToAssign() :null, null), auditElements);
 
                     compareActionMetaData(action.getAdditionalParameters(), null, auditElements);
                     actionAttributeAudit.setAuditElements(auditElements);
@@ -118,7 +106,7 @@ public class PraeceptaRuleGroupComparison {
                     List<PraeceptaAuditElement> auditElements = new ArrayList<>();
                     PraeceptaActionDetails newActionDetails = updatedActionMap.get(action.getActionAttributeName());
                     if(!action.getActionStrategy().equals(newActionDetails.getActionStrategy())) {
-                        populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy(), newActionDetails.getActionStrategy()), auditElements);
+                        populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy()!=null?action.getActionStrategy().toString():null, newActionDetails.getActionStrategy()!=null?newActionDetails.getActionStrategy().toString():null), auditElements);
                     }
                     if(!action.getValueToAssign().equals(newActionDetails.getValueToAssign())) {
                         populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(action.getValueToAssign(), newActionDetails.getValueToAssign()), auditElements);
@@ -135,7 +123,7 @@ public class PraeceptaRuleGroupComparison {
             existingActionToPerform.forEach(action->{
                 PraeceptaRuleAttributeAuditPoint actionAttributeAudit = new PraeceptaRuleAttributeAuditPoint(action.getActionAttributeName());
                 List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-                populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy(), null), auditElements);
+                populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy() != null?action.getActionStrategy().toString():null, null), auditElements);
                 populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(action.getValueToAssign(), null), auditElements);
 
                 compareActionMetaData(action.getAdditionalParameters(), null, auditElements);
@@ -143,11 +131,11 @@ public class PraeceptaRuleGroupComparison {
                 if(actionAttributeAudit.getAuditElements().size() > 0)
                     attributeAuditPoints.add(actionAttributeAudit);
             });
-        }else{
+        }else if(actionToPerform != null){
             actionToPerform.forEach(action->{
                 PraeceptaRuleAttributeAuditPoint actionAttributeAudit = new PraeceptaRuleAttributeAuditPoint(action.getActionAttributeName());
                 List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-                populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(null, action.getActionStrategy()), auditElements);
+                populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(null, action.getActionStrategy() != null?action.getActionStrategy().toString():null), auditElements);
                 populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(null, action.getValueToAssign()), auditElements);
 
                 compareActionMetaData(null, action.getAdditionalParameters(), auditElements);
@@ -167,10 +155,10 @@ public class PraeceptaRuleGroupComparison {
             Set<PraeceptaActionParametersType> existingParametrKeySet =  additionalParameters.keySet();
             existingParametrKeySet.forEach(key->{
                 if(newAdditionalParameters.get(key) == null){
-                    populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(additionalParameters.get(key), null), auditElements);
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(additionalParameters.get(key) != null? additionalParameters.get(key).toString(): null, null), auditElements);
                 }else{
                     if(!additionalParameters.get(key).equals(newAdditionalParameters.get(key))) {
-                        populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(additionalParameters.get(key), newAdditionalParameters.get(key)), auditElements);
+                        populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(additionalParameters.get(key) != null? additionalParameters.get(key).toString():null, newAdditionalParameters.get(key) != null?newAdditionalParameters.get(key).toString():null), auditElements);
                     }
                 }
             });
@@ -178,19 +166,15 @@ public class PraeceptaRuleGroupComparison {
             Set<PraeceptaActionParametersType> conditionalParameterKeySet =  newAdditionalParameters.keySet();
             conditionalParameterKeySet.forEach(key->{
                 if(additionalParameters.get(key) == null){
-                    populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(null, newAdditionalParameters.get(key)), auditElements);
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(null, newAdditionalParameters.get(key) != null? newAdditionalParameters.get(key).toString():null), auditElements);
                 }
             });
         }else if(additionalParameters != null){
             Set<PraeceptaActionParametersType> existingParametrKeySet =  additionalParameters.keySet();
-            existingParametrKeySet.forEach(key-> {
-                populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(additionalParameters.get(key), null), auditElements);
-            });
+            existingParametrKeySet.forEach(key-> populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(additionalParameters.get(key) != null? additionalParameters.get(key).toString(): null, null), auditElements));
         }else if(newAdditionalParameters != null){
             Set<PraeceptaActionParametersType> conditionalParameterSet =  newAdditionalParameters.keySet();
-            conditionalParameterSet.forEach(key-> {
-                populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(null, additionalParameters.get(key)), auditElements);
-            });
+            conditionalParameterSet.forEach(key-> populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(null, newAdditionalParameters.get(key) != null? newAdditionalParameters.get(key).toString():null), auditElements));
         }
     }
 
@@ -199,21 +183,29 @@ public class PraeceptaRuleGroupComparison {
         if(existingPredicates != null && newPredicates != null){
             attributeAuditPoints.addAll(getMultiConditionAuditPoint(existingPredicates.getMultiCondition(), newPredicates.getMultiCondition()));
             if(existingPredicates.getNextMultiNestedCondition() != null){
-                attributeAuditPoints.addAll(getConditionAuditPoint(existingPredicates.getNextMultiNestedCondition(), null));
+                List<PraeceptaRuleAttributeAuditPoint> existingAttributeAuditPoints = getConditionAuditPoint(existingPredicates.getNextMultiNestedCondition(), null);
+                if(!CollectionUtils.isEmpty(existingAttributeAuditPoints))
+                    attributeAuditPoints.addAll(existingAttributeAuditPoints);
             }
-        }else if(existingPredicates == null){
+        }else if(existingPredicates != null){
             attributeAuditPoints.addAll(getMultiConditionAuditPoint(existingPredicates.getMultiCondition(), null));
             if(existingPredicates.getNextMultiNestedCondition() != null){
-                attributeAuditPoints.addAll(getConditionAuditPoint(existingPredicates.getNextMultiNestedCondition(), null));
+                List<PraeceptaRuleAttributeAuditPoint> existingAttributeAuditPoints = getConditionAuditPoint(existingPredicates.getNextMultiNestedCondition(), null);
+                if(!CollectionUtils.isEmpty(existingAttributeAuditPoints))
+                    attributeAuditPoints.addAll(existingAttributeAuditPoints);
             }
-        }else{
+        }else if(newPredicates != null){
             attributeAuditPoints.addAll(getMultiConditionAuditPoint(null,newPredicates.getMultiCondition()));
-            if(existingPredicates.getNextMultiNestedCondition() != null){
-                attributeAuditPoints.addAll(getConditionAuditPoint(null, newPredicates.getNextMultiNestedCondition()));
+            if(newPredicates.getNextMultiNestedCondition() != null){
+                List<PraeceptaRuleAttributeAuditPoint> newPredicateAttributeAuditPoints  = getConditionAuditPoint(null, newPredicates.getNextMultiNestedCondition());
+                if(!CollectionUtils.isEmpty(newPredicateAttributeAuditPoints))
+                    attributeAuditPoints.addAll(newPredicateAttributeAuditPoints);
             }
         }
         if((existingPredicates != null && existingPredicates.getNextMultiNestedCondition() != null) || (newPredicates != null && newPredicates.getNextMultiNestedCondition() != null)){
-            attributeAuditPoints.addAll(getConditionAuditPoint(existingPredicates != null?existingPredicates.getNextMultiNestedCondition():null, newPredicates!=null?newPredicates.getNextMultiNestedCondition():null));
+            List<PraeceptaRuleAttributeAuditPoint> auditPoints = getConditionAuditPoint(existingPredicates != null?existingPredicates.getNextMultiNestedCondition():null, newPredicates!=null?newPredicates.getNextMultiNestedCondition():null);
+            if(!CollectionUtils.isEmpty(auditPoints))
+                attributeAuditPoints.addAll(auditPoints);
         }
 
         if(attributeAuditPoints.size() > 0)
@@ -228,14 +220,14 @@ public class PraeceptaRuleGroupComparison {
             PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint(simpleCondition.getSubjectName());
             List<PraeceptaAuditElement> auditElements = new ArrayList<>();
             if (existingSimpleCondition.getValueToCompare() != null && !existingSimpleCondition.getValueToCompare().equals(simpleCondition.getValueToCompare())) {
-                populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getValueToCompare(), simpleCondition.getValueToCompare()), auditElements);
+                populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getValueToCompare() != null? existingSimpleCondition.getValueToCompare().toString():null, simpleCondition.getValueToCompare() != null? simpleCondition.getValueToCompare().toString():null), auditElements);
             }
             if (existingSimpleCondition.getConditionOperator() != null && !existingSimpleCondition.getConditionOperator().equals(simpleCondition.getConditionOperator())) {
-                populateAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getConditionOperator(), simpleCondition.getConditionOperator()), auditElements);
+                populateAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getConditionOperator() != null? existingSimpleCondition.getConditionOperator().toString():null, simpleCondition.getConditionOperator() != null?simpleCondition.getConditionOperator().toString(): null), auditElements);
             }
 
             if (existingSimpleCondition.getNextConditionJoinOperator() != null && !existingSimpleCondition.getNextConditionJoinOperator().equals(simpleCondition.getNextConditionJoinOperator())) {
-                populateAuditElement(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getNextConditionJoinOperator(), simpleCondition.getNextConditionJoinOperator()), auditElements);
+                populateAuditElement(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getNextConditionJoinOperator() != null? existingSimpleCondition.getNextConditionJoinOperator().toString():null, simpleCondition.getNextConditionJoinOperator()!= null?simpleCondition.getNextConditionJoinOperator().toString():null), auditElements);
             }
 
             compareMetaData(existingSimpleCondition.getParameters(), simpleCondition.getParameters(), auditElements);
@@ -245,8 +237,8 @@ public class PraeceptaRuleGroupComparison {
         }else if(existingSimpleCondition != null){
             PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint(existingSimpleCondition.getSubjectName());
             List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-            populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getValueToCompare(), null), auditElements);
-            populateAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getConditionOperator(), null), auditElements);
+            populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getValueToCompare() != null? existingSimpleCondition.getValueToCompare().toString():null, null), auditElements);
+            populateAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getConditionOperator() != null? existingSimpleCondition.getConditionOperator().toString():null, null), auditElements);
 
             compareMetaData(existingSimpleCondition.getParameters(), null, auditElements);
 
@@ -255,8 +247,8 @@ public class PraeceptaRuleGroupComparison {
         }else if(simpleCondition != null){
             PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint(simpleCondition.getSubjectName());
             List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-            populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(null, simpleCondition.getValueToCompare()), auditElements);
-            populateAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(null, simpleCondition.getConditionOperator()), auditElements);
+            populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE, new PraeceptaAuditElement.ValueHolder(null, simpleCondition.getValueToCompare() != null? simpleCondition.getValueToCompare().toString():null), auditElements);
+            populateAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(null, simpleCondition.getConditionOperator() != null? simpleCondition.getConditionOperator().toString():null), auditElements);
 
             compareMetaData(null, simpleCondition.getParameters(), auditElements);
 
@@ -272,10 +264,10 @@ public class PraeceptaRuleGroupComparison {
             Set<String> existingParametrKeySet =  existingConditionParameters.keySet();
             existingParametrKeySet.forEach(key->{
                 if(conditionParameters.get(key) == null){
-                    populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(existingConditionParameters.get(key), null), auditElements);
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(existingConditionParameters.get(key) != null? existingConditionParameters.get(key).toString():null, null), auditElements);
                 }else{
                     if(!existingConditionParameters.get(key).equals(conditionParameters.get(key))) {
-                        populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(existingConditionParameters.get(key), conditionParameters.get(key)), auditElements);
+                        populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(existingConditionParameters.get(key) != null? existingConditionParameters.get(key).toString():null, conditionParameters.get(key) != null?conditionParameters.get(key).toString():null), auditElements);
                     }
                 }
             });
@@ -283,19 +275,15 @@ public class PraeceptaRuleGroupComparison {
             Set<String> conditionalParameterKeySet =  conditionParameters.keySet();
             conditionalParameterKeySet.forEach(key->{
                 if(existingConditionParameters.get(key) == null){
-                    populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(null, conditionParameters.get(key)), auditElements);
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(null, conditionParameters.get(key) != null?conditionParameters.get(key).toString():null), auditElements);
                 }
             });
-        }else if(existingConditionParameters != null){
+        }else if(existingConditionParameters != null && !CollectionUtils.isEmpty(existingConditionParameters.keySet())){
             Set<String> existingParametrKeySet =  existingConditionParameters.keySet();
-            existingParametrKeySet.forEach(key-> {
-                populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(existingConditionParameters.get(key), null), auditElements);
-            });
-        }else{
+            existingParametrKeySet.forEach(key-> populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(existingConditionParameters.get(key) != null? existingConditionParameters.get(key).toString():null, null), auditElements));
+        }else if(conditionParameters != null && !CollectionUtils.isEmpty(conditionParameters.keySet())){
             Set<String> conditionalParameterSet =  conditionParameters.keySet();
-            conditionalParameterSet.forEach(key-> {
-                populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(null, existingConditionParameters.get(key)), auditElements);
-            });
+            conditionalParameterSet.forEach(key-> populateAuditElement(AUDIT_ELEMENT_TYPE.MATA_DATA_CHANGE, new PraeceptaAuditElement.ValueHolder(null, conditionParameters.get(key) != null?conditionParameters.get(key).toString():null), auditElements));
         }
     }
 
@@ -350,7 +338,7 @@ public class PraeceptaRuleGroupComparison {
     private static PraeceptaRuleAttributeAuditPoint getPraeceptaRuleAttributeAuditPointForNextConditionJoinOperator(JoinOperatorType existingCondition, JoinOperatorType multiCondition) {
         PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint("JOIN_OPERATOR");
         List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-        populateAuditElement(AUDIT_ELEMENT_TYPE.NEXT_CONDITION_JOIN_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingCondition, multiCondition), auditElements);
+        populateAuditElement(AUDIT_ELEMENT_TYPE.NEXT_CONDITION_JOIN_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingCondition!=null?existingCondition.toString():null, multiCondition!=null?multiCondition.toString():null), auditElements);
         praeceptaRuleAttributeAuditPoint.setAuditElements(auditElements);
         return praeceptaRuleAttributeAuditPoint;
     }
@@ -381,44 +369,42 @@ public class PraeceptaRuleGroupComparison {
         return simpleConditionAttributeAuditPoints;
     }
 
-    private static Collection<PraeceptaCriteria> deletedCriterias(Map<String, PraeceptaCriteria> existingRuleCriteriasMap, Map<String, PraeceptaCriteria> ruleCriteriasMap){
-        Collection<PraeceptaCriteria> deletedCriterias = new ArrayList<>();
+    private static Collection<PraeceptaCriteria> getDeletedCriteriaList(Map<String, PraeceptaCriteria> existingRuleCriteriasMap, Map<String, PraeceptaCriteria> ruleCriteriasMap){
+        Collection<PraeceptaCriteria> deletedCriteriaList = new ArrayList<>();
         Set<String>  existingCriteriaKeySet =  existingRuleCriteriasMap.keySet();
         existingCriteriaKeySet.forEach(ruleName->{
             if(ruleCriteriasMap.get(ruleName) == null){
-                deletedCriterias.add(existingRuleCriteriasMap.get(ruleName));
+                deletedCriteriaList.add(existingRuleCriteriasMap.get(ruleName));
             }
         });
-        return deletedCriterias;
+        return deletedCriteriaList;
     }
 
-    private static Collection<PraeceptaCriteria> newCriterias(Map<String, PraeceptaCriteria> existingRuleCriteriasMap, Map<String, PraeceptaCriteria> ruleCriteriasMap){
-        Collection<PraeceptaCriteria> newCriterias = new ArrayList<>();
+    private static Collection<PraeceptaCriteria> getNewCriteriaList(Map<String, PraeceptaCriteria> existingRuleCriteriasMap, Map<String, PraeceptaCriteria> ruleCriteriasMap){
+        Collection<PraeceptaCriteria> newCriteriaList = new ArrayList<>();
         Set<String>  criteriaKeySet =  ruleCriteriasMap.keySet();
         criteriaKeySet.forEach(ruleName->{
             if(existingRuleCriteriasMap.get(ruleName) == null){
-                newCriterias.add(existingRuleCriteriasMap.get(ruleName));
+                newCriteriaList.add(existingRuleCriteriasMap.get(ruleName));
             }
         });
-        return newCriterias;
+        return newCriteriaList;
     }
 
-    private static Map<PraeceptaCriteria, PraeceptaCriteria> modifiedCriterias(Map<String, PraeceptaCriteria> existingRuleCriteriasMap, Map<String, PraeceptaCriteria> ruleCriteriasMap){
-        Map<PraeceptaCriteria, PraeceptaCriteria> modifiedCriterias = new HashMap<>();
+    private static Map<PraeceptaCriteria, PraeceptaCriteria> getModifiedCriteriaList(Map<String, PraeceptaCriteria> existingRuleCriteriasMap, Map<String, PraeceptaCriteria> ruleCriteriasMap){
+        Map<PraeceptaCriteria, PraeceptaCriteria> modifiedCriteriaList = new HashMap<>();
         Set<String>  criteriaKeySet =  ruleCriteriasMap.keySet();
         criteriaKeySet.forEach(ruleName->{
             if(existingRuleCriteriasMap.get(ruleName) != null){
-                modifiedCriterias.put(existingRuleCriteriasMap.get(ruleName), ruleCriteriasMap.get(ruleName));
+                modifiedCriteriaList.put(existingRuleCriteriasMap.get(ruleName), ruleCriteriasMap.get(ruleName));
             }
         });
-        return modifiedCriterias;
+        return modifiedCriteriaList;
     }
 
-    private static Map<String, PraeceptaCriteria> getCriteriasByRuleName(Collection<PraeceptaCriteria> criteriaCollection){
+    private static Map<String, PraeceptaCriteria> getCriteriaListByRuleName(Collection<PraeceptaCriteria> criteriaCollection){
         Map<String, PraeceptaCriteria> ruleCriteriasMap = new HashMap<>();
-        criteriaCollection.forEach(criteria ->{
-            ruleCriteriasMap.put(criteria.getRuleName(), criteria);
-        });
+        criteriaCollection.forEach(criteria -> ruleCriteriasMap.put(criteria.getRuleName(), criteria));
         return ruleCriteriasMap;
     }
 }

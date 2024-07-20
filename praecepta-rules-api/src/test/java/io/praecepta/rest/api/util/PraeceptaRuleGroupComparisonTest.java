@@ -104,13 +104,13 @@ public class PraeceptaRuleGroupComparisonTest {
         List<PraeceptaAuditElement> auditElementList = ageValidation.getAuditElements();
         PraeceptaAuditElement praeceptaAuditElement = auditElementList.get(0);
         Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE,praeceptaAuditElement.getElementType());
-        Assert.assertEquals(25.0,praeceptaAuditElement.getValueHolder().getFromValue());
-        Assert.assertEquals(30.0,praeceptaAuditElement.getValueHolder().getToValue());
+        Assert.assertEquals("25.0",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("30.0",praeceptaAuditElement.getValueHolder().getToValue());
 
         praeceptaAuditElement = auditElementList.get(1);
         Assert.assertEquals(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE,praeceptaAuditElement.getElementType());
-        Assert.assertEquals(JoinOperatorType.AND,praeceptaAuditElement.getValueHolder().getFromValue());
-        Assert.assertEquals(JoinOperatorType.OR,praeceptaAuditElement.getValueHolder().getToValue());
+        Assert.assertEquals(JoinOperatorType.AND.toString(),praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals(JoinOperatorType.OR.toString(),praeceptaAuditElement.getValueHolder().getToValue());
 
         PraeceptaRuleAttributeAuditPoint salValidation = conditionChanges.get(1);
         Assert.assertEquals("sal", salValidation.getAttributeName());
@@ -118,8 +118,8 @@ public class PraeceptaRuleGroupComparisonTest {
         auditElementList = salValidation.getAuditElements();
         praeceptaAuditElement = auditElementList.get(0);
         Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE,praeceptaAuditElement.getElementType());
-        Assert.assertEquals(10000.0,praeceptaAuditElement.getValueHolder().getFromValue());
-        Assert.assertEquals(15000.0,praeceptaAuditElement.getValueHolder().getToValue());
+        Assert.assertEquals("10000.0",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("15000.0",praeceptaAuditElement.getValueHolder().getToValue());
 
 
 
@@ -191,7 +191,7 @@ public class PraeceptaRuleGroupComparisonTest {
         PraeceptaAuditElement praeceptaAuditElement = auditElementList.get(0);
         Assert.assertEquals(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE,praeceptaAuditElement.getElementType());
         Assert.assertNull(praeceptaAuditElement.getValueHolder().getFromValue());
-        Assert.assertEquals(PraeceptaActionStrategyType.ADD_TO_PAYLOAD,praeceptaAuditElement.getValueHolder().getToValue());
+        Assert.assertEquals(PraeceptaActionStrategyType.ADD_TO_PAYLOAD.toString(),praeceptaAuditElement.getValueHolder().getToValue());
         praeceptaAuditElement = auditElementList.get(1);
         Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE,praeceptaAuditElement.getElementType());
         Assert.assertNull(praeceptaAuditElement.getValueHolder().getFromValue());
