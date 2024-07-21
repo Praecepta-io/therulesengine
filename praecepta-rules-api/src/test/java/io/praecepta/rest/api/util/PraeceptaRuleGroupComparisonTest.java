@@ -121,9 +121,6 @@ public class PraeceptaRuleGroupComparisonTest {
         Assert.assertEquals("10000.0",praeceptaAuditElement.getValueHolder().getFromValue());
         Assert.assertEquals("15000.0",praeceptaAuditElement.getValueHolder().getToValue());
 
-
-
-
         Assert.assertNull( ruleAuditPointMap.get(AUDIT_POINT_TYPE.ACTION));
 
 
