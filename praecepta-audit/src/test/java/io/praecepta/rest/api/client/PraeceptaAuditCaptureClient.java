@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -93,7 +92,7 @@ public class PraeceptaAuditCaptureClient {
 				List<PraeceptaRuleAttributeAuditPoint> attributeNameToValueChange = new ArrayList<>();
 				
 				// New Condition Add - Element Changes like Value add or a new join operator add etc
-				PraeceptaAuditElement scoreCheckEmployedValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE ,new ValueHolder(null, "yes"));
+				PraeceptaAuditElement scoreCheckEmployedValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,new ValueHolder(null, "yes"));
 				PraeceptaAuditElement scoreCheckEmployedConditionOperatorChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE ,new ValueHolder(null, "EQUALS"));
 				
 				// Defining Attribute for Which the above element changes belongs to
@@ -104,7 +103,7 @@ public class PraeceptaAuditCaptureClient {
 				// Capture all Audit points for An Attribute
 				attributeNameToValueChange.add(employedAttributeAuditPoint);
 				
-				PraeceptaAuditElement scoreCheckScoreValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE ,new ValueHolder(null, "800"));
+				PraeceptaAuditElement scoreCheckScoreValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,new ValueHolder(null, "800"));
 				
 				PraeceptaRuleAttributeAuditPoint scoreAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint("score");
 				scoreAttributeAuditPoint.setAuditElements(Arrays.asList( new PraeceptaAuditElement[] { scoreCheckScoreValueChange }));
@@ -120,7 +119,7 @@ public class PraeceptaAuditCaptureClient {
 				List<PraeceptaRuleAttributeAuditPoint>  actionAttributeNameToValueChange = new ArrayList<>();
 				
 				//  New Action Add - Action Element changes like Value add
-				PraeceptaAuditElement scoreCheckEmployedActionChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE ,new ValueHolder(null, "Excellent"));
+				PraeceptaAuditElement scoreCheckEmployedActionChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,new ValueHolder(null, "Excellent"));
 				
 				// Defining Action Attribute for Which the above element changes belongs to
 				PraeceptaRuleAttributeAuditPoint scoreLevelActionAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint("score_level");
@@ -151,7 +150,7 @@ public class PraeceptaAuditCaptureClient {
 				List<PraeceptaRuleAttributeAuditPoint> updateRuleAttributeNameToValueChange = new ArrayList<>();
 				
 				// Update Condition Add - Element Changes like Value add or a new join operator add etc
-				PraeceptaAuditElement regionElegibilityValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE , new ValueHolder("ASIA", "NOARTH_AMERICA"));
+				PraeceptaAuditElement regionElegibilityValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new ValueHolder("ASIA", "NOARTH_AMERICA"));
 				PraeceptaAuditElement regionElegibilityOperatorChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE , new ValueHolder("NOT_EQUALS", "EQUALS"));
 				
 				// Defining Attribute for Which the above element changes belongs to
@@ -168,7 +167,7 @@ public class PraeceptaAuditCaptureClient {
 				List<PraeceptaRuleAttributeAuditPoint> updateRuleActionAttributeNameToValueChange = new ArrayList<>();
 				
 				// New Action Add - Action Element changes like Value add
-				PraeceptaAuditElement regionElegibilityActionValueChange  = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE , new ValueHolder("SUCCESS", "SATISFIED"));
+				PraeceptaAuditElement regionElegibilityActionValueChange  = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new ValueHolder("SUCCESS", "SATISFIED"));
 				
 				// Defining Action Attribute for Which the above element changes belongs to
 				PraeceptaRuleAttributeAuditPoint updateRegionEligibleActionAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint("region_eligibility");

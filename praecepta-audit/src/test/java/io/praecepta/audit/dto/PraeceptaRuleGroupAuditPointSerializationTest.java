@@ -28,7 +28,7 @@ public class PraeceptaRuleGroupAuditPointSerializationTest {
 				"                  \"attributeName\": \"employed\",\r\n" + 
 				"                  \"auditElements\": [\r\n" + 
 				"                    {\r\n" + 
-				"                      \"elementType\": \"VALUE_CHNAGE\",\r\n" + 
+				"                      \"elementType\": \"VALUE_CHANGE\",\r\n" + 
 				"                      \"valueHolder\": {\r\n" + 
 				"                        \"toValue\": \"yes\"\r\n" + 
 				"                      }\r\n" + 
@@ -46,7 +46,7 @@ public class PraeceptaRuleGroupAuditPointSerializationTest {
 				"                  \"attributeName\": \"score\",\r\n" + 
 				"                  \"auditElements\": [\r\n" + 
 				"                    {\r\n" + 
-				"                      \"elementType\": \"VALUE_CHNAGE\",\r\n" + 
+				"                      \"elementType\": \"VALUE_CHANGE\",\r\n" + 
 				"                      \"valueHolder\": {\r\n" + 
 				"                        \"toValue\": \"800\"\r\n" + 
 				"                      }\r\n" + 
@@ -60,7 +60,7 @@ public class PraeceptaRuleGroupAuditPointSerializationTest {
 				"                  \"attributeName\": \"score_level\",\r\n" + 
 				"                  \"auditElements\": [\r\n" + 
 				"                    {\r\n" + 
-				"                      \"elementType\": \"VALUE_CHNAGE\",\r\n" + 
+				"                      \"elementType\": \"VALUE_CHANGE\",\r\n" + 
 				"                      \"valueHolder\": {\r\n" + 
 				"                        \"toValue\": \"Excellent\"\r\n" + 
 				"                      }\r\n" + 
@@ -82,7 +82,7 @@ public class PraeceptaRuleGroupAuditPointSerializationTest {
 				"                  \"attributeName\": \"region_eligible\",\r\n" + 
 				"                  \"auditElements\": [\r\n" + 
 				"                    {\r\n" + 
-				"                      \"elementType\": \"VALUE_CHNAGE\",\r\n" + 
+				"                      \"elementType\": \"VALUE_CHANGE\",\r\n" + 
 				"                      \"valueHolder\": {\r\n" + 
 				"                        \"fromValue\": \"ASIA\",\r\n" + 
 				"                        \"toValue\": \"NOARTH_AMERICA\"\r\n" + 
@@ -104,7 +104,7 @@ public class PraeceptaRuleGroupAuditPointSerializationTest {
 				"                  \"attributeName\": \"score_level\",\r\n" + 
 				"                  \"auditElements\": [\r\n" + 
 				"                    {\r\n" + 
-				"                      \"elementType\": \"VALUE_CHNAGE\",\r\n" + 
+				"                      \"elementType\": \"VALUE_CHANGE\",\r\n" + 
 				"                      \"valueHolder\": {\r\n" + 
 				"                        \"toValue\": \"Excellent\"\r\n" + 
 				"                      }\r\n" + 
