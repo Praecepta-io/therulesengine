@@ -10,15 +10,19 @@ import io.praecepta.dao.elastic.model.PraeceptaRuleAuditPoint;
 import io.praecepta.dao.elastic.model.PraeceptaRuleGroupAuditPoint;
 import io.praecepta.rules.actions.enums.PraeceptaActionStrategyType;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleGroup;
+import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpace;
+import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpaceCompositeKey;
 import io.praecepta.rules.model.PraeceptaCriteria;
-import io.praecepta.rules.model.filter.ConditionOperatorType;
 import io.praecepta.rules.model.filter.JoinOperatorType;
 import io.praecepta.rules.model.filter.PraeceptaMultiCondition;
+import io.praecepta.rules.model.filter.PraeceptaMultiNestedCondition;
 import io.praecepta.rules.model.filter.PraeceptaSimpleCondition;
+import io.praecepta.rules.model.projection.PraeceptaActionDetails;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -374,7 +378,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(2);
-        Assert.assertEquals("Condition1",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition1",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -407,7 +411,7 @@ public class PraeceptaRuleGroupComparisonTest {
         List<PraeceptaRuleAttributeAuditPoint> ruleAttributeAuditPoints = paeceptaRuleAttributeAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION);
         Assert.assertEquals(3, ruleAttributeAuditPoints.size());
         PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(0);
-        Assert.assertEquals("Condition1",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition1",praeceptaRuleAttributeAuditPoint.getAttributeName());
         List<PraeceptaAuditElement> praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         PraeceptaAuditElement praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -416,7 +420,7 @@ public class PraeceptaRuleGroupComparisonTest {
         Assert.assertEquals("AND",praeceptaAuditElement.getValueHolder().getToValue());
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
-        Assert.assertEquals("Condition2",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition2",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -468,7 +472,7 @@ public class PraeceptaRuleGroupComparisonTest {
         Assert.assertEquals("30.0",praeceptaAuditElement.getValueHolder().getToValue());
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
-        Assert.assertEquals("Condition1",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition1",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -489,7 +493,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(3);
-        Assert.assertEquals("Condition2",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition2",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -535,7 +539,7 @@ public class PraeceptaRuleGroupComparisonTest {
         Assert.assertEquals( "200000.0",praeceptaAuditElement.getValueHolder().getToValue());
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(7);
-        Assert.assertEquals("Condition4",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition4",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -551,6 +555,210 @@ public class PraeceptaRuleGroupComparisonTest {
         Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, praeceptaAuditElement.getElementType());
         Assert.assertEquals("L2", praeceptaAuditElement.getValueHolder().getFromValue());
         Assert.assertEquals("L1", praeceptaAuditElement.getValueHolder().getToValue());
+
+    }
+
+    @Test
+    public void testMultiNestedCondition(){
+
+        PraeceptaRuleGroup praeceptaRuleGroup = new PraeceptaRuleGroup();
+        praeceptaRuleGroup.setRuleGroupName("Test");
+        praeceptaRuleGroup.setRuleGroupType("multiNestedCondition");
+        Collection<PraeceptaCriteria> praeceptaCriterias = new ArrayList<>();
+        PraeceptaCriteria praeceptaCriteria = new PraeceptaCriteria();
+
+        praeceptaCriteria.setRuleName("Rule1");
+
+        PraeceptaMultiNestedCondition multiNestedCondition = new PraeceptaMultiNestedCondition();
+
+        PraeceptaMultiCondition praeceptaMultiCondition = new PraeceptaMultiCondition();
+        PraeceptaSimpleCondition simpleCondition = new PraeceptaSimpleCondition();
+        simpleCondition.setSubjectName("age");
+        simpleCondition.setValueToCompare(25);
+        praeceptaMultiCondition.setCondition(simpleCondition);
+        PraeceptaMultiCondition nextMultiCondition = new PraeceptaMultiCondition();
+        PraeceptaSimpleCondition simpleCondition1 = new PraeceptaSimpleCondition();
+        simpleCondition1.setSubjectName("sal");
+        simpleCondition1.setValueToCompare(25000);
+        nextMultiCondition.setCondition(simpleCondition1);
+        praeceptaMultiCondition.setNextMultiCondition(nextMultiCondition);
+        praeceptaMultiCondition.setNextConditionJoinOperator(JoinOperatorType.OR);
+        multiNestedCondition.setMultiCondition(praeceptaMultiCondition);
+
+        multiNestedCondition.setNextConditionJoinOperator(JoinOperatorType.AND);
+
+        PraeceptaMultiNestedCondition multiNestedCondition1 = new PraeceptaMultiNestedCondition();
+
+        PraeceptaMultiCondition praeceptaMultiCondition1 = new PraeceptaMultiCondition();
+        PraeceptaSimpleCondition simpleCondition3 = new PraeceptaSimpleCondition();
+        simpleCondition3.setSubjectName("age1");
+        simpleCondition3.setValueToCompare(25);
+        praeceptaMultiCondition1.setCondition(simpleCondition3);
+
+        PraeceptaMultiCondition nextMultiCondition1 = new PraeceptaMultiCondition();
+        PraeceptaSimpleCondition simpleCondition4 = new PraeceptaSimpleCondition();
+        simpleCondition4.setSubjectName("sal1");
+        simpleCondition4.setValueToCompare(25000);
+        nextMultiCondition1.setCondition(simpleCondition4);
+        praeceptaMultiCondition.setNextMultiCondition(nextMultiCondition1);
+        praeceptaMultiCondition.setNextConditionJoinOperator(JoinOperatorType.OR);
+        multiNestedCondition1.setMultiCondition(praeceptaMultiCondition1);
+
+        multiNestedCondition.setNextMultiNestedCondition(multiNestedCondition1);
+
+        praeceptaCriteria.setPredicates(multiNestedCondition);
+
+        praeceptaCriterias.add(praeceptaCriteria);
+        praeceptaRuleGroup.setPraeceptaCriterias(praeceptaCriterias);
+        PraeceptaRuleSpaceCompositeKey praeceptaRuleSpace = new PraeceptaRuleSpaceCompositeKey();
+        praeceptaRuleSpace.setSpaceName("ICICI");
+        praeceptaRuleSpace.setAppName("Loan");
+        praeceptaRuleSpace.setVersion("V1");
+        praeceptaRuleSpace.setClientId("001");
+        praeceptaRuleGroup.setRuleSpaceKey(praeceptaRuleSpace);
+
+        Collection<PraeceptaActionDetails> actionToPerform = new ArrayList<>();
+        praeceptaRuleGroup.setActionToPerform(actionToPerform);
+
+        Collection<PraeceptaActionDetails> failureActionToPerform = new ArrayList<>();
+        praeceptaRuleGroup.setActionToPerformOnFailure(failureActionToPerform);
+
+        System.out.println(GsonHelper.toJson(praeceptaRuleGroup));
+
+        String existingCondition = "{\"ruleGroupName\":\"Test\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"parameters\":{}},\"nextConditionJoinOperator\":\"OR\",\"nextMultiCondition\":{\"condition\":{\"subjectName\":\"sal1\",\"valueToCompare\":25000,\"parameters\":{}}}},\"nextConditionJoinOperator\":\"AND\",\"nextMultiNestedCondition\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age1\",\"valueToCompare\":25,\"parameters\":{}}}}},\"orderNumber\":0,\"ruleName\":\"Rule1\"}],\"actionToPerform\":[],\"actionToPerformOnFailure\":[],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"multiNestedCondition\"}\n";
+        String newCondition = "{\"ruleGroupName\":\"Test\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"parameters\":{}},\"nextConditionJoinOperator\":\"OR\",\"nextMultiCondition\":{\"condition\":{\"subjectName\":\"sal1\",\"valueToCompare\":25000,\"parameters\":{}}}},\"nextConditionJoinOperator\":\"OR\",\"nextMultiNestedCondition\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age1\",\"valueToCompare\":25,\"parameters\":{}}}}},\"orderNumber\":0,\"ruleName\":\"Rule1\"}],\"actionToPerform\":[],\"actionToPerformOnFailure\":[],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"multiNestedCondition\"}\n";
+        PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(GsonHelper.toEntity(existingCondition, PraeceptaRuleGroup.class), GsonHelper.toEntity(newCondition, PraeceptaRuleGroup.class));
+
+        Assert.assertEquals(1, praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().size());
+
+        List<PraeceptaRuleAuditPoint> ruleAuditPoints = praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().get(AUDIT_OPERATION_TYPE.UPDATE);
+
+        Assert.assertEquals(1, ruleAuditPoints.size());
+        PraeceptaRuleAuditPoint praeceptaRuleAuditPoint = ruleAuditPoints.get(0);
+
+        Assert.assertEquals(1, praeceptaRuleAuditPoint.getRuleAuditInfo().size());
+        List<PraeceptaRuleAttributeAuditPoint> ruleAttributeAuditPoints = praeceptaRuleAuditPoint.getRuleAuditInfo().get(AUDIT_POINT_TYPE.CONDITION);
+        Assert.assertEquals(1, ruleAttributeAuditPoints.size());
+
+        PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(0);
+
+        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+
+        Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
+
+        PraeceptaAuditElement praeceptaAuditElement = praeceptaRuleAttributeAuditPoint.getAuditElements().get(0);
+
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, praeceptaAuditElement.getElementType());
+        Assert.assertEquals("AND",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("OR",praeceptaAuditElement.getValueHolder().getToValue());
+
+
+    }
+
+
+    @Test
+    public void testMultiNestedCondition2(){
+
+
+        String existingCondition = "{\"ruleGroupName\":\"Test\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":30,\"parameters\":{}},\"nextConditionJoinOperator\":\"OR\",\"nextMultiCondition\":{\"condition\":{\"subjectName\":\"sal1\",\"valueToCompare\":25000,\"parameters\":{}}}},\"nextConditionJoinOperator\":\"AND\",\"nextMultiNestedCondition\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age1\",\"valueToCompare\":25,\"parameters\":{}}}}},\"orderNumber\":0,\"ruleName\":\"Rule1\"}],\"actionToPerform\":[],\"actionToPerformOnFailure\":[],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"multiNestedCondition\"}\n";
+        String newCondition = "{\"ruleGroupName\":\"Test\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"parameters\":{}},\"nextConditionJoinOperator\":\"OR\",\"nextMultiCondition\":{\"condition\":{\"subjectName\":\"sal1\",\"valueToCompare\":25000,\"parameters\":{}}}},\"nextConditionJoinOperator\":\"OR\",\"nextMultiNestedCondition\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age1\",\"valueToCompare\":25,\"parameters\":{}}}}},\"orderNumber\":0,\"ruleName\":\"Rule1\"}],\"actionToPerform\":[],\"actionToPerformOnFailure\":[],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"multiNestedCondition\"}\n";
+        PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(GsonHelper.toEntity(existingCondition, PraeceptaRuleGroup.class), GsonHelper.toEntity(newCondition, PraeceptaRuleGroup.class));
+
+        Assert.assertEquals(1, praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().size());
+
+        List<PraeceptaRuleAuditPoint> ruleAuditPoints = praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().get(AUDIT_OPERATION_TYPE.UPDATE);
+
+        Assert.assertEquals(1, ruleAuditPoints.size());
+        PraeceptaRuleAuditPoint praeceptaRuleAuditPoint = ruleAuditPoints.get(0);
+
+        Assert.assertEquals(1, praeceptaRuleAuditPoint.getRuleAuditInfo().size());
+        List<PraeceptaRuleAttributeAuditPoint> ruleAttributeAuditPoints = praeceptaRuleAuditPoint.getRuleAuditInfo().get(AUDIT_POINT_TYPE.CONDITION);
+        Assert.assertEquals(2, ruleAttributeAuditPoints.size());
+
+        PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(0);
+
+        Assert.assertEquals("age", praeceptaRuleAttributeAuditPoint.getAttributeName());
+
+        Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
+
+        PraeceptaAuditElement praeceptaAuditElement = praeceptaRuleAttributeAuditPoint.getAuditElements().get(0);
+
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, praeceptaAuditElement.getElementType());
+        Assert.assertEquals("30.0",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("25.0",praeceptaAuditElement.getValueHolder().getToValue());
+
+
+        praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
+
+        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+
+        Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
+
+        praeceptaAuditElement = praeceptaRuleAttributeAuditPoint.getAuditElements().get(0);
+
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, praeceptaAuditElement.getElementType());
+        Assert.assertEquals("AND",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("OR",praeceptaAuditElement.getValueHolder().getToValue());
+
+
+    }
+
+    @Test
+    public void testMultiNestedCondition3(){
+
+
+        String existingCondition = "{\"ruleGroupName\":\"Test\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":30,\"parameters\":{}},\"nextConditionJoinOperator\":\"OR\",\"nextMultiCondition\":{\"condition\":{\"subjectName\":\"sal1\",\"valueToCompare\":25000,\"parameters\":{}}}},\"nextConditionJoinOperator\":\"AND\",\"nextMultiNestedCondition\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age1\",\"valueToCompare\":25,\"parameters\":{}}}}},\"orderNumber\":0,\"ruleName\":\"Rule1\"}],\"actionToPerform\":[],\"actionToPerformOnFailure\":[],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"multiNestedCondition\"}\n";
+        String newCondition = "{\"ruleGroupName\":\"Test\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"parameters\":{}},\"nextConditionJoinOperator\":\"AND\",\"nextMultiCondition\":{\"condition\":{\"subjectName\":\"sal1\",\"valueToCompare\":25000,\"parameters\":{}}}},\"nextConditionJoinOperator\":\"OR\",\"nextMultiNestedCondition\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age1\",\"valueToCompare\":25,\"parameters\":{}}}}},\"orderNumber\":0,\"ruleName\":\"Rule1\"}],\"actionToPerform\":[],\"actionToPerformOnFailure\":[],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"multiNestedCondition\"}\n";
+        PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(GsonHelper.toEntity(existingCondition, PraeceptaRuleGroup.class), GsonHelper.toEntity(newCondition, PraeceptaRuleGroup.class));
+
+        Assert.assertEquals(1, praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().size());
+
+        List<PraeceptaRuleAuditPoint> ruleAuditPoints = praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().get(AUDIT_OPERATION_TYPE.UPDATE);
+
+        Assert.assertEquals(1, ruleAuditPoints.size());
+        PraeceptaRuleAuditPoint praeceptaRuleAuditPoint = ruleAuditPoints.get(0);
+
+        Assert.assertEquals(1, praeceptaRuleAuditPoint.getRuleAuditInfo().size());
+        List<PraeceptaRuleAttributeAuditPoint> ruleAttributeAuditPoints = praeceptaRuleAuditPoint.getRuleAuditInfo().get(AUDIT_POINT_TYPE.CONDITION);
+        Assert.assertEquals(3, ruleAttributeAuditPoints.size());
+
+        PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(0);
+
+        Assert.assertEquals("age", praeceptaRuleAttributeAuditPoint.getAttributeName());
+
+        Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
+
+        PraeceptaAuditElement praeceptaAuditElement = praeceptaRuleAttributeAuditPoint.getAuditElements().get(0);
+
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, praeceptaAuditElement.getElementType());
+        Assert.assertEquals("30.0",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("25.0",praeceptaAuditElement.getValueHolder().getToValue());
+
+
+        praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
+
+        Assert.assertEquals("MultiCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+
+        Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
+
+        praeceptaAuditElement = praeceptaRuleAttributeAuditPoint.getAuditElements().get(0);
+
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, praeceptaAuditElement.getElementType());
+        Assert.assertEquals("OR",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("AND",praeceptaAuditElement.getValueHolder().getToValue());
+
+        praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(2);
+
+        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+
+        Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
+
+        praeceptaAuditElement = praeceptaRuleAttributeAuditPoint.getAuditElements().get(0);
+
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, praeceptaAuditElement.getElementType());
+        Assert.assertEquals("AND",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("OR",praeceptaAuditElement.getValueHolder().getToValue());
+
 
     }
 }
