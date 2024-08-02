@@ -27,6 +27,44 @@ import java.util.Map;
 
 public class PraeceptaRuleGroupComparisonTest {
 
+
+    @Test
+    public void testNewRuleGroupWithSimpleCondition(){
+
+        String updatedCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":23,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"false\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+
+        PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(null, GsonHelper.toEntity(updatedCondition, PraeceptaRuleGroup.class));
+
+        Assert.assertEquals(1, praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().size());
+        Map<AUDIT_OPERATION_TYPE, List<PraeceptaRuleAuditPoint>> auditPointsMap =  praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints();
+
+        Assert.assertEquals(1,  auditPointsMap.get(AUDIT_OPERATION_TYPE.ADD).size());
+        Assert.assertNull(auditPointsMap.get(AUDIT_OPERATION_TYPE.DELETE));
+        Assert.assertNull( auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE));
+        List<PraeceptaRuleAuditPoint> ruleLevelAudits = auditPointsMap.get(AUDIT_OPERATION_TYPE.ADD);
+        Assert.assertEquals(1,ruleLevelAudits.size());
+        PraeceptaRuleAuditPoint ruleAuditPoint =  ruleLevelAudits.get(0);
+        Assert.assertEquals(2, ruleAuditPoint.getRuleAuditInfo().size());
+        Map<AUDIT_POINT_TYPE, List<PraeceptaRuleAttributeAuditPoint>> ruleAuditPointMap = ruleAuditPoint.getRuleAuditInfo();
+        Assert.assertEquals(1, ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION).size());
+        List<PraeceptaRuleAttributeAuditPoint> conditionChanges = ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION);
+        Assert.assertEquals(1, conditionChanges.size());
+
+        PraeceptaRuleAttributeAuditPoint ageValidation = conditionChanges.get(0);
+        Assert.assertEquals("age", ageValidation.getAttributeName());
+        Assert.assertEquals(2, ageValidation.getAuditElements().size());
+        List<PraeceptaAuditElement> auditElementList = ageValidation.getAuditElements();
+        PraeceptaAuditElement praeceptaAuditElement = auditElementList.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,praeceptaAuditElement.getElementType());
+        Assert.assertNull(praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("23.0",praeceptaAuditElement.getValueHolder().getToValue());
+
+        praeceptaAuditElement = auditElementList.get(1);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE,praeceptaAuditElement.getElementType());
+        Assert.assertNull(praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("EQUAL_NUMBER",praeceptaAuditElement.getValueHolder().getToValue());
+    }
+
     @Test
     public void testSimpleCondition(){
 
@@ -103,6 +141,109 @@ public class PraeceptaRuleGroupComparisonTest {
     }
 
     @Test
+    public void testSimpleCondition_params_not_mofified(){
+
+        String existingCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{\"dataType\":\"String\", \"decimalFormat\":\"0.00\"}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"true\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+        String updatedCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":23,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{\"dataType\":\"String\", \"decimalFormat\":\"0.00\"}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"false\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+
+        PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(GsonHelper.toEntity(existingCondition, PraeceptaRuleGroup.class), GsonHelper.toEntity(updatedCondition, PraeceptaRuleGroup.class));
+
+        Assert.assertEquals(1, praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().size());
+        Map<AUDIT_OPERATION_TYPE, List<PraeceptaRuleAuditPoint>> auditPointsMap =  praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints();
+
+        Assert.assertNull( auditPointsMap.get(AUDIT_OPERATION_TYPE.ADD));
+        Assert.assertNull(auditPointsMap.get(AUDIT_OPERATION_TYPE.DELETE));
+        Assert.assertEquals(1, auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE).size());
+        List<PraeceptaRuleAuditPoint> ruleLevelAudits = auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE);
+        Assert.assertEquals(1,ruleLevelAudits.size());
+        PraeceptaRuleAuditPoint ruleAuditPoint =  ruleLevelAudits.get(0);
+        Assert.assertEquals(2, ruleAuditPoint.getRuleAuditInfo().size());
+        Map<AUDIT_POINT_TYPE, List<PraeceptaRuleAttributeAuditPoint>> ruleAuditPointMap = ruleAuditPoint.getRuleAuditInfo();
+        Assert.assertEquals(1, ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION).size());
+        List<PraeceptaRuleAttributeAuditPoint> conditionChanges = ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION);
+        Assert.assertEquals(1, conditionChanges.size());
+
+        PraeceptaRuleAttributeAuditPoint ageValidation = conditionChanges.get(0);
+        Assert.assertEquals("age", ageValidation.getAttributeName());
+        Assert.assertEquals(1, ageValidation.getAuditElements().size());
+        List<PraeceptaAuditElement> auditElementList = ageValidation.getAuditElements();
+        PraeceptaAuditElement praeceptaAuditElement = auditElementList.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,praeceptaAuditElement.getElementType());
+        Assert.assertEquals("25.0",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("23.0",praeceptaAuditElement.getValueHolder().getToValue());
+
+    }
+
+    @Test
+    public void testSimpleCondition_params_not_modified(){
+
+        String existingCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{\"dataType\":\"String\", \"decimalFormat\":\"0.00\"}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"true\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+        String updatedCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":23,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{\"dataType\":\"String\", \"decimalFormat\":\"0.00\"}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"false\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+
+        PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(GsonHelper.toEntity(existingCondition, PraeceptaRuleGroup.class), GsonHelper.toEntity(updatedCondition, PraeceptaRuleGroup.class));
+
+        Assert.assertEquals(1, praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().size());
+        Map<AUDIT_OPERATION_TYPE, List<PraeceptaRuleAuditPoint>> auditPointsMap =  praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints();
+
+        Assert.assertNull( auditPointsMap.get(AUDIT_OPERATION_TYPE.ADD));
+        Assert.assertNull(auditPointsMap.get(AUDIT_OPERATION_TYPE.DELETE));
+        Assert.assertEquals(1, auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE).size());
+        List<PraeceptaRuleAuditPoint> ruleLevelAudits = auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE);
+        Assert.assertEquals(1,ruleLevelAudits.size());
+        PraeceptaRuleAuditPoint ruleAuditPoint =  ruleLevelAudits.get(0);
+        Assert.assertEquals(2, ruleAuditPoint.getRuleAuditInfo().size());
+        Map<AUDIT_POINT_TYPE, List<PraeceptaRuleAttributeAuditPoint>> ruleAuditPointMap = ruleAuditPoint.getRuleAuditInfo();
+        Assert.assertEquals(1, ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION).size());
+        List<PraeceptaRuleAttributeAuditPoint> conditionChanges = ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION);
+        Assert.assertEquals(1, conditionChanges.size());
+
+        PraeceptaRuleAttributeAuditPoint ageValidation = conditionChanges.get(0);
+        Assert.assertEquals("age", ageValidation.getAttributeName());
+        Assert.assertEquals(1, ageValidation.getAuditElements().size());
+        List<PraeceptaAuditElement> auditElementList = ageValidation.getAuditElements();
+        PraeceptaAuditElement praeceptaAuditElement = auditElementList.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,praeceptaAuditElement.getElementType());
+        Assert.assertEquals("25.0",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("23.0",praeceptaAuditElement.getValueHolder().getToValue());
+
+    }
+
+
+    @Test
+    public void testSimpleCondition_params_order_change(){
+
+        String existingCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{\"decimalFormat\":\"0.00\",\"dataType\":\"String\"}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"true\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+        String updatedCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":23,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{\"dataType\":\"String\", \"decimalFormat\":\"0.00\"}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"false\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+
+        PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(GsonHelper.toEntity(existingCondition, PraeceptaRuleGroup.class), GsonHelper.toEntity(updatedCondition, PraeceptaRuleGroup.class));
+
+        Assert.assertEquals(1, praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().size());
+        Map<AUDIT_OPERATION_TYPE, List<PraeceptaRuleAuditPoint>> auditPointsMap =  praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints();
+
+        Assert.assertNull( auditPointsMap.get(AUDIT_OPERATION_TYPE.ADD));
+        Assert.assertNull(auditPointsMap.get(AUDIT_OPERATION_TYPE.DELETE));
+        Assert.assertEquals(1, auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE).size());
+        List<PraeceptaRuleAuditPoint> ruleLevelAudits = auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE);
+        Assert.assertEquals(1,ruleLevelAudits.size());
+        PraeceptaRuleAuditPoint ruleAuditPoint =  ruleLevelAudits.get(0);
+        Assert.assertEquals(2, ruleAuditPoint.getRuleAuditInfo().size());
+        Map<AUDIT_POINT_TYPE, List<PraeceptaRuleAttributeAuditPoint>> ruleAuditPointMap = ruleAuditPoint.getRuleAuditInfo();
+        Assert.assertEquals(1, ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION).size());
+        List<PraeceptaRuleAttributeAuditPoint> conditionChanges = ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION);
+        Assert.assertEquals(1, conditionChanges.size());
+
+        PraeceptaRuleAttributeAuditPoint ageValidation = conditionChanges.get(0);
+        Assert.assertEquals("age", ageValidation.getAttributeName());
+        Assert.assertEquals(1, ageValidation.getAuditElements().size());
+        List<PraeceptaAuditElement> auditElementList = ageValidation.getAuditElements();
+        PraeceptaAuditElement praeceptaAuditElement = auditElementList.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,praeceptaAuditElement.getElementType());
+        Assert.assertEquals("25.0",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("23.0",praeceptaAuditElement.getValueHolder().getToValue());
+
+    }
+
+    @Test
     public void testSimpleCondition_params_update(){
 
         String existingCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{\"dataType\":\"String\", \"decimalFormat\":\"0.00\"}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"true\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
@@ -138,8 +279,6 @@ public class PraeceptaRuleGroupComparisonTest {
         Assert.assertEquals(AUDIT_ELEMENT_TYPE.META_DATA_CHANGE,praeceptaAuditElement.getElementType());
         Assert.assertEquals("{\"dataType\":\"String\",\"decimalFormat\":\"0.00\"}",praeceptaAuditElement.getValueHolder().getFromValue());
         Assert.assertEquals("{\"dataType\":\"Number\",\"decimalFormat\":\"0.000\"}",praeceptaAuditElement.getValueHolder().getToValue());
-
-
 
     }
 
@@ -318,6 +457,135 @@ public class PraeceptaRuleGroupComparisonTest {
         actionChange = actionChanges.get(1);
     }
 
+
+    @Test
+    public void testSimpleCondition_Action_update_action_params_not_modified(){
+
+        String existingCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"true\",\"additionalParameters\":{\"FROM_DATE_FORMAT\":\"yyyy-MM-DD\"}},{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status2\",\"valueToAssign\":\"true\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+        String updatedCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":23,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"false\",\"additionalParameters\":{\"FROM_DATE_FORMAT\":\"yyyy-MM-DD\"}}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+
+        PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(GsonHelper.toEntity(existingCondition, PraeceptaRuleGroup.class), GsonHelper.toEntity(updatedCondition, PraeceptaRuleGroup.class));
+
+        Assert.assertEquals(1, praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().size());
+        Map<AUDIT_OPERATION_TYPE, List<PraeceptaRuleAuditPoint>> auditPointsMap =  praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints();
+
+        Assert.assertNull( auditPointsMap.get(AUDIT_OPERATION_TYPE.ADD));
+        Assert.assertNull(auditPointsMap.get(AUDIT_OPERATION_TYPE.DELETE));
+        Assert.assertEquals(1, auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE).size());
+        List<PraeceptaRuleAuditPoint> ruleLevelAudits = auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE);
+        Assert.assertEquals(1,ruleLevelAudits.size());
+        PraeceptaRuleAuditPoint ruleAuditPoint =  ruleLevelAudits.get(0);
+        Assert.assertEquals(2, ruleAuditPoint.getRuleAuditInfo().size());
+        Map<AUDIT_POINT_TYPE, List<PraeceptaRuleAttributeAuditPoint>> ruleAuditPointMap = ruleAuditPoint.getRuleAuditInfo();
+        Assert.assertEquals(1, ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION).size());
+        List<PraeceptaRuleAttributeAuditPoint> conditionChanges = ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION);
+        Assert.assertEquals(1, conditionChanges.size());
+
+        PraeceptaRuleAttributeAuditPoint ageValidation = conditionChanges.get(0);
+        Assert.assertEquals("age", ageValidation.getAttributeName());
+        Assert.assertEquals(1, ageValidation.getAuditElements().size());
+        List<PraeceptaAuditElement> auditElementList = ageValidation.getAuditElements();
+        PraeceptaAuditElement praeceptaAuditElement = auditElementList.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,praeceptaAuditElement.getElementType());
+        Assert.assertEquals("25.0",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("23.0",praeceptaAuditElement.getValueHolder().getToValue());
+
+
+        Assert.assertEquals(2, ruleAuditPointMap.get(AUDIT_POINT_TYPE.ACTION).size());
+        List<PraeceptaRuleAttributeAuditPoint> actionChanges = ruleAuditPointMap.get(AUDIT_POINT_TYPE.ACTION);
+        PraeceptaRuleAttributeAuditPoint actionChange = actionChanges.get(0);
+        Assert.assertEquals("status", actionChange.getAttributeName());
+        List<PraeceptaAuditElement> auditElements = actionChange.getAuditElements();
+        Assert.assertEquals(1, auditElements.size());
+        PraeceptaAuditElement auditElement = auditElements.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,auditElement.getElementType());
+        Assert.assertEquals("false",auditElement.getValueHolder().getToValue());
+        Assert.assertEquals("true",auditElement.getValueHolder().getFromValue());
+
+
+        actionChange = actionChanges.get(1);
+        Assert.assertEquals("status2", actionChange.getAttributeName());
+        auditElements = actionChange.getAuditElements();
+        Assert.assertEquals(2, auditElements.size());
+
+        auditElement = auditElements.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE,auditElement.getElementType());
+        Assert.assertNull(auditElement.getValueHolder().getToValue());
+        Assert.assertEquals("ADD_TO_PAYLOAD",auditElement.getValueHolder().getFromValue());
+
+        auditElement = auditElements.get(1);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,auditElement.getElementType());
+        Assert.assertNull(auditElement.getValueHolder().getToValue());
+        Assert.assertEquals("true",auditElement.getValueHolder().getFromValue());
+
+
+        actionChange = actionChanges.get(1);
+    }
+
+
+    @Test
+    public void testSimpleCondition_Action_update_action_params_order_change(){
+
+        String existingCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":25,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"true\",\"additionalParameters\":{\"FROM_DATE_FORMAT\":\"yyyy-MM-DD\",\"TO_TIME_ZONE\":\"UST\"}},{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status2\",\"valueToAssign\":\"true\"}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+        String updatedCondition = "{\"ruleGroupName\":\"LoanEligibilityCheck\",\"active\":false,\"praeceptaCriterias\":[{\"predicates\":{\"multiCondition\":{\"condition\":{\"subjectName\":\"age\",\"valueToCompare\":23,\"conditionOperator\":\"EQUAL_NUMBER\",\"parameters\":{}}}},\"actionToPerform\":[{\"actionStrategy\":\"ADD_TO_PAYLOAD\",\"actionAttributeName\":\"status\",\"valueToAssign\":\"false\",\"additionalParameters\":{\"TO_TIME_ZONE\":\"UST\",\"FROM_DATE_FORMAT\":\"yyyy-MM-DD\"}}],\"orderNumber\":0,\"ruleName\":\"Age_Validation\"}],\"ruleSpaceKey\":{\"spaceName\":\"ICICI\",\"clientId\":\"001\",\"appName\":\"Loan\",\"version\":\"V1\"},\"ruleGroupType\":\"simpleCondition\"}\n";
+
+        PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(GsonHelper.toEntity(existingCondition, PraeceptaRuleGroup.class), GsonHelper.toEntity(updatedCondition, PraeceptaRuleGroup.class));
+
+        Assert.assertEquals(1, praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints().size());
+        Map<AUDIT_OPERATION_TYPE, List<PraeceptaRuleAuditPoint>> auditPointsMap =  praeceptaRuleGroupAuditPoint.getRuleOperationAuditPoints();
+
+        Assert.assertNull( auditPointsMap.get(AUDIT_OPERATION_TYPE.ADD));
+        Assert.assertNull(auditPointsMap.get(AUDIT_OPERATION_TYPE.DELETE));
+        Assert.assertEquals(1, auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE).size());
+        List<PraeceptaRuleAuditPoint> ruleLevelAudits = auditPointsMap.get(AUDIT_OPERATION_TYPE.UPDATE);
+        Assert.assertEquals(1,ruleLevelAudits.size());
+        PraeceptaRuleAuditPoint ruleAuditPoint =  ruleLevelAudits.get(0);
+        Assert.assertEquals(2, ruleAuditPoint.getRuleAuditInfo().size());
+        Map<AUDIT_POINT_TYPE, List<PraeceptaRuleAttributeAuditPoint>> ruleAuditPointMap = ruleAuditPoint.getRuleAuditInfo();
+        Assert.assertEquals(1, ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION).size());
+        List<PraeceptaRuleAttributeAuditPoint> conditionChanges = ruleAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION);
+        Assert.assertEquals(1, conditionChanges.size());
+
+        PraeceptaRuleAttributeAuditPoint ageValidation = conditionChanges.get(0);
+        Assert.assertEquals("age", ageValidation.getAttributeName());
+        Assert.assertEquals(1, ageValidation.getAuditElements().size());
+        List<PraeceptaAuditElement> auditElementList = ageValidation.getAuditElements();
+        PraeceptaAuditElement praeceptaAuditElement = auditElementList.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,praeceptaAuditElement.getElementType());
+        Assert.assertEquals("25.0",praeceptaAuditElement.getValueHolder().getFromValue());
+        Assert.assertEquals("23.0",praeceptaAuditElement.getValueHolder().getToValue());
+
+
+        Assert.assertEquals(2, ruleAuditPointMap.get(AUDIT_POINT_TYPE.ACTION).size());
+        List<PraeceptaRuleAttributeAuditPoint> actionChanges = ruleAuditPointMap.get(AUDIT_POINT_TYPE.ACTION);
+        PraeceptaRuleAttributeAuditPoint actionChange = actionChanges.get(0);
+        Assert.assertEquals("status", actionChange.getAttributeName());
+        List<PraeceptaAuditElement> auditElements = actionChange.getAuditElements();
+        Assert.assertEquals(1, auditElements.size());
+        PraeceptaAuditElement auditElement = auditElements.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,auditElement.getElementType());
+        Assert.assertEquals("false",auditElement.getValueHolder().getToValue());
+        Assert.assertEquals("true",auditElement.getValueHolder().getFromValue());
+
+
+        actionChange = actionChanges.get(1);
+        Assert.assertEquals("status2", actionChange.getAttributeName());
+        auditElements = actionChange.getAuditElements();
+        Assert.assertEquals(2, auditElements.size());
+
+        auditElement = auditElements.get(0);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE,auditElement.getElementType());
+        Assert.assertNull(auditElement.getValueHolder().getToValue());
+        Assert.assertEquals("ADD_TO_PAYLOAD",auditElement.getValueHolder().getFromValue());
+
+        auditElement = auditElements.get(1);
+        Assert.assertEquals(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,auditElement.getElementType());
+        Assert.assertNull(auditElement.getValueHolder().getToValue());
+        Assert.assertEquals("true",auditElement.getValueHolder().getFromValue());
+
+
+        actionChange = actionChanges.get(1);
+    }
 
     @Test
     public void testMultipleSimpleCondition(){

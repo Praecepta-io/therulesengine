@@ -1,29 +1,10 @@
 package io.praecepta.rest.api.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import io.praecepta.core.helper.GsonHelper;
 import io.praecepta.dao.elastic.model.PraeceptaRuleGroupAuditPoint;
-import io.praecepta.rest.api.util.PraeceptaRuleGroupComparison;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.praecepta.rest.api.service.IPraeceptaRulesGroupService;
-import io.praecepta.rules.dto.ConditionInfo;
-import io.praecepta.rules.dto.MultiConditionCriteriaInfo;
-import io.praecepta.rules.dto.MultiConditionGroupInfo;
-import io.praecepta.rules.dto.MultiConditionInfo;
-import io.praecepta.rules.dto.MultiNestedConditionCriteriaInfo;
-import io.praecepta.rules.dto.MultiNestedConditionGroupInfo;
-import io.praecepta.rules.dto.MultiNestedConditionInfo;
-import io.praecepta.rules.dto.RuleActionInfo;
-import io.praecepta.rules.dto.RuleSpaceInfo;
-import io.praecepta.rules.dto.SimpleConditionCriteriaInfo;
-import io.praecepta.rules.dto.SimpleConditionGroupInfo;
-import io.praecepta.rules.dto.SimpleConditionInfo;
+import io.praecepta.rest.api.util.PraeceptaRuleGroupComparison;
+import io.praecepta.rules.dto.*;
 import io.praecepta.rules.hub.IPraeceptaPivotalRulesHubManager;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleGroup;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpace;
@@ -33,6 +14,23 @@ import io.praecepta.rules.model.filter.PraeceptaMultiCondition;
 import io.praecepta.rules.model.filter.PraeceptaMultiNestedCondition;
 import io.praecepta.rules.model.filter.PraeceptaSimpleCondition;
 import io.praecepta.rules.model.projection.PraeceptaActionDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -48,6 +46,11 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 	public static final String MULTI = "multi";
 	@Autowired
 	IPraeceptaPivotalRulesHubManager pivotalRuleHubManager;
+
+	@Value("${praecepta.auditservice.url}")
+	private String url;
+
+	ExecutorService executor = Executors.newFixedThreadPool(1);
 
 
 	/**
@@ -223,12 +226,44 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 
 		pivotalRuleHubManager.createRuleGrp(praeceptaRuleGroup);
 		if(existingRuleGroup != null) {
-			PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(existingRuleGroup, praeceptaRuleGroup);
+			executor.submit(() -> auditRuleGroupUpdate(existingRuleGroup, praeceptaRuleGroup));
 		}
 		return "Rule Group added/updated successfully";
 
 	}
 
+	private void auditRuleGroupUpdate(PraeceptaRuleGroup existingRuleGroup , PraeceptaRuleGroup updatedRuleGroup){
+		PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(existingRuleGroup, updatedRuleGroup);
+
+		HttpEntity<String> requestEntity = new HttpEntity<String>(GsonHelper.toJson(praeceptaRuleGroupAuditPoint), new HttpHeaders());
+
+
+		ResponseEntity<String> strResponse = null;
+
+		try {
+
+			strResponse = new RestTemplate().exchange(url+"/"+existingRuleGroup.getRuleSpaceKey().getSpaceName()+"/"+existingRuleGroup.getRuleSpaceKey().getClientId()+"/"+existingRuleGroup.getRuleSpaceKey().getAppName()+"/"+existingRuleGroup.getRuleSpaceKey().getVersion()+"/"+existingRuleGroup.getRuleGroupName(), HttpMethod.PUT, requestEntity, String.class,
+					 new HashMap<>());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+/*		PraeceptaWebServiceClientConfig clientConfig = new PraeceptaWebServiceClientConfig();
+		clientConfig.setEndpointUrl(url);
+
+		PraeceptaRestClientBuilder restClientBuilder = new PraeceptaRestClientBuilder<>(clientConfig);
+
+		PraeceptaWsRestClient wsRestClient =  new PraeceptaWsRestClient(restClientBuilder);
+
+		PraeceptaWsRequestResponseHolder requestResponseHolderObj = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.POST,
+				GsonHelper.toJson(praeceptaRuleGroupAuditPoint),
+				null, null, null, null);
+
+		wsRestClient.triggerCall(requestResponseHolderObj);*/
+
+	}
 		/**
          * Method to add or update RuleGroup
          */
@@ -263,11 +298,16 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 		praeceptaRuleGroup.setRuleGroupName(ruleGroup.getRuleGroupName());
 		praeceptaRuleGroup.setActive(true);
 
-		if(pivotalRuleHubManager.fetchRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName()) != null){
+		PraeceptaRuleGroup existingRuleGroup = pivotalRuleHubManager.fetchRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName());
+		if(existingRuleGroup != null){
 			pivotalRuleHubManager.deleteRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName());
 		}
 
-			pivotalRuleHubManager.createRuleGrp(praeceptaRuleGroup);
+		pivotalRuleHubManager.createRuleGrp(praeceptaRuleGroup);
+		if(existingRuleGroup != null) {
+			executor.submit(() -> auditRuleGroupUpdate(existingRuleGroup, praeceptaRuleGroup));
+		}
+
 		return "Rule Group added/updated successfully";
 	}
 
@@ -316,11 +356,16 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 		praeceptaRuleGroup.setRuleGroupName(ruleGroup.getRuleGroupName());
 		praeceptaRuleGroup.setActive(true);
 
-		if(pivotalRuleHubManager.fetchRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName()) != null){
+		PraeceptaRuleGroup existingRuleGroup = pivotalRuleHubManager.fetchRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName());
+
+		if(existingRuleGroup != null){
 			pivotalRuleHubManager.deleteRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName());
 		}
 
 		pivotalRuleHubManager.createRuleGrp(praeceptaRuleGroup);
+
+		executor.submit(() -> auditRuleGroupUpdate(existingRuleGroup, praeceptaRuleGroup));
+
 		return "Rule Group added/updated successfully";
 	}
 

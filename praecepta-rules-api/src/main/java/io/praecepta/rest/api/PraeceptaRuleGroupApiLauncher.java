@@ -23,7 +23,7 @@ public class PraeceptaRuleGroupApiLauncher
     public static void main( String[] args ) throws JsonProcessingException
     {
     	
-    	System.setProperty("contextPath", "io.praecepta.rest.api.config.RulesConfiguration");
+    	System.setProperty("contextPath", "io.praecepta.rest.api.config.PraeceptaRulesConfiguration");
 
     	PraeceptaRuleBuilder.buildWithEnvParmPropsFile().buildAll();
 
