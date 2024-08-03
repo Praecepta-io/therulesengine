@@ -18,6 +18,7 @@ import io.praecepta.rules.model.filter.PraeceptaSimpleCondition;
 import io.praecepta.rules.model.projection.PraeceptaActionDetails;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -95,26 +96,37 @@ public class PraeceptaRuleGroupComparison {
         if(actionToPerform != null) {
             actionToPerform.forEach(action -> updatedActionMap.put(action.getActionAttributeName(), action));
         }
+        Map<String, PraeceptaActionDetails> existingActionMap = new HashMap<>();
+        if(existingActionToPerform != null) {
+            existingActionToPerform.forEach(action -> existingActionMap.put(action.getActionAttributeName(), action));
+        }
 
         if(existingActionToPerform != null && actionToPerform != null){
             existingActionToPerform.forEach(action->{
                 PraeceptaRuleAttributeAuditPoint actionAttributeAudit = new PraeceptaRuleAttributeAuditPoint(action.getActionAttributeName());
                 if(updatedActionMap.get(action.getActionAttributeName()) == null){
                     List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-                    populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy()!= null?action.getActionStrategy().toString():null, null), auditElements);
-                    populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getValueToAssign()!=null? action.getValueToAssign() :null, null), auditElements);
+                    if(action.getActionStrategy() != null)
+                        populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy().toString(), null), auditElements);
+                    if(action.getValueToAssign() != null)
+                        populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getValueToAssign().toString(), null), auditElements);
+                    if(action.getSourceValueAttributeName() != null )
+                        populateAuditElement(AUDIT_ELEMENT_TYPE.SOURCE_ATTRIBUTE_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getSourceValueAttributeName(), null), auditElements);
 
-                    compareActionMetaData(action.getAdditionalParameters(), null, auditElements);
+                   compareActionMetaData(action.getAdditionalParameters(), null, auditElements);
                     actionAttributeAudit.setAuditElements(auditElements);
                 }else{
                     List<PraeceptaAuditElement> auditElements = new ArrayList<>();
                     PraeceptaActionDetails newActionDetails = updatedActionMap.get(action.getActionAttributeName());
-
-                    populateAudit(action.getActionStrategy(), newActionDetails.getActionStrategy(), AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, auditElements);
-
-                    populateAudit(action.getValueToAssign(), newActionDetails.getValueToAssign(), AUDIT_ELEMENT_TYPE.VALUE_CHANGE, auditElements);
-
-                    populateAudit(action.getSourceValueAttributeName(), newActionDetails.getSourceValueAttributeName(), AUDIT_ELEMENT_TYPE.SOURCE_ATTRIBUTE_CHANGE, auditElements);
+                    if(action.getActionStrategy() != null) {
+                        populateAudit(action.getActionStrategy(), newActionDetails.getActionStrategy(), AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, auditElements);
+                    }
+                    if(action.getValueToAssign() != null) {
+                        populateAudit(action.getValueToAssign(), newActionDetails.getValueToAssign(), AUDIT_ELEMENT_TYPE.VALUE_CHANGE, auditElements);
+                    }
+                    if(action.getSourceValueAttributeName() != null) {
+                        populateAudit(action.getSourceValueAttributeName(), newActionDetails.getSourceValueAttributeName(), AUDIT_ELEMENT_TYPE.SOURCE_ATTRIBUTE_CHANGE, auditElements);
+                    }
 
                     compareActionMetaData(action.getAdditionalParameters(), newActionDetails.getAdditionalParameters(), auditElements);
 
@@ -123,12 +135,36 @@ public class PraeceptaRuleGroupComparison {
                 if(actionAttributeAudit.getAuditElements().size() > 0)
                     attributeAuditPoints.add(actionAttributeAudit);
             });
+
+
+            actionToPerform.forEach(action->{
+                PraeceptaRuleAttributeAuditPoint actionAttributeAudit = new PraeceptaRuleAttributeAuditPoint(action.getActionAttributeName());
+                if(existingActionMap.get(action.getActionAttributeName()) == null){
+                    List<PraeceptaAuditElement> auditElements = new ArrayList<>();
+                    if(action.getActionStrategy() != null)
+                        populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(null, action.getActionStrategy().toString()), auditElements);
+                    if(action.getValueToAssign() != null)
+                        populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(null, action.getValueToAssign()), auditElements);
+                    if(action.getSourceValueAttributeName() != null)
+                        populateAuditElement(AUDIT_ELEMENT_TYPE.SOURCE_ATTRIBUTE_CHANGE, new PraeceptaAuditElement.ValueHolder(null, action.getSourceValueAttributeName()), auditElements);
+
+                    compareActionMetaData(action.getAdditionalParameters(), null, auditElements);
+                    actionAttributeAudit.setAuditElements(auditElements);
+                }
+                if(!CollectionUtils.isEmpty(actionAttributeAudit.getAuditElements()))
+                    attributeAuditPoints.add(actionAttributeAudit);
+            });
+
         }else if(existingActionToPerform != null){
             existingActionToPerform.forEach(action->{
                 PraeceptaRuleAttributeAuditPoint actionAttributeAudit = new PraeceptaRuleAttributeAuditPoint(action.getActionAttributeName());
                 List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-                populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy() != null?action.getActionStrategy().toString():null, null), auditElements);
-                populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getValueToAssign(), null), auditElements);
+                if(action.getActionStrategy() != null)
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getActionStrategy().toString(), null), auditElements);
+                if(action.getValueToAssign() != null)
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getValueToAssign().toString(), null), auditElements);
+                if(action.getSourceValueAttributeName() != null)
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.SOURCE_ATTRIBUTE_CHANGE, new PraeceptaAuditElement.ValueHolder(action.getSourceValueAttributeName(), null), auditElements);
 
                 compareActionMetaData(action.getAdditionalParameters(), null, auditElements);
                 actionAttributeAudit.setAuditElements(auditElements);
@@ -139,8 +175,12 @@ public class PraeceptaRuleGroupComparison {
             actionToPerform.forEach(action->{
                 PraeceptaRuleAttributeAuditPoint actionAttributeAudit = new PraeceptaRuleAttributeAuditPoint(action.getActionAttributeName());
                 List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-                populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(null, action.getActionStrategy() != null?action.getActionStrategy().toString():null), auditElements);
-                populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(null, action.getValueToAssign()), auditElements);
+                if(action.getActionStrategy() != null)
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.ACTION_STRATEGY_CHANGE, new PraeceptaAuditElement.ValueHolder(null, action.getActionStrategy().toString()), auditElements);
+                if(action.getValueToAssign() != null)
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(null, action.getValueToAssign().toString()), auditElements);
+                if(action.getSourceValueAttributeName() != null)
+                    populateAuditElement(AUDIT_ELEMENT_TYPE.SOURCE_ATTRIBUTE_CHANGE, new PraeceptaAuditElement.ValueHolder(null,action.getSourceValueAttributeName()), auditElements);
 
                 compareActionMetaData(null, action.getAdditionalParameters(), auditElements);
                 actionAttributeAudit.setAuditElements(auditElements);
@@ -223,6 +263,7 @@ public class PraeceptaRuleGroupComparison {
         if(simpleCondition != null && existingSimpleCondition != null) {
             PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint(simpleCondition.getSubjectName());
             List<PraeceptaAuditElement> auditElements = new ArrayList<>();
+
             if (existingSimpleCondition.getValueToCompare() != null && !existingSimpleCondition.getValueToCompare().equals(simpleCondition.getValueToCompare())) {
                 populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getValueToCompare() != null? existingSimpleCondition.getValueToCompare().toString():null, simpleCondition.getValueToCompare() != null? simpleCondition.getValueToCompare().toString():null), auditElements);
             }
@@ -250,14 +291,21 @@ public class PraeceptaRuleGroupComparison {
         }else if(existingSimpleCondition != null){
             PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint(existingSimpleCondition.getSubjectName());
             List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-            populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getValueToCompare() != null? existingSimpleCondition.getValueToCompare().toString():null, null), auditElements);
+
+            if(existingSimpleCondition.getValueToCompare() != null)
+                populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getValueToCompare() != null? existingSimpleCondition.getValueToCompare().toString():null, null), auditElements);
+
             if(existingSimpleCondition.getConditionOperator() != null)
                 populateAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getConditionOperator() != null? existingSimpleCondition.getConditionOperator().toString():null, null), auditElements);
-
+            if (existingSimpleCondition.getSubjectValue() != null && !existingSimpleCondition.getSubjectValue().equals(simpleCondition.getSubjectValue())) {
+                populateAuditElement(AUDIT_ELEMENT_TYPE.SOURCE_ATTRIBUTE_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getSubjectValue() != null? existingSimpleCondition.getValueToCompare().toString():null, simpleCondition.getSubjectValue() != null? simpleCondition.getSubjectValue().toString():null), auditElements);
+            }
             compareMetaData(existingSimpleCondition.getParameters(), null, auditElements);
 
             if (existingSimpleCondition.getNextConditionJoinOperator() != null ) {
                 populateAuditElement(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(existingSimpleCondition.getNextConditionJoinOperator() != null? existingSimpleCondition.getNextConditionJoinOperator().toString():null, null), auditElements);
+            }else if(existingSimpleCondition.getNextConditionJoinOperator() != null ) {
+                populateAuditElement(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder( null, simpleCondition.getNextConditionJoinOperator().toString()), auditElements);
             }
 
             praeceptaRuleAttributeAuditPoint.setAuditElements(auditElements);
@@ -265,18 +313,27 @@ public class PraeceptaRuleGroupComparison {
         }else if(simpleCondition != null){
             PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint(simpleCondition.getSubjectName());
             List<PraeceptaAuditElement> auditElements = new ArrayList<>();
-            populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(null, simpleCondition.getValueToCompare() != null? simpleCondition.getValueToCompare().toString():null), auditElements);
+
+            if(simpleCondition.getValueToCompare() != null)
+                populateAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new PraeceptaAuditElement.ValueHolder(null, simpleCondition.getValueToCompare() != null? simpleCondition.getValueToCompare().toString():null), auditElements);
             if(simpleCondition.getConditionOperator() != null)
                 populateAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(null, simpleCondition.getConditionOperator() != null? simpleCondition.getConditionOperator().toString():null), auditElements);
 
+            if (simpleCondition.getSubjectValue() != null) {
+                populateAuditElement(AUDIT_ELEMENT_TYPE.SOURCE_ATTRIBUTE_CHANGE, new PraeceptaAuditElement.ValueHolder(null, simpleCondition.getSubjectValue().toString()), auditElements);
+            }
+
             if (simpleCondition.getNextConditionJoinOperator() != null) {
                 populateAuditElement(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder(null, simpleCondition.getNextConditionJoinOperator()!= null?simpleCondition.getNextConditionJoinOperator().toString():null), auditElements);
+            }else if(simpleCondition.getNextConditionJoinOperator() != null ) {
+                populateAuditElement(AUDIT_ELEMENT_TYPE.JOIN_OPERATOR_CHANGE, new PraeceptaAuditElement.ValueHolder( null, simpleCondition.getNextConditionJoinOperator().toString()), auditElements);
             }
 
             compareMetaData(null, simpleCondition.getParameters(), auditElements);
 
 
             praeceptaRuleAttributeAuditPoint.setAuditElements(auditElements);
+
             return praeceptaRuleAttributeAuditPoint;
         }
 

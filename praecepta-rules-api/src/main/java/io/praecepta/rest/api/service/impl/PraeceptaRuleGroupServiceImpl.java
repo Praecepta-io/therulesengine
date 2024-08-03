@@ -225,9 +225,8 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 		}
 
 		pivotalRuleHubManager.createRuleGrp(praeceptaRuleGroup);
-		if(existingRuleGroup != null) {
-			executor.submit(() -> auditRuleGroupUpdate(existingRuleGroup, praeceptaRuleGroup));
-		}
+		executor.submit(() -> auditRuleGroupUpdate(existingRuleGroup, praeceptaRuleGroup));
+
 		return "Rule Group added/updated successfully";
 
 	}
@@ -242,7 +241,7 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 
 		try {
 
-			strResponse = new RestTemplate().exchange(url+"/"+existingRuleGroup.getRuleSpaceKey().getSpaceName()+"/"+existingRuleGroup.getRuleSpaceKey().getClientId()+"/"+existingRuleGroup.getRuleSpaceKey().getAppName()+"/"+existingRuleGroup.getRuleSpaceKey().getVersion()+"/"+existingRuleGroup.getRuleGroupName(), HttpMethod.PUT, requestEntity, String.class,
+			strResponse = new RestTemplate().exchange(url+"/"+updatedRuleGroup.getRuleSpaceKey().getSpaceName()+"/"+updatedRuleGroup.getRuleSpaceKey().getClientId()+"/"+updatedRuleGroup.getRuleSpaceKey().getAppName()+"/"+updatedRuleGroup.getRuleSpaceKey().getVersion()+"/"+updatedRuleGroup.getRuleGroupName(), HttpMethod.PUT, requestEntity, String.class,
 					 new HashMap<>());
 
 		} catch (Exception e) {
@@ -304,9 +303,7 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 		}
 
 		pivotalRuleHubManager.createRuleGrp(praeceptaRuleGroup);
-		if(existingRuleGroup != null) {
-			executor.submit(() -> auditRuleGroupUpdate(existingRuleGroup, praeceptaRuleGroup));
-		}
+		executor.submit(() -> auditRuleGroupUpdate(existingRuleGroup, praeceptaRuleGroup));
 
 		return "Rule Group added/updated successfully";
 	}
