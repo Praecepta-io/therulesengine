@@ -94,7 +94,6 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.2</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -112,7 +111,11 @@
 			<groupId>io.praecepta.dto.elasticsearch</groupId>
 			<artifactId>praecepta-dto-elasticsearch</artifactId>
 			<version>1.0.3-SNAPSHOT</version>
-			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.praecepta.rest.client</groupId>
+			<artifactId>praecepta-rest-client</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 

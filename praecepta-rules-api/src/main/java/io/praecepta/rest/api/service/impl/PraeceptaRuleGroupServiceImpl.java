@@ -4,6 +4,10 @@ import io.praecepta.core.helper.GsonHelper;
 import io.praecepta.dao.elastic.model.PraeceptaRuleGroupAuditPoint;
 import io.praecepta.rest.api.service.IPraeceptaRulesGroupService;
 import io.praecepta.rest.api.util.PraeceptaRuleGroupComparison;
+import io.praecepta.rest.client.PraeceptaWsRestClient;
+import io.praecepta.rest.client.builder.PraeceptaRestClientBuilder;
+import io.praecepta.rest.client.config.PraeceptaWebServiceClientConfig;
+import io.praecepta.rest.client.dto.PraeceptaWsRequestResponseHolder;
 import io.praecepta.rules.dto.*;
 import io.praecepta.rules.hub.IPraeceptaPivotalRulesHubManager;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleGroup;
@@ -19,16 +23,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -44,6 +40,17 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 	public static final String MULTI_NESTED = "multiNested";
 	public static final String SIMPLE = "simple";
 	public static final String MULTI = "multi";
+
+	String PATH_PARAM_SPACE_NAME = "spacename";
+
+	String PATH_PARAM_CLIENT_ID = "clientid";
+
+	String PATH_PARAM_APP_NAME = "appname";
+
+	String PATH_PARAM_VERSION = "version";
+
+	String PATH_PARAM_GROUP_NAME = "groupname";
+
 	@Autowired
 	IPraeceptaPivotalRulesHubManager pivotalRuleHubManager;
 
@@ -232,36 +239,38 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 	}
 
 	private void auditRuleGroupUpdate(PraeceptaRuleGroup existingRuleGroup , PraeceptaRuleGroup updatedRuleGroup){
-		PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(existingRuleGroup, updatedRuleGroup);
-
-		HttpEntity<String> requestEntity = new HttpEntity<String>(GsonHelper.toJson(praeceptaRuleGroupAuditPoint), new HttpHeaders());
-
-
-		ResponseEntity<String> strResponse = null;
-
 		try {
+			PraeceptaRuleGroupAuditPoint praeceptaRuleGroupAuditPoint = PraeceptaRuleGroupComparison.compare(existingRuleGroup, updatedRuleGroup);
 
-			strResponse = new RestTemplate().exchange(url+"/"+updatedRuleGroup.getRuleSpaceKey().getSpaceName()+"/"+updatedRuleGroup.getRuleSpaceKey().getClientId()+"/"+updatedRuleGroup.getRuleSpaceKey().getAppName()+"/"+updatedRuleGroup.getRuleSpaceKey().getVersion()+"/"+updatedRuleGroup.getRuleGroupName(), HttpMethod.PUT, requestEntity, String.class,
-					 new HashMap<>());
 
-		} catch (Exception e) {
+			Map<String, String> pathParams = new HashMap<>();
+			pathParams.put(PATH_PARAM_SPACE_NAME, updatedRuleGroup.getRuleSpaceKey().getSpaceName());
+			pathParams.put(PATH_PARAM_CLIENT_ID, updatedRuleGroup.getRuleSpaceKey().getClientId());
+			pathParams.put(PATH_PARAM_APP_NAME, updatedRuleGroup.getRuleSpaceKey().getAppName());
+			pathParams.put(PATH_PARAM_VERSION, updatedRuleGroup.getRuleSpaceKey().getVersion());
+			pathParams.put(PATH_PARAM_GROUP_NAME, updatedRuleGroup.getRuleGroupName());
+
+			PraeceptaWsRequestResponseHolder wsReqResHolder = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.PUT,
+					GsonHelper.toJson(praeceptaRuleGroupAuditPoint), new HashMap<>(), pathParams, new HashMap<>(), new HashMap<>());
+
+			PraeceptaWebServiceClientConfig config = new PraeceptaWebServiceClientConfig();
+
+			config.setEndpointUrl(url);
+			config.setConnectionTimeOut(10000L);
+			config.setReadTimeOut(7500L);
+
+			System.out.println("before call");
+			PraeceptaRestClientBuilder<PraeceptaWebServiceClientConfig> simpleRestBuilder = new PraeceptaRestClientBuilder<>(config);
+
+			PraeceptaWsRestClient<PraeceptaRestClientBuilder<PraeceptaWebServiceClientConfig>> restClient =
+					new PraeceptaWsRestClient<>(simpleRestBuilder);
+
+			restClient.initialize();
+
+			restClient.triggerCall(wsReqResHolder);
+		}catch(Exception e){
 			e.printStackTrace();
 		}
-
-
-/*		PraeceptaWebServiceClientConfig clientConfig = new PraeceptaWebServiceClientConfig();
-		clientConfig.setEndpointUrl(url);
-
-		PraeceptaRestClientBuilder restClientBuilder = new PraeceptaRestClientBuilder<>(clientConfig);
-
-		PraeceptaWsRestClient wsRestClient =  new PraeceptaWsRestClient(restClientBuilder);
-
-		PraeceptaWsRequestResponseHolder requestResponseHolderObj = new PraeceptaWsRequestResponseHolder(PraeceptaWsRequestResponseHolder.PraeceptaWsOperationType.POST,
-				GsonHelper.toJson(praeceptaRuleGroupAuditPoint),
-				null, null, null, null);
-
-		wsRestClient.triggerCall(requestResponseHolderObj);*/
-
 	}
 		/**
          * Method to add or update RuleGroup

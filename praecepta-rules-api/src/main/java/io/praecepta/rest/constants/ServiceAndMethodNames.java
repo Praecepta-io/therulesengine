@@ -65,6 +65,8 @@ public interface ServiceAndMethodNames {
 
 	String PATH_PARAM_VERSION = ":version";
 
+	String PATH_PARAM_GROUP_NAME = ":groupname";
+
 	String GROUP_NAME = ":groupname";
 
 	String PATH_PARAM_RULEGROUPNAME = ":groupname";
