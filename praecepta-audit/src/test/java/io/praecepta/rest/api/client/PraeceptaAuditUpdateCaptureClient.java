@@ -25,9 +25,10 @@ import io.praecepta.dao.elastic.model.PraeceptaAuditElement;
 import io.praecepta.dao.elastic.model.PraeceptaRuleAttributeAuditPoint;
 import io.praecepta.dao.elastic.model.PraeceptaRuleAuditPoint;
 import io.praecepta.dao.elastic.model.PraeceptaRuleGroupAuditPoint;
+import io.praecepta.dao.elastic.model.PraeceptaRuleSpaceAuditPoint;
 import io.praecepta.dao.elastic.model.PraeceptaAuditElement.ValueHolder;
 
-public class PraeceptaAuditCaptureClient {
+public class PraeceptaAuditUpdateCaptureClient {
 
 	public static void main(String[] args) throws Exception {
 
@@ -36,10 +37,20 @@ public class PraeceptaAuditCaptureClient {
 //		HttpPost httpPost = new HttpPost("http://localhost:8080/audit/addRuleGroupAudit/ABC/Risk/Creadit/V2/Credit");
 //		HttpPut httpPost = new HttpPut("http://localhost:8080/audit/addRuleGroupAudit/ABC/Risk/Creadit/V2/CreditCheck1");
 //		HttpPut httpPost = new HttpPut("http://localhost:4567/audit/ruleGroupAudit/ABC/Risk/Creadit/V2/CreditCheck1");
-		HttpPut httpPost = new HttpPut("http://localhost:4567/audit/addRuleGroupAudit/ABC/Risk/Creadit/V2/CreditCheck1");
+		HttpPost httpPost = new HttpPost("http://localhost:4567/audit/updateRuleGroupAudit/xxxxx");
 //		HttpPost httpPost = new HttpPost("http://localhost:4567/audit/ruleGroupAudit/ABC/Risk/Creadit/V2/CreditCheck1");
 
 		PraeceptaRuleGroupAuditPoint ruleGrpAuditPoint = getRuleGrp();
+		
+		PraeceptaRuleSpaceAuditPoint ruleGroupAuditPointToRefurbish = new PraeceptaRuleSpaceAuditPoint();
+		
+		ruleGroupAuditPointToRefurbish.setSpaceName("ABC");
+		ruleGroupAuditPointToRefurbish.setClientId("Risk");
+		ruleGroupAuditPointToRefurbish.setAppName("Creadit");
+		ruleGroupAuditPointToRefurbish.setVersion("V1");
+		ruleGroupAuditPointToRefurbish.setRuleGroupName("CreditCheck1");
+		
+		ruleGroupAuditPointToRefurbish.setRuleGroupAuditPoint(ruleGrpAuditPoint);
 		
 		String json = GsonHelper.toJson(ruleGrpAuditPoint);
 		

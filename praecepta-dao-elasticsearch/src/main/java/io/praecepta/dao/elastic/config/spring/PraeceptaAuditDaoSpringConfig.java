@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 
 import io.praecepta.dao.elastic.PraeceptaAuditDao;
+import io.praecepta.dao.elastic.PraeceptaRulesExecutionAuditDao;
 import io.praecepta.dao.elastic.config.PraeceptaElasticConfiguration;
 
 @Import(PraeceptaElasticConfiguration.class)
@@ -18,5 +19,10 @@ public class PraeceptaAuditDaoSpringConfig {
 	@Bean(name = "praeceptaAuditDao")
 	public PraeceptaAuditDao getPraeceptaAuditDao() {
 		return new PraeceptaAuditDao(esOperations);
+	}
+	
+	@Bean(name = "praeceptaRulesExecutionAuditDao")
+	public PraeceptaRulesExecutionAuditDao getPraeceptaRulesExecutionAuditDao() {
+		return new PraeceptaRulesExecutionAuditDao(esOperations);
 	}
 }

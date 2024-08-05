@@ -85,8 +85,11 @@
 			<groupId>io.praecepta.core</groupId>
 			<artifactId>praecepta-core</artifactId>
 			<version>${project.version}</version>
-			
 		</dependency>
-
+		<dependency>
+			<artifactId>praecepta-rules-dto</artifactId>
+			<groupId>io.praecepta.rules</groupId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>
