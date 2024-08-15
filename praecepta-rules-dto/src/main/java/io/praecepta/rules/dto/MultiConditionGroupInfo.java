@@ -7,6 +7,8 @@ public class MultiConditionGroupInfo {
     private String ruleGroupName;
     private Collection<MultiConditionCriteriaInfo> multiConditionCriteriaInfos;
 
+    private String attributeSchemaTemplate;
+
     public Collection<MultiConditionCriteriaInfo> getMultiConditionCriteriaInfos() {
         return multiConditionCriteriaInfos;
     }
@@ -23,4 +25,11 @@ public class MultiConditionGroupInfo {
         this.ruleGroupName = ruleGroupName;
     }
 
+    public String getAttributeSchemaTemplate() {
+        return attributeSchemaTemplate;
+    }
+
+    public void setAttributeSchemaTemplate(String attributeSchemaTemplate) {
+        this.attributeSchemaTemplate = attributeSchemaTemplate;
+    }
 }

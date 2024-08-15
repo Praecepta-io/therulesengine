@@ -838,7 +838,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(2);
-        Assert.assertEquals("MultiCondition1",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_1",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -871,7 +871,7 @@ public class PraeceptaRuleGroupComparisonTest {
         List<PraeceptaRuleAttributeAuditPoint> ruleAttributeAuditPoints = paeceptaRuleAttributeAuditPointMap.get(AUDIT_POINT_TYPE.CONDITION);
         Assert.assertEquals(3, ruleAttributeAuditPoints.size());
         PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(0);
-        Assert.assertEquals("MultiCondition1",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_1",praeceptaRuleAttributeAuditPoint.getAttributeName());
         List<PraeceptaAuditElement> praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         PraeceptaAuditElement praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -880,7 +880,7 @@ public class PraeceptaRuleGroupComparisonTest {
         Assert.assertEquals("AND",praeceptaAuditElement.getValueHolder().getToValue());
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
-        Assert.assertEquals("MultiCondition2",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_2",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -932,7 +932,7 @@ public class PraeceptaRuleGroupComparisonTest {
         Assert.assertEquals("30.0",praeceptaAuditElement.getValueHolder().getToValue());
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
-        Assert.assertEquals("MultiCondition1",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_1",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -953,7 +953,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(3);
-        Assert.assertEquals("MultiCondition2",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_2",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -999,7 +999,7 @@ public class PraeceptaRuleGroupComparisonTest {
         Assert.assertEquals( "200000.0",praeceptaAuditElement.getValueHolder().getToValue());
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(7);
-        Assert.assertEquals("MultiCondition4",praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_4",praeceptaRuleAttributeAuditPoint.getAttributeName());
         praeceptaAuditElementList =  praeceptaRuleAttributeAuditPoint.getAuditElements();
         Assert.assertEquals(1, praeceptaAuditElementList.size());
         praeceptaAuditElement = praeceptaAuditElementList.get(0);
@@ -1102,7 +1102,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(0);
 
-        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiNestedCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1150,7 +1150,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
 
-        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiNestedCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1197,7 +1197,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
 
-        Assert.assertEquals("MultiCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1209,7 +1209,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(2);
 
-        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiNestedCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1258,7 +1258,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
 
-        Assert.assertEquals("MultiCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1270,7 +1270,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(2);
 
-        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiNestedCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1308,7 +1308,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
 
-        Assert.assertEquals("MultiCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1332,7 +1332,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(3);
 
-        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiNestedCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1392,7 +1392,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
 
-        Assert.assertEquals("MultiCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1404,7 +1404,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(2);
 
-        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiNestedCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1442,7 +1442,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(1);
 
-        Assert.assertEquals("MultiCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 
@@ -1466,7 +1466,7 @@ public class PraeceptaRuleGroupComparisonTest {
 
         praeceptaRuleAttributeAuditPoint = ruleAttributeAuditPoints.get(3);
 
-        Assert.assertEquals("MultiNestedCondition1", praeceptaRuleAttributeAuditPoint.getAttributeName());
+        Assert.assertEquals("MultiNestedCondition_1", praeceptaRuleAttributeAuditPoint.getAttributeName());
 
         Assert.assertEquals(1,praeceptaRuleAttributeAuditPoint.getAuditElements().size());
 

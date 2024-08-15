@@ -4,13 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +46,17 @@ public class PraeceptaAuditController implements IPraeceptaApiService {
 		
 		return ruleAuditEntitities;
 	}
+
+	@PraeceptaExposeAsRestServiceMethod(delete = true, functionPath = PraeceptaAuditServiceConstants.DELETE_RULE_GROUP_AUDIT_FUNCTION_PATH, methodName = PraeceptaAuditServiceConstants.DELETE_RULE_GROUP_AUDIT)
+	@Operation(operationId = PraeceptaAuditServiceConstants.DELETE_RULE_GROUP_AUDIT)
+	@DELETE
+	@Produces("application/json")
+	@Path(PraeceptaAuditServiceConstants.DELETE_RULE_GROUP_AUDIT_PATH)
+	public String deleteRuleGroupAudit(@PathParam(value = "uniqueid")String uniqueId) {
+		praeceptaAuditService.deleteRuleGroupAudit(uniqueId);
+
+		return "Deleted the record Successfully";
+	}
 	
 	@PraeceptaExposeAsRestServiceMethod(put = true, functionPath = PraeceptaAuditServiceConstants.ADD_RULE_GROUP_AUDIT_FUNCTION_PATH, methodName = PraeceptaAuditServiceConstants.ADD_RULE_GROUP_AUDIT)
 	@Operation(operationId = PraeceptaAuditServiceConstants.ADD_RULE_GROUP_AUDIT)
@@ -68,7 +73,7 @@ public class PraeceptaAuditController implements IPraeceptaApiService {
 		return ruleAuditEntity;
 	}
 	
-	@PraeceptaExposeAsRestServiceMethod(put = true, functionPath = PraeceptaAuditServiceConstants.REFURBISH_RULE_GROUP_AUDIT_PATH, methodName = PraeceptaAuditServiceConstants.REFURBISH_RULE_GROUP_AUDIT_RULE_GROUP_AUDIT)
+	@PraeceptaExposeAsRestServiceMethod(post = true, functionPath = PraeceptaAuditServiceConstants.REFURBISH_RULE_GROUP_AUDIT_PATH, methodName = PraeceptaAuditServiceConstants.REFURBISH_RULE_GROUP_AUDIT_RULE_GROUP_AUDIT)
 	@Operation(operationId = PraeceptaAuditServiceConstants.REFURBISH_RULE_GROUP_AUDIT_RULE_GROUP_AUDIT)
 	@POST
 	@Consumes(PraeceptaAuditServiceConstants.JSON_PRODUCE)
@@ -96,7 +101,7 @@ public class PraeceptaAuditController implements IPraeceptaApiService {
 		String appName = (String) pathParams.get(PraeceptaAuditServiceConstants.PATH_PARAM_APP_NAME);
 		String version = (String) pathParams.get(PraeceptaAuditServiceConstants.PATH_PARAM_VERSION);
 		String groupname = (String) pathParams.get(PraeceptaAuditServiceConstants.PATH_PARAM_RULEGROUPNAME);
-		
+		String uniqueId = (String) pathParams.get(PraeceptaAuditServiceConstants.PATH_PARAM_UNIQUE_ID);
 		LOG.info("Path Params: {}", pathParams);
 		
 		switch (operation) {
@@ -113,6 +118,9 @@ public class PraeceptaAuditController implements IPraeceptaApiService {
 				requestStore.upsertToPraeceptaStore(PraeceptaWsRequestStoreType.WS_OUTPUT, captureAuditForRuleGroup(spaceName, clientId, appName, version, groupname, ruleGrpAuditPoint) );
 				
 				break;
+			case PraeceptaAuditServiceConstants.DELETE_RULE_GROUP_AUDIT:
+					deleteRuleGroupAudit(uniqueId);
+					break;
 		}
 		
 	}

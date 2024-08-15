@@ -32,6 +32,7 @@ public class PraeceptaRuleGroup implements IModel{
 
 	private String ruleGroupType;
 
+	private String attributeSchemaTemplate;
 	public PraeceptaRuleGroup(){
 
 	}
@@ -147,7 +148,15 @@ public class PraeceptaRuleGroup implements IModel{
 			Collection<PraeceptaActionDetails> actionToPerformOnFailure) {
 		this.actionToPerformOnFailure = actionToPerformOnFailure;
 	}
-	
+
+	public String getAttributeSchemaTemplate() {
+		return attributeSchemaTemplate;
+	}
+
+	public void setAttributeSchemaTemplate(String attributeSchemaTemplate) {
+		this.attributeSchemaTemplate = attributeSchemaTemplate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

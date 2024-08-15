@@ -8,6 +8,8 @@ public class MultiNestedConditionGroupInfo {
 
     private Collection<MultiNestedConditionCriteriaInfo> multiNestedConditionCriteriaInfos;
 
+    private String attributeSchemaTemplate;
+
     public Collection<MultiNestedConditionCriteriaInfo> getMultiNestedConditionCriteriaInfos() {
         return multiNestedConditionCriteriaInfos;
     }
@@ -24,4 +26,11 @@ public class MultiNestedConditionGroupInfo {
         this.ruleGroupName = ruleGroupName;
     }
 
+    public String getAttributeSchemaTemplate() {
+        return attributeSchemaTemplate;
+    }
+
+    public void setAttributeSchemaTemplate(String attributeSchemaTemplate) {
+        this.attributeSchemaTemplate = attributeSchemaTemplate;
+    }
 }

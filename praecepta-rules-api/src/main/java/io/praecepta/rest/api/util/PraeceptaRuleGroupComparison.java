@@ -237,14 +237,14 @@ public class PraeceptaRuleGroupComparison {
         if(existingPredicates != null && existingPredicates.getNextMultiNestedCondition() != null){
                 JoinOperatorType newConditionJoinOperatorType = newPredicates != null?newPredicates.getNextConditionJoinOperator():null;
                 if(!existingPredicates.getNextConditionJoinOperator().equals(newConditionJoinOperatorType)){
-                    PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = getPraeceptaRuleAttributeAuditPointForNextConditionJoinOperator(existingPredicates.getNextConditionJoinOperator(), newConditionJoinOperatorType, conditionIndex,"MultiNestedCondition");
+                    PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = getPraeceptaRuleAttributeAuditPointForNextConditionJoinOperator(existingPredicates.getNextConditionJoinOperator(), newConditionJoinOperatorType, conditionIndex,"MultiNestedCondition_");
                     attributeAuditPoints.add(praeceptaRuleAttributeAuditPoint);
                 }
             List<PraeceptaRuleAttributeAuditPoint> existingAttributeAuditPoints = getConditionAuditPoint(existingPredicates.getNextMultiNestedCondition(), newPredicates != null ?newPredicates.getNextMultiNestedCondition():null, ++ conditionIndex);
             if(!CollectionUtils.isEmpty(existingAttributeAuditPoints))
                 attributeAuditPoints.addAll(existingAttributeAuditPoints);
         }else if(newPredicates != null && newPredicates.getNextMultiNestedCondition() != null){
-            PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = getPraeceptaRuleAttributeAuditPointForNextConditionJoinOperator(null, newPredicates.getNextConditionJoinOperator(), conditionIndex,"MultiNestedCondition");
+            PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = getPraeceptaRuleAttributeAuditPointForNextConditionJoinOperator(null, newPredicates.getNextConditionJoinOperator(), conditionIndex,"MultiNestedCondition_");
             attributeAuditPoints.add(praeceptaRuleAttributeAuditPoint);
 
                 List<PraeceptaRuleAttributeAuditPoint> newPredicateAttributeAuditPoints  = getConditionAuditPoint(null, newPredicates.getNextMultiNestedCondition(), ++conditionIndex);
@@ -360,7 +360,7 @@ public class PraeceptaRuleGroupComparison {
 
             if(existingCondition.getNextConditionJoinOperator() != null){
                 if(!existingCondition.getNextConditionJoinOperator().equals(multiCondition.getNextConditionJoinOperator())){
-                    PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = getPraeceptaRuleAttributeAuditPointForNextConditionJoinOperator(existingCondition.getNextConditionJoinOperator(), multiCondition.getNextConditionJoinOperator(), conditionIndex,"MultiCondition");
+                    PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = getPraeceptaRuleAttributeAuditPointForNextConditionJoinOperator(existingCondition.getNextConditionJoinOperator(), multiCondition.getNextConditionJoinOperator(), conditionIndex,"MultiCondition_");
                     multiAttributeAuditPoints.add(praeceptaRuleAttributeAuditPoint);
                 }
             }
@@ -372,7 +372,7 @@ public class PraeceptaRuleGroupComparison {
             multiAttributeAuditPoints.addAll(getSimpleConditionAuditPoint(existingCondition != null?existingCondition.getCondition():null, multiCondition != null?multiCondition.getCondition():null));
 
             if((existingCondition != null && existingCondition.getNextConditionJoinOperator() != null) || (multiCondition != null && multiCondition.getNextConditionJoinOperator() != null)){
-                PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = getPraeceptaRuleAttributeAuditPointForNextConditionJoinOperator(existingCondition!=null?existingCondition.getNextConditionJoinOperator():null, multiCondition!=null?multiCondition.getNextConditionJoinOperator():null, conditionIndex, "MultiCondition");
+                PraeceptaRuleAttributeAuditPoint praeceptaRuleAttributeAuditPoint = getPraeceptaRuleAttributeAuditPointForNextConditionJoinOperator(existingCondition!=null?existingCondition.getNextConditionJoinOperator():null, multiCondition!=null?multiCondition.getNextConditionJoinOperator():null, conditionIndex, "MultiCondition_");
                 multiAttributeAuditPoints.add(praeceptaRuleAttributeAuditPoint);
             }
 

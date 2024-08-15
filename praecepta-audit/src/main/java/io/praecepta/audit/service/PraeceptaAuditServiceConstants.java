@@ -13,6 +13,12 @@ public class PraeceptaAuditServiceConstants {
 	public static final String GET_RULE_GROUP_AUDIT_FUNCTION_PATH = "/ruleGroupAudit/:spacename/:clientid/:appname/:version/:groupname";
 	
 	public static final String GET_RULE_GROUP_AUDIT_PATH = "/ruleGroupAudit/{spacename}/{clientid}/{appname}/{version}/{groupname}";
+
+	public static final String DELETE_RULE_GROUP_AUDIT_FUNCTION_PATH = "/deleteRuleGroupAudit/:uniqueid";
+
+	public static final String DELETE_RULE_GROUP_AUDIT_PATH = "/deleteRuleGroupAudit/{uniqueid}";
+
+	public static final String DELETE_RULE_GROUP_AUDIT = "deleteRuleGroupAudit";
 	
 	public static final String ADD_RULE_GROUP_AUDIT = "addRuleGroupAudit";
 	
@@ -33,6 +39,8 @@ public class PraeceptaAuditServiceConstants {
 	public static final String PATH_PARAM_VERSION = ":version";
 
 	public static final String PATH_PARAM_RULEGROUPNAME = ":groupname";
+
+	public static final String PATH_PARAM_UNIQUE_ID = ":uniqueid";
 	
 	public static final String JSON_PRODUCE = "application/json";
 }

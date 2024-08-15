@@ -8,6 +8,8 @@ public class SimpleConditionGroupInfo {
 
     private Collection<SimpleConditionCriteriaInfo> simpleConditionCriteriaInfos;
 
+    private String attributeSchemaTemplate;
+
     public Collection<SimpleConditionCriteriaInfo> getSimpleConditionCriteriaInfos() {
         return simpleConditionCriteriaInfos;
     }
@@ -24,4 +26,11 @@ public class SimpleConditionGroupInfo {
         this.ruleGroupName = ruleGroupName;
     }
 
+    public String getAttributeSchemaTemplate() {
+        return attributeSchemaTemplate;
+    }
+
+    public void setAttributeSchemaTemplate(String attributeSchemaTemplate) {
+        this.attributeSchemaTemplate = attributeSchemaTemplate;
+    }
 }

@@ -12,4 +12,6 @@ public interface IPraeceptaAuditService {
 	List<PraeceptaRuleSpaceAuditPoint> fetchRuleGroupAudit(String spaceName, String clientId, String appName, String version, String groupname);
 	
 	void refurbishRuleGroupAudit(String uniqueId, PraeceptaRuleSpaceAuditPoint ruleGroupAuditPointToRefurbish);
+
+	void deleteRuleGroupAudit(String uniqueId);
 }

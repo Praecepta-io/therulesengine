@@ -226,6 +226,8 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 
 		praeceptaRuleGroup.setRuleGroupName(ruleGroup.getRuleGroupName());
 		praeceptaRuleGroup.setActive(true);
+		praeceptaRuleGroup.setAttributeSchemaTemplate(ruleGroup.getAttributeSchemaTemplate());
+
 		PraeceptaRuleGroup existingRuleGroup = pivotalRuleHubManager.fetchRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName());
 		if(existingRuleGroup != null){
 			pivotalRuleHubManager.deleteRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName());
@@ -259,7 +261,6 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 			config.setConnectionTimeOut(10000L);
 			config.setReadTimeOut(7500L);
 
-			System.out.println("before call");
 			PraeceptaRestClientBuilder<PraeceptaWebServiceClientConfig> simpleRestBuilder = new PraeceptaRestClientBuilder<>(config);
 
 			PraeceptaWsRestClient<PraeceptaRestClientBuilder<PraeceptaWebServiceClientConfig>> restClient =
@@ -305,6 +306,7 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 
 		praeceptaRuleGroup.setRuleGroupName(ruleGroup.getRuleGroupName());
 		praeceptaRuleGroup.setActive(true);
+		praeceptaRuleGroup.setAttributeSchemaTemplate(ruleGroup.getAttributeSchemaTemplate());
 
 		PraeceptaRuleGroup existingRuleGroup = pivotalRuleHubManager.fetchRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName());
 		if(existingRuleGroup != null){
@@ -361,7 +363,7 @@ public class PraeceptaRuleGroupServiceImpl implements IPraeceptaRulesGroupServic
 
 		praeceptaRuleGroup.setRuleGroupName(ruleGroup.getRuleGroupName());
 		praeceptaRuleGroup.setActive(true);
-
+		praeceptaRuleGroup.setAttributeSchemaTemplate(ruleGroup.getAttributeSchemaTemplate());
 		PraeceptaRuleGroup existingRuleGroup = pivotalRuleHubManager.fetchRuleGrp(praeceptaRuleGroup.getRuleSpaceKey(), praeceptaRuleGroup.getRuleSpaceKey().getVersion(), praeceptaRuleGroup.getRuleGroupName());
 
 		if(existingRuleGroup != null){

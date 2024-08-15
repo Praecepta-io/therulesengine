@@ -71,6 +71,11 @@ public class PraeceptaAuditServiceImpl implements IPraeceptaAuditService{
 		praeceptaAuditDao.update(ruleAuditEntityToRefurbish);
 	}
 
+	@Override
+	public void deleteRuleGroupAudit(String uniqueId) {
+		praeceptaAuditDao.deleteById(uniqueId);
+	}
+
 	private PraeceptaAuditEntity getAuditEntityForAGroup(String spaceName, String clientId, String appName, String version,
 			String groupname) {
 		

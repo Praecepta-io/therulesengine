@@ -149,7 +149,7 @@ public abstract class AbstractPraeceptaElasticDao<KEY extends Serializable , ENT
 
 	@Override
 	protected void upsert(ENTITY entity) {
-		simpleEsRepo.save(entity);		
+		simpleEsRepo.save(entity);
 	}
 
 	@Override
