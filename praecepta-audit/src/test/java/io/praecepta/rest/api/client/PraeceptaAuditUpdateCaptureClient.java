@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -24,9 +25,10 @@ import io.praecepta.dao.elastic.model.PraeceptaAuditElement;
 import io.praecepta.dao.elastic.model.PraeceptaRuleAttributeAuditPoint;
 import io.praecepta.dao.elastic.model.PraeceptaRuleAuditPoint;
 import io.praecepta.dao.elastic.model.PraeceptaRuleGroupAuditPoint;
+import io.praecepta.dao.elastic.model.PraeceptaRuleSpaceAuditPoint;
 import io.praecepta.dao.elastic.model.PraeceptaAuditElement.ValueHolder;
 
-public class PraeceptaAuditCaptureClient {
+public class PraeceptaAuditUpdateCaptureClient {
 
 	public static void main(String[] args) throws Exception {
 
@@ -35,10 +37,20 @@ public class PraeceptaAuditCaptureClient {
 //		HttpPost httpPost = new HttpPost("http://localhost:8080/audit/addRuleGroupAudit/ABC/Risk/Creadit/V2/Credit");
 //		HttpPut httpPost = new HttpPut("http://localhost:8080/audit/addRuleGroupAudit/ABC/Risk/Creadit/V2/CreditCheck1");
 //		HttpPut httpPost = new HttpPut("http://localhost:4567/audit/ruleGroupAudit/ABC/Risk/Creadit/V2/CreditCheck1");
-		HttpPut httpPost = new HttpPut("http://localhost:4567/audit/addRuleGroupAudit/ABC/Risk/Creadit/V2/CreditCheck1");
+		HttpPost httpPost = new HttpPost("http://localhost:4567/audit/updateRuleGroupAudit/xxxxx");
 //		HttpPost httpPost = new HttpPost("http://localhost:4567/audit/ruleGroupAudit/ABC/Risk/Creadit/V2/CreditCheck1");
 
 		PraeceptaRuleGroupAuditPoint ruleGrpAuditPoint = getRuleGrp();
+		
+		PraeceptaRuleSpaceAuditPoint ruleGroupAuditPointToRefurbish = new PraeceptaRuleSpaceAuditPoint();
+		
+		ruleGroupAuditPointToRefurbish.setSpaceName("ABC");
+		ruleGroupAuditPointToRefurbish.setClientId("Risk");
+		ruleGroupAuditPointToRefurbish.setAppName("Creadit");
+		ruleGroupAuditPointToRefurbish.setVersion("V1");
+		ruleGroupAuditPointToRefurbish.setRuleGroupName("CreditCheck1");
+		
+		ruleGroupAuditPointToRefurbish.setRuleGroupAuditPoint(ruleGrpAuditPoint);
 		
 		String json = GsonHelper.toJson(ruleGrpAuditPoint);
 		
@@ -95,7 +107,7 @@ public class PraeceptaAuditCaptureClient {
 				List<PraeceptaRuleAttributeAuditPoint> attributeNameToValueChange = new ArrayList<>();
 				
 				// New Condition Add - Element Changes like Value add or a new join operator add etc
-				PraeceptaAuditElement scoreCheckEmployedValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,new ValueHolder(null, "yes"));
+				PraeceptaAuditElement scoreCheckEmployedValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE ,new ValueHolder(null, "yes"));
 				PraeceptaAuditElement scoreCheckEmployedConditionOperatorChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE ,new ValueHolder(null, "EQUALS"));
 				
 				// Defining Attribute for Which the above element changes belongs to
@@ -106,7 +118,7 @@ public class PraeceptaAuditCaptureClient {
 				// Capture all Audit points for An Attribute
 				attributeNameToValueChange.add(employedAttributeAuditPoint);
 				
-				PraeceptaAuditElement scoreCheckScoreValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,new ValueHolder(null, "800"));
+				PraeceptaAuditElement scoreCheckScoreValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE ,new ValueHolder(null, "800"));
 				
 				PraeceptaRuleAttributeAuditPoint scoreAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint("score");
 				scoreAttributeAuditPoint.setAuditElements(Arrays.asList( new PraeceptaAuditElement[] { scoreCheckScoreValueChange }));
@@ -122,7 +134,7 @@ public class PraeceptaAuditCaptureClient {
 				List<PraeceptaRuleAttributeAuditPoint>  actionAttributeNameToValueChange = new ArrayList<>();
 				
 				//  New Action Add - Action Element changes like Value add
-				PraeceptaAuditElement scoreCheckEmployedActionChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE,new ValueHolder(null, "Excellent"));
+				PraeceptaAuditElement scoreCheckEmployedActionChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE ,new ValueHolder(null, "Excellent"));
 				
 				// Defining Action Attribute for Which the above element changes belongs to
 				PraeceptaRuleAttributeAuditPoint scoreLevelActionAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint("score_level");
@@ -153,7 +165,7 @@ public class PraeceptaAuditCaptureClient {
 				List<PraeceptaRuleAttributeAuditPoint> updateRuleAttributeNameToValueChange = new ArrayList<>();
 				
 				// Update Condition Add - Element Changes like Value add or a new join operator add etc
-				PraeceptaAuditElement regionElegibilityValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new ValueHolder("ASIA", "NOARTH_AMERICA"));
+				PraeceptaAuditElement regionElegibilityValueChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE , new ValueHolder("ASIA", "NOARTH_AMERICA"));
 				PraeceptaAuditElement regionElegibilityOperatorChange = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.CONDITION_OPERATOR_CHANGE , new ValueHolder("NOT_EQUALS", "EQUALS"));
 				
 				// Defining Attribute for Which the above element changes belongs to
@@ -170,7 +182,7 @@ public class PraeceptaAuditCaptureClient {
 				List<PraeceptaRuleAttributeAuditPoint> updateRuleActionAttributeNameToValueChange = new ArrayList<>();
 				
 				// New Action Add - Action Element changes like Value add
-				PraeceptaAuditElement regionElegibilityActionValueChange  = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHANGE, new ValueHolder("SUCCESS", "SATISFIED"));
+				PraeceptaAuditElement regionElegibilityActionValueChange  = new PraeceptaAuditElement(AUDIT_ELEMENT_TYPE.VALUE_CHNAGE , new ValueHolder("SUCCESS", "SATISFIED"));
 				
 				// Defining Action Attribute for Which the above element changes belongs to
 				PraeceptaRuleAttributeAuditPoint updateRegionEligibleActionAttributeAuditPoint = new PraeceptaRuleAttributeAuditPoint("region_eligibility");

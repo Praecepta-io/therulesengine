@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Import;
 
 import io.praecepta.audit.controller.PraeceptaAuditController;
 import io.praecepta.audit.service.IPraeceptaAuditService;
+import io.praecepta.audit.service.IPraeceptaExecutionAuditService;
 import io.praecepta.audit.service.PraeceptaAuditServiceConstants;
 import io.praecepta.audit.service.impl.PraeceptaAuditServiceImpl;
+import io.praecepta.audit.service.impl.PraeceptaExecutionAuditServiceImpl;
 import io.praecepta.dao.elastic.config.spring.PraeceptaAuditDaoSpringConfig;
 import io.praecepta.rest.api.interceptor.PraeceptaRestServiceInterceptorRegistry;
 import io.praecepta.rest.api.model.PraeceptaRestServiceInterceptorModel;
@@ -23,6 +25,11 @@ public class PraeceptaAuditSpringConfig {
 	@Bean(name = PraeceptaAuditServiceConstants.AUDIT_SERVICE_NAME)
 	public IPraeceptaAuditService getPraeceptaAuditService() {
 		return new PraeceptaAuditServiceImpl();
+	}
+	
+	@Bean(name = PraeceptaAuditServiceConstants.AUDIT_EXECUTION_SERVICE_NAME)
+	public IPraeceptaExecutionAuditService getPraeceptaExecutionAuditService() {
+		return new PraeceptaExecutionAuditServiceImpl();
 	}
 	
 	@Bean(name = PraeceptaAuditServiceConstants.AUDIT_CONTROLLER_NAME)
