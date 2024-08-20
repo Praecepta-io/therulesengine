@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.PathParam;
-import javax.ws.rs.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,48 +26,8 @@ public class PraeceptaAuditController implements IPraeceptaAuditController {
 	@Autowired
 	private IPraeceptaAuditService  praeceptaAuditService;
 
-	@PraeceptaExposeAsRestServiceMethod(get = true, functionPath = PraeceptaAuditServiceConstants.GET_RULE_GROUP_AUDIT_FUNCTION_PATH, methodName = PraeceptaAuditServiceConstants.GET_RULE_GROUP_AUDIT)
-	@Operation(operationId = PraeceptaAuditServiceConstants.GET_RULE_GROUP_AUDIT)
-    @GET
-	@Produces(PraeceptaAuditServiceConstants.JSON_PRODUCE)
-    @Path(PraeceptaAuditServiceConstants.GET_RULE_GROUP_AUDIT_PATH)
-	public List<PraeceptaRuleSpaceAuditPoint> getRuleGroupAduitUsingSpaceInfo(@PathParam(value = "spacename")String spaceName,
-			@PathParam(value = "clientid")String clientId,@PathParam(value = "appname")String appName,@PathParam(value = "version")String version,
-			@PathParam(value = "groupname") String groupname) {
-
-
-		List<PraeceptaRuleSpaceAuditPoint> ruleAuditEntitities = praeceptaAuditService.fetchRuleGroupAudit(spaceName, clientId, appName, version, groupname);
-
-		return ruleAuditEntitities;
-	}
-
-	@PraeceptaExposeAsRestServiceMethod(put = true, functionPath = PraeceptaAuditServiceConstants.ADD_RULE_GROUP_AUDIT_FUNCTION_PATH, methodName = PraeceptaAuditServiceConstants.ADD_RULE_GROUP_AUDIT)
-	@Operation(operationId = PraeceptaAuditServiceConstants.ADD_RULE_GROUP_AUDIT)
-    @PUT
-    @Consumes(PraeceptaAuditServiceConstants.JSON_PRODUCE)
-	@Produces(PraeceptaAuditServiceConstants.JSON_PRODUCE)
-    @Path(PraeceptaAuditServiceConstants.ADD_RULE_GROUP_AUDIT_PATH)
-	public PraeceptaRuleSpaceAuditPoint captureAuditForRuleGroup(@PathParam(value = "spacename")String spaceName, @PathParam(value = "clientid")String clientId,
-			@PathParam(value = "appname")String appName,
-			@PathParam(value = "version")String version, @PathParam(value = "rulegroupname") String rulegroupname, PraeceptaRuleGroupAuditPoint ruleGroupAuditPoint) {
-
-		PraeceptaRuleSpaceAuditPoint ruleAuditEntity = praeceptaAuditService.captureRuleGroupAudit(spaceName, clientId, appName, version, rulegroupname, ruleGroupAuditPoint);
-
-		return ruleAuditEntity;
-	}
-
-	@PraeceptaExposeAsRestServiceMethod(put = true, functionPath = PraeceptaAuditServiceConstants.REFURBISH_RULE_GROUP_AUDIT_PATH, methodName = PraeceptaAuditServiceConstants.REFURBISH_RULE_GROUP_AUDIT_RULE_GROUP_AUDIT)
-	@Operation(operationId = PraeceptaAuditServiceConstants.REFURBISH_RULE_GROUP_AUDIT_RULE_GROUP_AUDIT)
-	@POST
-	@Consumes(PraeceptaAuditServiceConstants.JSON_PRODUCE)
-	@Produces(PraeceptaAuditServiceConstants.JSON_PRODUCE)
-	@Path(PraeceptaAuditServiceConstants.REFURBISH_RULE_GROUP_AUDIT_PATH)
-	public PraeceptaRuleSpaceAuditPoint refurbishAuditForRuleGroup(@PathParam(value = "uniqueId")String uniqueId, PraeceptaRuleSpaceAuditPoint ruleGroupAuditPointToRefurbish) {
-
-		praeceptaAuditService.refurbishRuleGroupAudit(uniqueId ,ruleGroupAuditPointToRefurbish);
-
-		return ruleGroupAuditPointToRefurbish;
-	}
+	@Autowired
+	private IPraeceptaExecutionAuditService praeceptaExecutionAuditService;
 
 	@Override
 	public void execute(PraeceptaRequestStore requestStore) {
@@ -194,10 +151,9 @@ public class PraeceptaAuditController implements IPraeceptaAuditController {
 	public List<PraeceptaRuleSpaceAuditPoint> getRuleGroupAduitUsingSpaceInfo(String spaceName, String clientId,
 			String appName, String version, String groupname) {
 
-		List<PraeceptaRuleSpaceAuditPoint> ruleAuditEntitities = praeceptaAuditService.fetchRuleGroupAudit(spaceName,
+		return praeceptaAuditService.fetchRuleGroupAudit(spaceName,
 				clientId, appName, version, groupname);
 
-		return ruleAuditEntitities;
 	}
 
 	@Override

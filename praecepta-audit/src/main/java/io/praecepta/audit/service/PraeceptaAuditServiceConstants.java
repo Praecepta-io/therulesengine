@@ -46,8 +46,7 @@ public class PraeceptaAuditServiceConstants {
 
 	public static final String PATH_PARAM_UNIQUE_ID = ":uniqueid";
 	
-	public static final String PATH_PARAM_UNIQUE_ID = ":uniqueId";
-	
+
 	public static final String JSON_PRODUCE = "application/json";
 	 
 	public static final String ADD_RULE_GROUP_EXECUTION_AUDIT = "addRuleGroupExecutionAudit";
