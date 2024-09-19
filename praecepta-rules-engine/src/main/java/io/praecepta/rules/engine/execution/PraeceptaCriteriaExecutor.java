@@ -1,9 +1,16 @@
 package io.praecepta.rules.engine.execution;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +18,13 @@ import org.slf4j.LoggerFactory;
 import io.praecepta.core.data.PraeceptaRequestStore;
 import io.praecepta.core.helper.GsonHelper;
 import io.praecepta.core.helper.PraeceptaObjectHelper;
+import io.praecepta.dao.elastic.model.execution.PraeceptaExecutionAuditPoint;
+import io.praecepta.dao.elastic.model.execution.PraeceptaRuleExecutionAuditPoint;
+import io.praecepta.dao.elastic.model.execution.PraeceptaRuleGroupExecutionAuditPoint;
 import io.praecepta.rules.actions.PraeceptaAbstractAction;
 import io.praecepta.rules.actions.impl.PraeceptaValueAssignAction;
+import io.praecepta.rules.dto.RuleGroupInfo;
+import io.praecepta.rules.dto.RuleSpaceInfo;
 import io.praecepta.rules.engine.sidecars.GenericPraeceptaInfoTrackerSideCarInjector;
 import io.praecepta.rules.engine.sidecars.GenericPraeceptaRuleLevelInfoTrackerSideCarInjector;
 import io.praecepta.rules.engine.sidecars.IPraeceptaInfoTrackerSideCarInjector;
@@ -52,15 +64,23 @@ public class PraeceptaCriteriaExecutor {
 		GenericPraeceptaInfoTrackerSideCarInjector preRuleGrpSideCar = (GenericPraeceptaInfoTrackerSideCarInjector) 
 				ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.PRE_RULE_GROUP_SIDE_CAR);
 		
+		String traceId = UUID.randomUUID().toString();
+		
+		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_TRACE_ID, traceId);
+		
+		String ruleGroupToExecute = (String) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_GROUP_NAME);
+		
 		if (preRuleGrpSideCar != null) {
+			
+			// Start Pre Rule GROUP Execution Audit Point
+			PraeceptaExecutionAuditPoint executionTraceDto =  buildPreRuleGrpExecutionPoint(ruleStore);
+			
 			performSideCarActivity(ruleStore, preRuleGrpSideCar);
 		}
 		
 		Object ruleRequestAsAMap = ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_AS_KEY_VALUE_PAIR);
 				
 		logger.info(" After Executing Pre Rule Group Side Car");
-		
-		String ruleGroupToExecute = (String) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_GROUP_NAME);
 		
 		logger.info(" About to Rule Trigger for Rule Group {} ", ruleGroupToExecute);
 		
@@ -110,6 +130,167 @@ public class PraeceptaCriteriaExecutor {
 		logger.info(" After Executing Post Rule Group Side Car");
 		
 		logger.debug(" Finishing Execute Criterias Of A RuleGroup");
+	}
+
+	private static PraeceptaExecutionAuditPoint buildPreRuleGrpExecutionPoint(PraeceptaRequestStore ruleStore) {
+		
+		String traceId = (String) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_TRACE_ID);
+		
+		PraeceptaRuleGroup ruleGrpToUse = (PraeceptaRuleGroup) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_GROUP);
+		
+		PraeceptaExecutionAuditPoint executionTraceDtoWithPreRuleGrpDetails = new PraeceptaExecutionAuditPoint();
+		
+		PraeceptaRuleGroupExecutionAuditPoint preRuleGroupExecutionAuditDetails = executionTraceDtoWithPreRuleGrpDetails
+				.getPreRuleGroupExecutionAuditDetails();
+		
+		preRuleGroupExecutionAuditDetails.setRuleGroupInfo(getRuleGroupInfo(ruleGrpToUse));
+
+		preRuleGroupExecutionAuditDetails.setTraceId(traceId);
+		
+		LocalDateTime ldt = LocalDateTime.now();
+		Date ruleGrpStartTime = addMinutesToDate(ldt, 0);
+		
+		preRuleGroupExecutionAuditDetails.setStartTime(ruleGrpStartTime);
+		
+		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_GROUP_START_TIME, ruleGrpStartTime);
+		
+		return executionTraceDtoWithPreRuleGrpDetails;
+	}
+	
+	private static PraeceptaExecutionAuditPoint buildPostRuleGrpExecutionPoint(PraeceptaRequestStore ruleStore) {
+		
+		String traceId = (String) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_TRACE_ID);
+		
+		PraeceptaRuleGroup ruleGrpToUse = (PraeceptaRuleGroup) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_GROUP);
+		
+		PraeceptaExecutionAuditPoint executionTraceDtoWithPostRuleGroupDetails = new PraeceptaExecutionAuditPoint();
+		
+		PraeceptaRuleGroupExecutionAuditPoint postRuleGroupExecutionAuditDetails = executionTraceDtoWithPostRuleGroupDetails
+				.getPostRuleGroupExecutionAuditDetails();
+		
+		postRuleGroupExecutionAuditDetails.setRuleGroupInfo(getRuleGroupInfo(ruleGrpToUse));
+		
+		postRuleGroupExecutionAuditDetails.setTraceId(traceId);
+		
+		Date ruleGrpStartTime = (Date) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_GROUP_START_TIME);
+
+		postRuleGroupExecutionAuditDetails.setStartTime(ruleGrpStartTime);
+		
+		LocalDateTime ldt = LocalDateTime.now();
+		
+		Date ruleGrpEndTime = addMinutesToDate(ldt, 0);
+		
+		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_GROUP_END_TIME, ruleGrpEndTime);
+		
+		postRuleGroupExecutionAuditDetails.setEndTime(ruleGrpEndTime);
+		
+		return executionTraceDtoWithPostRuleGroupDetails;
+	}
+	
+	private static PraeceptaExecutionAuditPoint buildPreRuleExecutionPoint(PraeceptaRequestStore ruleStore) {
+		
+		String spanId = UUID.randomUUID().toString();
+		
+		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_SPAN_ID, spanId);
+		
+		String traceId = (String) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_TRACE_ID);
+		
+		PraeceptaRuleGroup ruleGrpToUse = (PraeceptaRuleGroup) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_GROUP);
+		
+		PraeceptaExecutionAuditPoint executionTraceDtoWithPreRuleDetails = new PraeceptaExecutionAuditPoint();
+		
+		PraeceptaRuleExecutionAuditPoint preRuleExecutionAuditDetails = executionTraceDtoWithPreRuleDetails
+				.getPreRuleExecutionAuditDetails();
+		
+		preRuleExecutionAuditDetails.setRuleGroupInfo(getRuleGroupInfo(ruleGrpToUse));
+		
+		preRuleExecutionAuditDetails.setTraceId(traceId);
+		
+		preRuleExecutionAuditDetails.setSpanId(spanId);
+		
+		LocalDateTime ldt = LocalDateTime.now();
+		Date ruleStartTime = addMinutesToDate(ldt, 0);
+		
+		preRuleExecutionAuditDetails.setStartTime(ruleStartTime);
+		
+		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_START_TIME, ruleStartTime);
+		return executionTraceDtoWithPreRuleDetails;
+	}
+	
+	private static PraeceptaExecutionAuditPoint buildPostRuleExecutionPoint(PraeceptaRequestStore ruleStore) {
+		
+		String spanId = UUID.randomUUID().toString();
+		
+		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_SPAN_ID, spanId);
+		
+		String traceId = (String) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_TRACE_ID);
+		
+		PraeceptaRuleGroup ruleGrpToUse = (PraeceptaRuleGroup) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_GROUP);
+		
+		PraeceptaExecutionAuditPoint executionTraceDtoWithPostRuleDetails = new PraeceptaExecutionAuditPoint();
+		
+		PraeceptaRuleExecutionAuditPoint postRuleExecutionAuditDetails = executionTraceDtoWithPostRuleDetails
+				.getPostRuleExecutionAuditDetails();
+		
+		postRuleExecutionAuditDetails.setRuleGroupInfo(getRuleGroupInfo(ruleGrpToUse));
+		
+		postRuleExecutionAuditDetails.setTraceId(traceId);
+		
+		postRuleExecutionAuditDetails.setSpanId(spanId);
+		
+		Date ruleStartTime = (Date) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_START_TIME);
+		
+		postRuleExecutionAuditDetails.setStartTime(ruleStartTime);
+		
+		LocalDateTime ldt = LocalDateTime.now();
+		Date ruleEndTime = addMinutesToDate(ldt, 0);
+		
+		postRuleExecutionAuditDetails.setEndTime(ruleEndTime);
+		
+		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_END_TIME, ruleEndTime);
+		
+		return executionTraceDtoWithPostRuleDetails;
+	}
+
+	private static RuleGroupInfo getRuleGroupInfo(PraeceptaRuleGroup ruleGrpToUse) {
+
+		RuleGroupInfo ruleGroupInfo = new RuleGroupInfo();
+
+		ruleGroupInfo.setRuleGroupName(ruleGrpToUse.getRuleGroupName());
+
+		RuleSpaceInfo ruleSpaceInfo = getRuleSpaceInfo(ruleGrpToUse);
+
+		ruleGroupInfo.setRuleSpaceInfo(ruleSpaceInfo);
+
+		return ruleGroupInfo;
+	}
+
+	private static RuleSpaceInfo getRuleSpaceInfo(PraeceptaRuleGroup ruleGrpToUse) {
+
+		RuleSpaceInfo ruleSpaceInfo = new RuleSpaceInfo();
+
+		ruleSpaceInfo.setSpaceName(ruleGrpToUse.getRuleSpaceKey().getSpaceName());
+		ruleSpaceInfo.setClientId(ruleGrpToUse.getRuleSpaceKey().getClientId());
+		ruleSpaceInfo.setAppName(ruleGrpToUse.getRuleSpaceKey().getAppName());
+		ruleSpaceInfo.setVersion(ruleGrpToUse.getRuleSpaceKey().getVersion());
+
+		return ruleSpaceInfo;
+	}
+	
+	private static Date addMinutesToDate(LocalDateTime ldt, long minutes) {
+
+		LocalDateTime ldtAfterAdd = ldt.plus(minutes, ChronoUnit.MINUTES);
+
+		ZoneId zoneId = ZoneId.systemDefault();
+		ZoneOffset zoneOffsetAfterAdd = zoneId.getRules().getOffset(ldtAfterAdd);
+
+		Instant instantAfterAdd = ldtAfterAdd.toInstant(zoneOffsetAfterAdd);
+
+		Date dateToReturn = Date.from(instantAfterAdd);
+
+		System.out.println(dateToReturn);
+
+		return dateToReturn;
 	}
 
 	private static PraeceptaSideCarDataHolder<String, String> getInputDataHolder(String inputRequest) {

@@ -39,6 +39,9 @@ public enum PraeceptaRuleRequestStoreType implements IPraeceptaRequestStoreType{
 	RULE_GROUP("ruleGroup"), 
 	RULE_GROUP_METADATA("ruleGroupMetadata"), 
 	RULES_REQUEST("rulesRequest"), 
+	RULES_REQUEST_TRACE_ID("rulesRequestTraceId"), 
+	RULES_GROUP_START_TIME("rulesGroupStartTime"), 
+	RULES_GROUP_END_TIME("rulesGroupEndTime"), 
 	RULES_REQUEST_DATA_TYPE("rulesRequestDataType"), 
 	RULES_REQUEST_AS_KEY_VALUE_PAIR("rulesRequestAsKeyValuePair"), 
 	IS_RULES_REQUEST_VALID_TO_RUN("rulesRequestValidToRun"), 
@@ -53,6 +56,9 @@ public enum PraeceptaRuleRequestStoreType implements IPraeceptaRequestStoreType{
 	RULES_CRITERIA_INFO("rulesResponse"),
 	
 	// This Section is for an Individual Rule 
+	RULES_REQUEST_SPAN_ID("rulesRequestSpanId"), 
+	RULES_REQUEST_START_TIME("rulesRequestStartTime"), 
+	RULES_REQUEST_END_TIME("rulesRequestEndTime"), 
 	RULE_CONDITION_STATUS("ruleConditionStatus"), 
 	RULE_CONDITION_INFO("ruleConditionInfo"),
 	RULE_VALIDATION_STATUS("ruleValidationStatus"),
