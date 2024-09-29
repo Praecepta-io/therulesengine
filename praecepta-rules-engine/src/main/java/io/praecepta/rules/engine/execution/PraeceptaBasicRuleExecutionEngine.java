@@ -11,11 +11,12 @@ import io.praecepta.rules.enums.PraeceptaRuleGroupMetaData;
 import io.praecepta.rules.enums.PraeceptaRuleRequestStoreType;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleGroup;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpace;
+import org.springframework.beans.factory.annotation.Value;
 
 public class PraeceptaBasicRuleExecutionEngine extends AbstractPraeceptaRuleExecutionEngine{
 
 	private final static Logger logger = LoggerFactory.getLogger(PraeceptaBasicRuleExecutionEngine.class);
-	
+
 	@Override
 	protected void triggerRules(PraeceptaRequestStore ruleStore) {
 		

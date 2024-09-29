@@ -28,6 +28,7 @@ import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpace;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpaceCompositeKey;
 import io.praecepta.rules.model.PraeceptaCriteria;
 import io.praecepta.rules.model.projection.PraeceptaActionDetails;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 
@@ -45,6 +46,8 @@ public abstract class AbstractPraeceptaRuleExecutionEngine
 	private final static Logger logger = LoggerFactory.getLogger(AbstractPraeceptaRuleExecutionEngine.class);
 
 	private PraeceptaRuleBuilder ruleBuider = initializeRuleBuilder();
+
+
 
 	/*private GenericPraeceptaInfoTrackerSideCarInjector preRuleGrpSideCar = new PraeceptaDefaultPreRuleGrpSideCarInjector();
 

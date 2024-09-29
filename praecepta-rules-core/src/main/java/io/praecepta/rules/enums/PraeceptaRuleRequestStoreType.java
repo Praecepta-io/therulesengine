@@ -77,6 +77,7 @@ public enum PraeceptaRuleRequestStoreType implements IPraeceptaRequestStoreType{
 	RULE_GROUP_ACTIONS_ON_FAILURE("ruleGroupActionsOnFailure"),
 	RULE_GROUP_NAME_WITH_SPACE_KEY("ruleGroupNameWithSpaceKey"),
 	SIDCAR_OUTPUT("SideCarOutput"),
+	RULE_EXECUTION_AUDIT_URL("ruleExecutionAuditUrl"),
 	
 	RULE_EXECUTION_ENGINE("ruleExecutionEngine"),
 	;

@@ -99,6 +99,16 @@
 			<artifactId>praecepta-rules-sidecars-to</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+        <dependency>
+            <groupId>io.praecepta.rest.client</groupId>
+            <artifactId>praecepta-rest-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>io.praecepta.dto.elasticsearch</groupId>
+			<artifactId>praecepta-dto-elasticsearch</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 	</dependencies>
 </project>
