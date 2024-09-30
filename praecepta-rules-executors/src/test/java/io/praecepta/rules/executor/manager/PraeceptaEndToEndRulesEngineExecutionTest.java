@@ -175,11 +175,11 @@ public class PraeceptaEndToEndRulesEngineExecutionTest {
 //				"	\"emp\":\r\n" + 
 //				"	{\r\n" + 
 //				"		\"name\":\"Raja\",\r\n" + 
-//				"		\"company\":\"Broadridge\",\r\n" + 
+//				"		\"company\":\"Xploretch\",\r\n" + 
 //				"		\"id\":25\r\n" + 
 //				"    },\r\n" + 
 //				"	\"zip\":\"08512\",\r\n" + 
-//				"	\"outerCompany\":\"Broadridge\",\r\n" + 
+//				"	\"outerCompany\":\"Xploretch\",\r\n" + 
 //				"	\"location\":\"Cranbury\"\r\n" + 
 //				"} ";
 		
@@ -194,7 +194,7 @@ public class PraeceptaEndToEndRulesEngineExecutionTest {
 		"   \"version\":\"" + ACTIVE_SPACE_VERSION+ "\"\r\n" + 
 		"   },\r\n" + 
 		"	\"ruleInputType\" : \"JSON\"," + 
-		"   \"ruleInput\":\"{\\\"emp\\\":{\\\"name\\\":\\\"Raja\\\",\\\"company\\\":\\\"Broadridge\\\",\\\"id\\\":25},\\\"zip\\\":\\\"08512\\\",\\\"outerCompany\\\":\\\"Broadridge\\\",\\\"location\\\":\\\"Cranbury\\\"}\"\r\n" + 
+		"   \"ruleInput\":\"{\\\"emp\\\":{\\\"name\\\":\\\"Raja\\\",\\\"company\\\":\\\"Xploretch\\\",\\\"id\\\":25},\\\"zip\\\":\\\"08512\\\",\\\"outerCompany\\\":\\\"Xploretch\\\",\\\"location\\\":\\\"Cranbury\\\"}\"\r\n" + 
 		"}";
 	}
 }

@@ -176,11 +176,11 @@ public class PraeceptaEndToEndRulesEngineExecutionTest {
 				"	\"emp\":\r\n" + 
 				"	{\r\n" + 
 				"		\"name\":\"Raja\",\r\n" + 
-				"		\"company\":\"Broadridge\",\r\n" + 
+				"		\"company\":\"Xploretch\",\r\n" + 
 				"		\"id\":25\r\n" + 
 				"    },\r\n" + 
 				"	\"zip\":\"08512\",\r\n" + 
-				"	\"outerCompany\":\"Broadridge\",\r\n" + 
+				"	\"outerCompany\":\"Xploretch\",\r\n" + 
 				"	\"location\":\"Cranbury\"\r\n" + 
 				"} ";
 	}

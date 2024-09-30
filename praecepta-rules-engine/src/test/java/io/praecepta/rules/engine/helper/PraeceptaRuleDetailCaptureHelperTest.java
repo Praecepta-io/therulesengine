@@ -20,7 +20,7 @@ public class PraeceptaRuleDetailCaptureHelperTest {
 			"      \"version\":\"1.3\"\r\n" + 
 			"   },\r\n" + 
 			"	\"ruleInputType\" : \"JSON\"," + 
-			"   \"ruleInput\":\"{\\\"emp\\\":{\\\"name\\\":\\\"Raja\\\",\\\"company\\\":\\\"Broadridge\\\",\\\"id\\\":25},\\\"zip\\\":\\\"08512\\\",\\\"outerCompany\\\":\\\"Broadridge\\\",\\\"location\\\":\\\"Cranbury\\\"}\"\r\n" + 
+			"   \"ruleInput\":\"{\\\"emp\\\":{\\\"name\\\":\\\"Raja\\\",\\\"company\\\":\\\"Xploretch\\\",\\\"id\\\":25},\\\"zip\\\":\\\"08512\\\",\\\"outerCompany\\\":\\\"Xploretch\\\",\\\"location\\\":\\\"Cranbury\\\"}\"\r\n" + 
 			"}";
 
 	@Test
