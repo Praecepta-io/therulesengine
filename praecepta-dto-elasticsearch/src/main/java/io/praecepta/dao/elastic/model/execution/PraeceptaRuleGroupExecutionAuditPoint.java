@@ -2,6 +2,9 @@ package io.praecepta.dao.elastic.model.execution;
 
 import io.praecepta.dao.elastic.enums.execution.EXECUTION_AUDIT_OPERATION_TYPE;
 import io.praecepta.rules.dto.RuleGroupInfo;
+import io.praecepta.rules.model.PraeceptaRuleResult;
+
+import java.util.List;
 
 public class PraeceptaRuleGroupExecutionAuditPoint extends PraeceptaProcessTracer{
 	
@@ -12,7 +15,14 @@ public class PraeceptaRuleGroupExecutionAuditPoint extends PraeceptaProcessTrace
 	}
 	
 	private RuleGroupInfo ruleGroupInfo;
-	
+
+	private List<PraeceptaRuleResult> ruleExecutionAuditPoints;
+
+	private String failureRulesCount;
+
+	private String successRulesCount;
+
+
 	public RuleGroupInfo getRuleGroupInfo() {
 		return ruleGroupInfo;
 	}
@@ -29,11 +39,36 @@ public class PraeceptaRuleGroupExecutionAuditPoint extends PraeceptaProcessTrace
 		this.operationType = operationType;
 	}
 
+
+	public List<PraeceptaRuleResult> getRuleExecutionAuditPoints() {
+		return ruleExecutionAuditPoints;
+	}
+
+	public void setRuleExecutionAuditPoints(List<PraeceptaRuleResult> ruleExecutionAuditPoints) {
+		this.ruleExecutionAuditPoints = ruleExecutionAuditPoints;
+	}
+
+	public String getFailureRulesCount() {
+		return failureRulesCount;
+	}
+
+	public void setFailureRulesCount(String failureRulesCount) {
+		this.failureRulesCount = failureRulesCount;
+	}
+
+	public String getSuccessRulesCount() {
+		return successRulesCount;
+	}
+
+	public void setSuccessRulesCount(String successRulesCount) {
+		this.successRulesCount = successRulesCount;
+	}
+
 	@Override
 	public String toString() {
 		return "PraeceptaRuleGroupExecutionAuditPoint [operationType=" + operationType + ", ruleGroupInfo="
 				+ ruleGroupInfo + ", getStartTime()=" + getStartTime() + ", getEndTime()=" + getEndTime()
-				+ ", getTraceId()=" + getTraceId() + "]";
+				+", ruleExecutionAuditPoints=" + ruleExecutionAuditPoints
+				+", getTraceId()=" + getTraceId() + "]";
 	}
-	
 }

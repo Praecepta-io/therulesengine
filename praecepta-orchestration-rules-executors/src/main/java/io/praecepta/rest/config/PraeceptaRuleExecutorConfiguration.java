@@ -16,11 +16,13 @@ import io.praecepta.rest.api.interceptor.PraeceptaRestServiceInterceptorRegistry
 import io.praecepta.rest.api.model.PraeceptaRestServiceInterceptorModel;
 import io.praecepta.rest.constants.ServiceAndMethodNames;
 import io.praecepta.rules.hub.spring.config.PraeceptaRuleBuilderConfig;
+import org.springframework.context.annotation.PropertySource;
 import spark.Filter;
 import spark.route.HttpMethod;
 
 @Configuration
 @Import({PraeceptaRuleBuilderConfig.class})
+@PropertySource("classpath:praecepta-${envTarget:local}.properties")
 public class PraeceptaRuleExecutorConfiguration {
 	
 	@Bean(name = ServiceAndMethodNames.RULE_EXECUTION_CONTROLLER_NAME)

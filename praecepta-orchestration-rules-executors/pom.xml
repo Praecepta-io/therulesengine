@@ -97,8 +97,12 @@
 			<artifactId>praecepta-rules-executors</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
-	</dependencies>
+        <dependency>
+            <groupId>io.praecepta.dto.elasticsearch</groupId>
+            <artifactId>praecepta-dto-elasticsearch</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 	
 	<build>
 		<plugins>

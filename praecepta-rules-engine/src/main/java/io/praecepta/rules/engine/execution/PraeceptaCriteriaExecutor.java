@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.praecepta.dao.elastic.enums.execution.EXECUTION_AUDIT_OPERATION_TYPE;
 import io.praecepta.dao.elastic.model.execution.PraeceptaExecutionAuditPoints;
@@ -134,9 +135,10 @@ public class PraeceptaCriteriaExecutor {
 			eachCriteriaStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_EXECUTION_ENGINE, ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_EXECUTION_ENGINE));
 			//TODO AUDIT BEFORE RULE
 			String spanId = UUID.randomUUID().toString();
-			executor.submit(() -> publishRuleExecutionAudit( EXECUTION_AUDIT_OPERATION_TYPE.PRE_RULE_HAWK_EYE,buildPreRuleExecutionPoint(eachCriteriaStore, spanId, eachCriteria),  (String)ruleStore.fetchFromPraeceptaStore(RULE_EXECUTION_AUDIT_URL)));
+			executor.submit(() -> publishRuleExecutionAudit( EXECUTION_AUDIT_OPERATION_TYPE.PRE_RULE_HAWK_EYE,buildPreRuleExecutionPoint(ruleStore, spanId, eachCriteria),  (String)ruleStore.fetchFromPraeceptaStore(RULE_EXECUTION_AUDIT_URL)));
 			executeCriteria(eachCriteriaStore, eachCriteria);
-			executor.submit(() -> publishRuleExecutionAudit( EXECUTION_AUDIT_OPERATION_TYPE.POST_RULE_HAWK_EYE, buildPostRuleExecutionPoint(ruleStore, spanId, eachCriteria),  (String)ruleStore.fetchFromPraeceptaStore(RULE_EXECUTION_AUDIT_URL)));
+
+			executor.submit(() -> publishRuleExecutionAudit( EXECUTION_AUDIT_OPERATION_TYPE.POST_RULE_HAWK_EYE, buildPostRuleExecutionPoint(eachCriteriaStore, spanId, eachCriteria, ruleStore),  (String)ruleStore.fetchFromPraeceptaStore(RULE_EXECUTION_AUDIT_URL)));
 
 			resultCriteriaStores.add(eachCriteriaStore);
 
@@ -168,17 +170,10 @@ public class PraeceptaCriteriaExecutor {
 
 		PraeceptaExecutionAuditPoint executionTraceDtoWithPreRuleGrpDetails = new PraeceptaExecutionAuditPoint();
 
-		PraeceptaRuleGroupExecutionAuditPoint preRuleGroupExecutionAuditDetails = executionTraceDtoWithPreRuleGrpDetails
-				.getPreRuleGroupExecutionAuditDetails();
-
-		preRuleGroupExecutionAuditDetails.setRuleGroupInfo(getRuleGroupInfo(ruleGrpToUse));
-
-		preRuleGroupExecutionAuditDetails.setTraceId(traceId);
-
 		LocalDateTime ldt = LocalDateTime.now();
 		Date ruleGrpStartTime = addMinutesToDate(ldt, 0);
 
-		preRuleGroupExecutionAuditDetails.setStartTime(ruleGrpStartTime);
+		populatePreRuleGroupAuditDetails(traceId, ruleGrpToUse, executionTraceDtoWithPreRuleGrpDetails, ruleGrpStartTime);
 
 		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_GROUP_START_TIME, ruleGrpStartTime);
 
@@ -204,6 +199,8 @@ public class PraeceptaCriteriaExecutor {
 
 		postRuleGroupExecutionAuditDetails.setStartTime(ruleGrpStartTime);
 
+		populatePreRuleGroupAuditDetails(traceId, ruleGrpToUse, executionTraceDtoWithPostRuleGroupDetails, ruleGrpStartTime);
+
 		LocalDateTime ldt = LocalDateTime.now();
 
 		Date ruleGrpEndTime = addMinutesToDate(ldt, 0);
@@ -213,19 +210,37 @@ public class PraeceptaCriteriaExecutor {
 		List<PraeceptaRequestStore> resultCriteriaStores = (List<PraeceptaRequestStore>) ruleStore.fetchFromPraeceptaStore(CRITERIA_RULE_STORES);
 
 		List<PraeceptaRuleResult> ruleExecutionAuditPointList = new ArrayList<>();
-
+		AtomicInteger successRuleCount = new AtomicInteger(0);
+		AtomicInteger failureRuleCount = new AtomicInteger(0);
 		resultCriteriaStores.stream().forEach(praeceptaRequestStore->{
 			PraeceptaConditionResult result = captureConditionResultInfo(praeceptaRequestStore);
+			if(result.getResult().compareTo(PraeceptaConditionResult.CONDITION_RESULT.SATISFIED) == 0){
+				successRuleCount.incrementAndGet();
+			}else{
+				failureRuleCount.incrementAndGet();
+			}
 			List<PraeceptaActionResultDetails> allActionResultDetails = captureActionResultInfo(praeceptaRequestStore);
 			PraeceptaRuleResult praeceptaRuleResult = new PraeceptaRuleResult((String) praeceptaRequestStore.fetchFromPraeceptaStore(RULE_NAME), result, allActionResultDetails);
 			ruleExecutionAuditPointList.add(praeceptaRuleResult);
 		});
-
+		postRuleGroupExecutionAuditDetails.setFailureRulesCount(String.valueOf(failureRuleCount.get()));
+		postRuleGroupExecutionAuditDetails.setSuccessRulesCount(String.valueOf(successRuleCount.get()));
 		postRuleGroupExecutionAuditDetails.setRuleExecutionAuditPoints(ruleExecutionAuditPointList);
 
 		postRuleGroupExecutionAuditDetails.setEndTime(ruleGrpEndTime);
 
 		return executionTraceDtoWithPostRuleGroupDetails;
+	}
+
+	private static void populatePreRuleGroupAuditDetails(String traceId, PraeceptaRuleGroup ruleGrpToUse, PraeceptaExecutionAuditPoint executionTraceDtoWithPostRuleGroupDetails, Date ruleGrpStartTime) {
+		PraeceptaRuleGroupExecutionAuditPoint preRuleGroupExecutionAuditDetails = executionTraceDtoWithPostRuleGroupDetails
+				.getPreRuleGroupExecutionAuditDetails();
+
+		preRuleGroupExecutionAuditDetails.setRuleGroupInfo(getRuleGroupInfo(ruleGrpToUse));
+
+		preRuleGroupExecutionAuditDetails.setTraceId(traceId);
+
+		preRuleGroupExecutionAuditDetails.setStartTime(ruleGrpStartTime);
 	}
 
 	private static PraeceptaExecutionAuditPoint buildPreRuleExecutionPoint(PraeceptaRequestStore ruleStore, String spanId, PraeceptaCriteria criteriaStore) {
@@ -254,10 +269,15 @@ public class PraeceptaCriteriaExecutor {
 		preRuleExecutionAuditDetails.setStartTime(ruleStartTime);
 
 		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_START_TIME, ruleStartTime);
+
+		Date ruleGrpStartTime = (Date) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_GROUP_START_TIME);
+
+		populatePreRuleGroupAuditDetails(traceId, ruleGrpToUse, executionTraceDtoWithPreRuleDetails, ruleGrpStartTime);
+
 		return executionTraceDtoWithPreRuleDetails;
 	}
 
-	private static PraeceptaExecutionAuditPoint buildPostRuleExecutionPoint(PraeceptaRequestStore ruleStore, String spanId, PraeceptaCriteria criteriaStore) {
+	private static PraeceptaExecutionAuditPoint buildPostRuleExecutionPoint(PraeceptaRequestStore eachCriteriaStore, String spanId, PraeceptaCriteria criteriaStore, PraeceptaRequestStore ruleStore) {
 
 		String traceId = (String) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_TRACE_ID);
 
@@ -268,8 +288,8 @@ public class PraeceptaCriteriaExecutor {
 		PraeceptaRuleExecutionAuditPoint postRuleExecutionAuditDetails = executionTraceDtoWithPostRuleDetails
 				.getPostRuleExecutionAuditDetails();
 
-		PraeceptaConditionResult result = captureConditionResultInfo(ruleStore);
-		List<PraeceptaActionResultDetails> allActionResultDetails = captureActionResultInfo(ruleStore);
+		PraeceptaConditionResult result = captureConditionResultInfo(eachCriteriaStore);
+		List<PraeceptaActionResultDetails> allActionResultDetails = captureActionResultInfo(eachCriteriaStore);
 		PraeceptaRuleResult praeceptaRuleResult = new PraeceptaRuleResult(criteriaStore.getRuleName(), result, allActionResultDetails);
 
 		postRuleExecutionAuditDetails.setRuleExecutionAuditPoint(praeceptaRuleResult);
@@ -280,7 +300,11 @@ public class PraeceptaCriteriaExecutor {
 
 		postRuleExecutionAuditDetails.setSpanId(spanId);
 
-		Date ruleStartTime = (Date) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_START_TIME);
+		Date ruleStartTime = (Date) eachCriteriaStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_START_TIME);
+
+		Date ruleGrpStartTime = (Date) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_GROUP_START_TIME);
+
+		populatePreRuleGroupAuditDetails(traceId, ruleGrpToUse, executionTraceDtoWithPostRuleDetails, ruleGrpStartTime);
 
 		postRuleExecutionAuditDetails.setStartTime(ruleStartTime);
 
@@ -289,7 +313,7 @@ public class PraeceptaCriteriaExecutor {
 
 		postRuleExecutionAuditDetails.setEndTime(ruleEndTime);
 
-		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_END_TIME, ruleEndTime);
+		eachCriteriaStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_END_TIME, ruleEndTime);
 
 		return executionTraceDtoWithPostRuleDetails;
 	}

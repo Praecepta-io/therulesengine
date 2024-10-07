@@ -12,6 +12,10 @@ public class PraeceptaRuleGroupExecutionAuditPointEntity extends PraeceptaRuleGr
 	private String ruleGrpStartTime;
 	
 	private String ruleGrpEndTime;
+
+	private String failureRulesCount;
+
+	private String successRulesCount;
 	
 	public String getRuleGrpStartTime() {
 		return ruleGrpStartTime;
@@ -29,11 +33,28 @@ public class PraeceptaRuleGroupExecutionAuditPointEntity extends PraeceptaRuleGr
 		this.ruleGrpEndTime = ruleGrpEndTime;
 	}
 
+	public String getFailureRulesCount() {
+		return failureRulesCount;
+	}
+
+	public void setFailureRulesCount(String failureRulesCount) {
+		this.failureRulesCount = failureRulesCount;
+	}
+
+	public String getSuccessRulesCount() {
+		return successRulesCount;
+	}
+
+	public void setSuccessRulesCount(String successRulesCount) {
+		this.successRulesCount = successRulesCount;
+	}
+
 	@Override
 	public String toString() {
 		return "PraeceptaRuleGroupExecutionAuditPointEntity [ruleGrpStartTime=" + ruleGrpStartTime + ", ruleGrpEndTime="
 				+ ruleGrpEndTime + ", getRuleGroupInfo()=" + getRuleGroupInfo() + ", getOperationType()="
 				+ getOperationType() + ", getStartTime()=" + getStartTime() + ", getEndTime()=" + getEndTime()
+				+ ", getFailureRulesCount()=" + getFailureRulesCount()+ ", getSuccessRulesCount()=" + getSuccessRulesCount()
 				+ ", getTraceId()=" + getTraceId() + "]";
 	}
 }

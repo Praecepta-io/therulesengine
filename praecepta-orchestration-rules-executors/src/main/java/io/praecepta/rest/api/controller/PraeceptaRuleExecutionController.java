@@ -22,9 +22,13 @@ import io.praecepta.rules.hub.dao.models.PraeceptaRuleGroup;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpace;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpaceCompositeKey;
 import io.praecepta.rules.sidecars.enums.PraeceptaSideCarStoreType;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class PraeceptaRuleExecutionController implements IPraeceptaRuleExecutionController {
+
+	@Value("${praecepta.ruleexecution.auditservice.url}")
+	private String ruleExecutionAuditUrl;
 
 	@Autowired
 	IPraeceptaPivotalRulesHubManager pivotalRulesHubManager;
@@ -123,6 +127,7 @@ public class PraeceptaRuleExecutionController implements IPraeceptaRuleExecution
 		metaData.put(PraeceptaRuleGroupMetaData.NUMBER_OF_CRITERIAS.name(), praeceptaRuleGroup.getPraeceptaCriterias().size());
 
 		ruleRequestStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_GROUP_METADATA, metaData);
+		ruleRequestStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_EXECUTION_AUDIT_URL, ruleExecutionAuditUrl);
 
 		ruleExecutionEngine.performRuleEngineExecution(ruleRequestStore);
 		if(ruleRequestStore.fetchFromPraeceptaStore(PraeceptaSideCarStoreType.SIDCAR_OUTPUT) != null) {
