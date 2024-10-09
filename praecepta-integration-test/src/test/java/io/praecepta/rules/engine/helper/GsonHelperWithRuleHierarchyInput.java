@@ -18,11 +18,11 @@ public class GsonHelperWithRuleHierarchyInput {
 			"		\"version\" : \"1.3\"\r\n" + 
 			"	},\r\n" + 
 			"	\"ruleInput\" : \"sdfsdfsdfsdfsdfsd\"\r\n" + 
-//			"	\"ruleInput\" : \" {\"emp\":{\"name\":\"Raja\",\"company\":\"Broadridge\",\"id\":25},\"zip\":\"08512\",\"outerCompany\":\"Broadridge\",\"location\":\"Cranbury\"}  \"\r\n" + 
+//			"	\"ruleInput\" : \" {\"emp\":{\"name\":\"Raja\",\"company\":\"Xploretech\",\"id\":25},\"zip\":\"08512\",\"outerCompany\":\"Xploretech\",\"location\":\"Cranbury\"}  \"\r\n" + 
 			"\r\n" + 
 			"}";
 	
-	private static final String anotherJson = "{\"spaceKeyDetails\":{\"spaceName\":\"RBC\",\"clientId\":\"TRADE_EXECUTION\",\"appName\":\"RISK_CALCULATOR\"},\"rulGrpDetails\":{\"ruleGroupName\":\"STOP_TRADE_EXECUTION\",\"version\":\"1.3\"},\"ruleInput\":\"{\\\"emp\\\":{\\\"name\\\":\\\"Raja\\\",\\\"company\\\":\\\"Broadridge\\\",\\\"id\\\":25},\\\"zip\\\":\\\"08512\\\",\\\"outerCompany\\\":\\\"Broadridge\\\",\\\"location\\\":\\\"Cranbury\\\"}\"}";
+	private static final String anotherJson = "{\"spaceKeyDetails\":{\"spaceName\":\"RBC\",\"clientId\":\"TRADE_EXECUTION\",\"appName\":\"RISK_CALCULATOR\"},\"rulGrpDetails\":{\"ruleGroupName\":\"STOP_TRADE_EXECUTION\",\"version\":\"1.3\"},\"ruleInput\":\"{\\\"emp\\\":{\\\"name\\\":\\\"Raja\\\",\\\"company\\\":\\\"Xploretech\\\",\\\"id\\\":25},\\\"zip\\\":\\\"08512\\\",\\\"outerCompany\\\":\\\"Xploretech\\\",\\\"location\\\":\\\"Cranbury\\\"}\"}";
 	
 	public static void main(String[] args) {
 		
@@ -31,7 +31,7 @@ public class GsonHelperWithRuleHierarchyInput {
 		System.out.println(inputMap.get("spaceKeyDetails"));
 		System.out.println(inputMap.get("ruleInput"));
 		
-		inputMap.put("ruleInput", "{\"emp\":{\"name\":\"Raja\",\"company\":\"Broadridge\",\"id\":25},\"zip\":\"08512\",\"outerCompany\":\"Broadridge\",\"location\":\"Cranbury\"}");
+		inputMap.put("ruleInput", "{\"emp\":{\"name\":\"Raja\",\"company\":\"Xploretech\",\"id\":25},\"zip\":\"08512\",\"outerCompany\":\"Xploretech\",\"location\":\"Cranbury\"}");
 //		
 		System.out.println(GsonHelper.toJsonPreserveNumber(inputMap));
 		

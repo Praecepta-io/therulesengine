@@ -177,8 +177,8 @@ public class PraeceptaEndToEndRBCRuleGrpSidecarExecutionTest {
 				"   \"version\":\"" + ACTIVE_SPACE_VERSION+ "\"\r\n" +  
 				"   },\r\n" + 
 				"	\"ruleInputType\" : \"JSON\"," + 
-//				"   \"ruleInput\":\"{\\\"emp\\\":{\\\"name\\\":\\\"Raja\\\",\\\"company\\\":\\\"Broadridge\\\",\\\"id\\\":25},\\\"zip\\\":\\\"08512\\\",\\\"outerCompany\\\":\\\"Broadridge\\\",\\\"location\\\":\\\"Cranbury\\\"}\"\r\n" + 
-				"   \"ruleInput\":\"Rajasrikar Punugoti Broadridge    3221008512Investor Communication System Newark, New Jersey, 08512 \"\r\n" + 
+//				"   \"ruleInput\":\"{\\\"emp\\\":{\\\"name\\\":\\\"Raja\\\",\\\"company\\\":\\\"Xploretech\\\",\\\"id\\\":25},\\\"zip\\\":\\\"08512\\\",\\\"outerCompany\\\":\\\"Xploretech\\\",\\\"location\\\":\\\"Cranbury\\\"}\"\r\n" + 
+				"   \"ruleInput\":\"Rajasrikar Punugoti Xploretech    3221008512Investor Communication System Newark, New Jersey, 08512 \"\r\n" + 
 				"}";
 
 
@@ -191,11 +191,11 @@ public class PraeceptaEndToEndRBCRuleGrpSidecarExecutionTest {
 //				"	\"emp\":\r\n" + 
 //				"	{\r\n" + 
 //				"		\"name\":\"Raja\",\r\n" + 
-//				"		\"company\":\"Broadridge\",\r\n" + 
+//				"		\"company\":\"Xploretech\",\r\n" + 
 //				"		\"id\":25\r\n" + 
 //				"    },\r\n" + 
 //				"	\"zip\":\"08512\",\r\n" + 
-//				"	\"outerCompany\":\"Broadridge\",\r\n" + 
+//				"	\"outerCompany\":\"Xploretech\",\r\n" + 
 //				"	\"location\":\"Cranbury\"\r\n" + 
 //				"} ";
 	}

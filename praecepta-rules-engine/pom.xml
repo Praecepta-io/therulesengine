@@ -110,5 +110,18 @@
 			<version>${project.version}</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>io.praecepta.dao.elasticsearch</groupId>
+			<artifactId>praecepta-dao-elasticsearch</artifactId>
+			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 	</dependencies>
 </project>

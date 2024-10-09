@@ -17,9 +17,6 @@ public abstract class AbstractDao<KEY extends Serializable , ENTITY extends IBas
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractDao.class); 
 
-	/* (non-Javadoc)
-	 * @see com.broadridge.sps.gems.dao.IDAO#insert(com.broadridge.sps.gems.core.intf.IModel)
-	 */
 	@Override
 	public void insert(ENTITY entity) {
 		LOG.debug("Inside insert");

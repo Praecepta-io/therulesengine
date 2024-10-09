@@ -26,8 +26,9 @@ public class SimpleRuleGroupCreationRestClient {
                 (PraeceptaRestClientWrapper<RestTemplate>) simpleRestBuilder.buildClient();
 
 
-        String inputJson = "{\"ruleGroupName\":\"Simple Condition Group\",\"simpleConditionCriteriaInfos\":[{\"ruleName\":\"Age Validation\",\"conditionInfo\":{\"conditionInfoList\":[{\"attributeName\":\"age\",\"operatorType\":\"GREATER_THAN_NUMBER\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\"}]},\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}";
+        String inputJson = "{\"ruleGroupName\":\"Simple Condition Group\",\"ruleSpaceInfo\":{\"spaceName\":\"KOTAK\",\"clientId\":\"001\",\"appName\":\"App1\",\"version\":\"V1\"},\"simpleConditionCriteriaInfos\":[{\"ruleName\":\"Age Validation\",\"conditionInfo\":{\"conditionInfoList\":[{\"attributeName\":\"age\",\"operatorType\":\"GREATER_THAN_NUMBER\",\"valueToCompare\":\"40\",\"attributeToCompare\":\"\"}]},\"actionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"true\"}],\"failureActionList\":[{\"sourceValueAttributeName\":\"\",\"actionAttributeName\":\"Medical Test Required\",\"valueToAssign\":\"false\"}]}]}";
 
+        System.out.println(inputJson);
         Map<String,String> pathParams = new HashMap<>();
         pathParams.put("space","KOTAK");
         pathParams.put("client","001");
