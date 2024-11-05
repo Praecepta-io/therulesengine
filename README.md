@@ -1,6 +1,6 @@
 #### Author - Rajasrikar Rao Punugoti, Senior Director, Broadridge Financials - https://www.linkedin.com/in/rpunugoti/
 # Praecepta - The Rules Engine - https://www.praecepta.io/
-Efficient, Salable, Reliable and Cost Effective Orchestration Business Rules Engine for Polyglot Software Systems
+Efficient, Scalable, Reliable and Cost Effective Orchestration Business Rules Engine for Polyglot Software Systems
 
 <details open>
 <summary><h1>What is Praecepta</h1></summary>
