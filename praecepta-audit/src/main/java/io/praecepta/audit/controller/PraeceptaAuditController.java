@@ -49,10 +49,10 @@ public class PraeceptaAuditController implements IPraeceptaAuditController {
 			String clientId = (String) pathParams.get(PraeceptaAuditServiceConstants.PATH_PARAM_CLIENT_ID);
 			String appName = (String) pathParams.get(PraeceptaAuditServiceConstants.PATH_PARAM_APP_NAME);
 			String version = (String) pathParams.get(PraeceptaAuditServiceConstants.PATH_PARAM_VERSION);
-			String groupname = (String) pathParams.get(PraeceptaAuditServiceConstants.PATH_PARAM_RULEGROUPNAME);
+			String groupName = (String) pathParams.get(PraeceptaAuditServiceConstants.PATH_PARAM_RULEGROUPNAME);
 
 			requestStore.upsertToPraeceptaStore(PraeceptaWsRequestStoreType.WS_OUTPUT,
-					getRuleGroupAduitUsingSpaceInfo(spaceName, clientId, appName, version, groupname));
+					getRuleGroupAduitUsingSpaceInfo(spaceName, clientId, appName, version, groupName));
 
 			break;
 		case PraeceptaAuditServiceConstants.ADD_RULE_GROUP_AUDIT:
@@ -121,7 +121,7 @@ public class PraeceptaAuditController implements IPraeceptaAuditController {
 						PraeceptaExecutionAuditPoints.class);
 
 				requestStore.upsertToPraeceptaStore(PraeceptaWsRequestStoreType.WS_OUTPUT,
-						captureExectionAuditsForRuleGroup(addExecutionsSpaceName, addExecutionsClientId,
+						captureExecutionAuditsForRuleGroup(addExecutionsSpaceName, addExecutionsClientId,
 								addExecutionsAppName, addExecutionsVersion, addExecutionsGroupname,
 								ruleExecutionAuditPoints));
 
@@ -149,19 +149,19 @@ public class PraeceptaAuditController implements IPraeceptaAuditController {
 
 	@Override
 	public List<PraeceptaRuleSpaceAuditPoint> getRuleGroupAduitUsingSpaceInfo(String spaceName, String clientId,
-			String appName, String version, String groupname) {
+			String appName, String version, String groupName) {
 
 		return praeceptaAuditService.fetchRuleGroupAudit(spaceName,
-				clientId, appName, version, groupname);
+				clientId, appName, version, groupName);
 
 	}
 
 	@Override
 	public PraeceptaRuleSpaceAuditPoint captureAuditForRuleGroup(String spaceName, String clientId, String appName,
-			String version, String rulegroupname, PraeceptaRuleGroupAuditPoint ruleGroupAuditPoint) {
+			String version, String ruleGroupName, PraeceptaRuleGroupAuditPoint ruleGroupAuditPoint) {
 
 		PraeceptaRuleSpaceAuditPoint ruleAuditEntity = praeceptaAuditService.captureRuleGroupAudit(spaceName, clientId,
-				appName, version, rulegroupname, ruleGroupAuditPoint);
+				appName, version, ruleGroupName, ruleGroupAuditPoint);
 
 		return ruleAuditEntity;
 	}
@@ -177,20 +177,20 @@ public class PraeceptaAuditController implements IPraeceptaAuditController {
 
 	@Override
 	public PraeceptaExecutionAuditPoint captureExectionAuditForRuleGroup(String spaceName, String clientId, String appName, String version,
-			String groupname, PraeceptaExecutionAuditPoint ruleExecutionAuditPoint) {
+			String groupName, PraeceptaExecutionAuditPoint ruleExecutionAuditPoint) {
 
-		praeceptaExecutionAuditService.captureRuleGroupExecutionAudit(spaceName, clientId, appName, version, groupname, ruleExecutionAuditPoint);
+		praeceptaExecutionAuditService.captureRuleGroupExecutionAudit(spaceName, clientId, appName, version, groupName, ruleExecutionAuditPoint);
 
 		return ruleExecutionAuditPoint;
 	}
 
 	@Override
-	public PraeceptaExecutionAuditPoints captureExectionAuditsForRuleGroup(String spaceName, String clientId, String appName, String version,
-			String groupname, PraeceptaExecutionAuditPoints ruleExecutionAuditPoints) {
+	public PraeceptaExecutionAuditPoints captureExecutionAuditsForRuleGroup(String spaceName, String clientId, String appName, String version,
+			String groupName, PraeceptaExecutionAuditPoints ruleExecutionAuditPoints) {
 
 		Collection<PraeceptaExecutionAuditPoint> ruleExecutionAuditPointDtos =  ruleExecutionAuditPoints.getRuleExecutionAuditPoints();
 
-		praeceptaExecutionAuditService.captureRuleGroupExecutionAudits(spaceName, clientId, appName, version, groupname, ruleExecutionAuditPointDtos);
+		praeceptaExecutionAuditService.captureRuleGroupExecutionAudits(spaceName, clientId, appName, version, groupName, ruleExecutionAuditPointDtos);
 
 		return ruleExecutionAuditPoints;
 
@@ -198,9 +198,9 @@ public class PraeceptaAuditController implements IPraeceptaAuditController {
 
 	@Override
 	public PraeceptaExecutionAuditPoints getRuleGroupExecutionAudits(String spaceName, String clientId, String appName, String version,
-			String groupname) {
+			String groupName) {
 
-		return praeceptaExecutionAuditService.fetchRuleGroupExecutionAudit(spaceName, clientId, appName, version, groupname);
+		return praeceptaExecutionAuditService.fetchRuleGroupExecutionAudit(spaceName, clientId, appName, version, groupName);
 	}
 
 }

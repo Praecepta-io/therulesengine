@@ -29,7 +29,7 @@ public interface IPraeceptaRuleExecutionController extends IPraeceptaApiService{
 	@Consumes("application/json")
 	@Produces("application/json")
 	Object executeRule(@PathParam(value = "spacename")String spaceName, @PathParam(value = "clientid")String clientId, @PathParam(value = "appname")String appName, @PathParam(value = "version")String version,@PathParam(value = "groupname")String groupName,
-					   Map<String,Object> request );
+					   Object request );
 
 	@PraeceptaExposeAsRestServiceMethod(get = true, functionPath = "/disableRuleExecutor", methodName = ServiceAndMethodNames.RULE_EXECUTOR_DISABLE_METHOD_NAME)
 	@Operation(operationId = ServiceAndMethodNames.RULE_EXECUTOR_DISABLE_METHOD_NAME)

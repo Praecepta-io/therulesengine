@@ -35,10 +35,10 @@ public abstract class ConditionConfigSelector implements Condition {
 		if(!PraeceptaObjectHelper.isObjectEmpty(rulePersistantType) ) {
 			RULE_SET_UP_PERSISTANT_TYPE type = RULE_SET_UP_PERSISTANT_TYPE.valueOf(rulePersistantType);
 			
-			logger.info(" Ccomparing getPersistantType {} and RULE_SET_UP_PERSISTANT_TYPE of rulePersistantType {} ", getPersistantType(), type);
+			logger.info(" Comparing getPersistentType {} and RULE_SET_UP_PERSISTANT_TYPE of rulePersistentType {} ", getPersistantType(), type);
 			
 			if(getPersistantType() == type) {
-				logger.info(" Seletor Matched for Persistant Type ");
+				logger.info(" Selector Matched for Persistent Type ");
 				return true;
 			}
 		}

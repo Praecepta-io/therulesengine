@@ -70,7 +70,7 @@ public interface IPraeceptaAuditController extends IPraeceptaApiService{
 	@Path(PraeceptaAuditServiceConstants.ADD_RULE_GROUP_EXECUTION_AUDITS_PATH)
 	@Consumes(PraeceptaAuditServiceConstants.JSON_PRODUCE)
 	@Produces(PraeceptaAuditServiceConstants.JSON_PRODUCE)
-	public PraeceptaExecutionAuditPoints captureExectionAuditsForRuleGroup(@PathParam(value = "spacename")String spaceName,@PathParam(value = "clientid")String clientId,
+	public PraeceptaExecutionAuditPoints captureExecutionAuditsForRuleGroup(@PathParam(value = "spacename")String spaceName,@PathParam(value = "clientid")String clientId,
 			@PathParam(value = "appname")String appName,@PathParam(value = "version")String version, @PathParam(value = "groupname") String groupname,
 			PraeceptaExecutionAuditPoints ruleExecutionAuditPoints);
 //	

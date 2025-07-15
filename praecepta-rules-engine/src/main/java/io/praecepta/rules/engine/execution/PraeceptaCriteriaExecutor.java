@@ -17,6 +17,8 @@ import io.praecepta.rest.client.builder.PraeceptaRestClientBuilder;
 import io.praecepta.rest.client.config.PraeceptaWebServiceClientConfig;
 import io.praecepta.rest.client.dto.PraeceptaWsRequestResponseHolder;
 import io.praecepta.rules.actions.PraeceptaActionHolder;
+import io.praecepta.rules.engine.dataconverter.IpraeceptaDataTypeConverter;
+import io.praecepta.rules.engine.registry.PraeceptaDataTypeConvertorRegistry;
 import io.praecepta.rules.model.PraeceptaActionResultDetails;
 import io.praecepta.rules.model.PraeceptaConditionResult;
 import io.praecepta.rules.model.PraeceptaRuleResult;
@@ -50,6 +52,7 @@ import io.praecepta.rules.model.filter.PraeceptaSimpleCondition.ConditionValueHo
 import io.praecepta.rules.model.projection.PraeceptaActionDetails;
 import io.praecepta.rules.sidecars.enums.PraeceptaSideCarStoreType;
 import io.praecepta.rules.sidecars.to.PraeceptaSideCarDataHolder;
+import org.springframework.util.ObjectUtils;
 
 import static io.praecepta.rules.enums.PraeceptaRuleRequestStoreType.*;
 
@@ -105,6 +108,12 @@ public class PraeceptaCriteriaExecutor {
 		}
 
 		Object ruleRequestAsAMap = ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_AS_KEY_VALUE_PAIR);
+
+		if(ruleRequestAsAMap != null){
+			String inputMessage = (String)((Map)ruleRequestAsAMap).get("ruleInput");
+			if(inputMessage != null)
+			((Map)ruleRequestAsAMap).putAll(GsonHelper.toMapEntityPreserveNumber(inputMessage));
+		}
 
 		logger.info(" After Executing Pre Rule Group Side Car");
 
@@ -728,7 +737,7 @@ public class PraeceptaCriteriaExecutor {
 
 		Object toValue = null;
 
-		if(condition.getValueToCompare() != null){
+		if(!ObjectUtils.isEmpty(condition.getValueToCompare())){
 
 			toValue = condition.getValueToCompare();
 
@@ -738,6 +747,12 @@ public class PraeceptaCriteriaExecutor {
 
 		}
 
+		if(condition.getParameters() != null){
+			IpraeceptaDataTypeConverter dataTypeConverter = PraeceptaDataTypeConvertorRegistry.getInstance().getDataTypeConvertor((String) condition.getParameters().get("dataType"));
+			if(dataTypeConverter != null){
+				return dataTypeConverter.convert((String)toValue,null);
+			}
+		}
 		logger.info(" RHS Value Captured - {} ", toValue);
 		return toValue;
 	}

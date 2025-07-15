@@ -3,6 +3,7 @@ package io.praecepta.rules.sidecars.parser.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.praecepta.core.helper.GsonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,10 @@ public class PraeceptaFixedLengthParser implements IPraeceptaSideCarParser {
 
             logger.debug(" Side Car Holder Present in Fixed Length Parser");
 
-            String inputMessage = sideCarDataHolder.retriveInput();
+            Map<String,Object> input = GsonHelper.toMapEntityPreserveNumber(sideCarDataHolder.retriveInput());
+
+			String inputMessage = (String)input.get("ruleInput");
+
 
 			if (!PraeceptaObjectHelper.isObjectEmpty(inputMessage)) {
 
@@ -62,14 +66,14 @@ public class PraeceptaFixedLengthParser implements IPraeceptaSideCarParser {
 						if (!PraeceptaObjectHelper.isObjectEmpty(sideCarConfigs)) {
 
 							sideCarConfigs.keySet().forEach(key -> {
-								Map<String, Object> attributeMappingsForAKey = (Map<String, Object>) sideCarConfigs.get(key);
+								String attributeMappingsForAKey = (String) sideCarConfigs.get(key);
 
 								logger.info(" Attributes Mapping for Key - {} is - {}", key, attributeMappingsForAKey);
 
 								if(!PraeceptaObjectHelper.isObjectEmpty(attributeMappingsForAKey)) {
-									
-									Object startPos = attributeMappingsForAKey.get(START_POSITION);
-									Object endPos = attributeMappingsForAKey.get(END_POSITION);
+									String[] indexes = attributeMappingsForAKey.split(",");
+									String startPos = indexes[0];
+									String endPos = indexes[1];
 									
 									if(!PraeceptaObjectHelper.isObjectEmpty(startPos) && !PraeceptaObjectHelper.isObjectEmpty(endPos)) {
 										
@@ -79,15 +83,15 @@ public class PraeceptaFixedLengthParser implements IPraeceptaSideCarParser {
 										if (inputMessage.length() >= endPostionValue) {
 											
 											String message = inputMessage.substring(startPostionValue, endPostionValue).trim();
-											
-											if (attributeMappingsForAKey.get(DATA_TYPE) != null) {
+											outputMessage.put(key, message);
+											/*if (attributeMappingsForAKey.get(DATA_TYPE) != null) {
 												IpraeceptaDataTypeConverter dataTypeConverter = PraeceptaDataTypeConvertorRegistry
 														.getInstance()
 														.getDataTypeConvertor((String) attributeMappingsForAKey.get(DATA_TYPE));
 												outputMessage.put(key, dataTypeConverter.convert(message, attributeMappingsForAKey));
 											} else {
-												outputMessage.put(key, message);
-											}
+
+											}*/
 										}
 									}
 								}

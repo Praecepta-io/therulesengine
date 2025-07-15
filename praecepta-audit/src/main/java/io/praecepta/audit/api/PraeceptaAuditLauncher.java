@@ -16,7 +16,7 @@ public class PraeceptaAuditLauncher {
 	
 	public static void main( String[] args )
     {
-		System.setProperty("server.port", "8080");
+		System.setProperty("server.port", "8081");
 		
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(PraeceptaAuditSpringConfig.class);
 		

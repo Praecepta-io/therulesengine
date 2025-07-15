@@ -25,6 +25,7 @@ import io.praecepta.rules.sidecars.enums.PraeceptaSideCarStoreType;
 import org.springframework.beans.factory.annotation.Value;
 
 
+
 public class PraeceptaRuleExecutionController implements IPraeceptaRuleExecutionController {
 
 	@Value("${praecepta.ruleexecution.auditservice.url}")
@@ -66,7 +67,7 @@ public class PraeceptaRuleExecutionController implements IPraeceptaRuleExecution
 					LOG.info("Path Params: {}", pathParams);
 					requestStore.upsertToPraeceptaStore(PraeceptaWsRequestStoreType.WS_OUTPUT,
 							executeRule(spaceName, clientId, appName, version, groupName,
-									GsonHelper.toEntity((String) requestStore.fetchFromPraeceptaStore(PraeceptaWsRequestStoreType.WS_INPUT), Map.class)));
+									requestStore.fetchFromPraeceptaStore(PraeceptaWsRequestStoreType.WS_INPUT)));
 				}else{
 					requestStore.upsertToPraeceptaStore(PraeceptaWsRequestStoreType.WS_OUTPUT,"Rule Execution is Stopped");
 				}
@@ -92,17 +93,26 @@ public class PraeceptaRuleExecutionController implements IPraeceptaRuleExecution
 		return "Enable Rule Execution Successfully";
 	}
 	@Override
-	public Object executeRule(String spaceName, String clientId, String appName, String version,String groupName, Map<String,Object> request) {
+	public Object executeRule(String spaceName, String clientId, String appName, String version,String groupName, Object inputMessage) {
 
 		LOG.info("App Name: {} ", appName);
 		//PraeceptaRequestStore requestStore = new PraeceptaRequestStore();
-
+		Map<String,Object> request = new HashMap<>();
+		Map<String, Object>  spaceKeyDetails = new HashMap<>();
+		spaceKeyDetails.put("spaceName", spaceName);
+		spaceKeyDetails.put("clientId", clientId);
+		spaceKeyDetails.put("appName", appName);
+		spaceKeyDetails.put("version", version);
+		spaceKeyDetails.put("ruleGroupName",groupName);
 		request.put("spaceName", spaceName);
 		request.put("clientId", clientId);
 		request.put("appName", appName);
 		request.put("version", version);
 		request.put("ruleGroupName",groupName);
 
+		request.put("spaceKeyDetails", spaceKeyDetails);
+		request.put("ruleInput", inputMessage);
+		request.put("rulGrpDetails", spaceKeyDetails);
 		PraeceptaRequestStore ruleRequestStore = PraeceptaRuleExecutionEngineHelper.createRuleStore(GsonHelper.toJson(request), new HashMap<>());
 
 		// Convert Side Car Meta Data to Actual Side Cars Depending on the Type and SUb Type
