@@ -82,8 +82,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>io.praecepta.core</groupId>
-			<artifactId>praecepta-core</artifactId>
+			<groupId>io.praecepta.dao</groupId>
+			<artifactId>praecepta-dao</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.calcite/calcite-core -->

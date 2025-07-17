@@ -80,10 +80,14 @@ public abstract class PraeceptaAbstractDataCollector<COLLECTOR_CONFIG extends Ge
 		status = CONNECTION_STATUS.COLLECTOR_STARTED;
 		
 		Runnable runnable = () -> {
+			logger.info(" Start Data Collector Runnable with Stop Polling Flag Status "+stopPolling);
 		
 			int totalRecordsPolled = 0;
 			
 			while(!stopPolling) {
+				
+				logger.info(" Before triggering the Data Collection ");
+				
 				PraeceptaDataRecord dataRecord = performCollection();
 				
 				if(!PraeceptaObjectHelper.isObjectEmpty(dataRecord) && !PraeceptaObjectHelper.isObjectEmpty(dataRecord.getRecordEntries())) {
