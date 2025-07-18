@@ -132,7 +132,7 @@ public class PraeceptaCriteriaExecutor {
 		logger.debug(" Finishing Execute Criterias Of A RuleGroup");
 	}
 
-	private static PraeceptaExecutionAuditPoint buildPreRuleGrpExecutionPoint(PraeceptaRequestStore ruleStore) {
+	public static PraeceptaExecutionAuditPoint buildPreRuleGrpExecutionPoint(PraeceptaRequestStore ruleStore) {
 		
 		String traceId = (String) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_TRACE_ID);
 		
@@ -293,7 +293,7 @@ public class PraeceptaCriteriaExecutor {
 		return dateToReturn;
 	}
 
-	private static PraeceptaSideCarDataHolder<String, String> getInputDataHolder(String inputRequest) {
+	public static PraeceptaSideCarDataHolder<String, String> getInputDataHolder(String inputRequest) {
 		// Adding this Input Data Holder to Use it in the Sidecars
 		PraeceptaSideCarDataHolder<String, String> inputDataHolder = new PraeceptaSideCarDataHolder<>();
 		
@@ -395,7 +395,7 @@ public class PraeceptaCriteriaExecutor {
 		return valueAssignAction;
 	}
 
-	private static void performSideCarActivity(PraeceptaRequestStore criteriaRuleStore,
+	public static void performSideCarActivity(PraeceptaRequestStore criteriaRuleStore,
 			IPraeceptaInfoTrackerSideCarInjector sideCarToRun) {
 		
 		sideCarToRun.trackAndCaptureInitialInfo(criteriaRuleStore);

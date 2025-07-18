@@ -3,6 +3,7 @@ package io.praecepta.rules.sidecars.enums;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.praecepta.rules.sidecars.db.PraeceptaDatabaseSideCarInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ public enum PraeceptaDefaultSideCarClazzType {
 	
 	
 	PARSER (PraeceptaParserSideCarInjector.class), ENRICHER (PraeceptaEnricherSideCarInjector.class), 
-	FORMATTER (PraeceptaFormatterSideCarInjector.class);	
+	FORMATTER (PraeceptaFormatterSideCarInjector.class),DB(PraeceptaDatabaseSideCarInjector.class);
 
 	private final static Logger logger = LoggerFactory.getLogger(PraeceptaDefaultSideCarClazzType.class);
 	

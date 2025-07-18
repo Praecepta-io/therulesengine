@@ -36,7 +36,8 @@ public enum PraeceptaRuleRequestStoreType implements IPraeceptaRequestStoreType{
 	// This Section is for Group Of Rules
 	RULE_SPACE("ruleSpace"), 
 	RULE_GROUP_NAME("ruleGroupName"), 
-	RULE_GROUP("ruleGroup"), 
+	RULE_GROUP("ruleGroup"),
+	RULE_GROUP_TO_USE("ruleGroupToUse"),
 	RULE_GROUP_METADATA("ruleGroupMetadata"), 
 	RULES_REQUEST("rulesRequest"), 
 	RULES_REQUEST_TRACE_ID("rulesRequestTraceId"), 
