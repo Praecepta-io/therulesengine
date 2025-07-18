@@ -1,5 +1,6 @@
 package io.praecepta.data.collectors.common.collector;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +28,14 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 	private JdbcTemplate objJdbcTemplate;
 	
 	private String queryToExecute;
-	
+
+	private int currentOffset = 0;
+	private final int chunkSize = 20;
+
+
 	@Override
 	public void openCollectorConnection(PraeceptaDBInjestorConfig dbConfig) {
 		super.openCollectorConnection(dbConfig);
-		
 		initializeDBConnection(dbConfig);
 	}
 
@@ -85,18 +89,24 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 		if(getCollectorStatus() == null || getCollectorStatus() == CONNECTION_STATUS.INITIALIZED) {
 			throw new PraeceptaDataCollectorException("Perform Collector should be called only after Starting the Data Collector");
 		}
-		
-		List<Map<String, Object>> resultSetRowsFromDB =  objJdbcTemplate.queryForList(queryToExecute);
-		
-		LOG.info("After JDBC Template Query Execution is Done ");
+
+		String paginatedQuery = queryToExecute +
+				" OFFSET " + getCurrentOffset() + " ROWS FETCH NEXT " + chunkSize + " ROWS ONLY";
+
+		LOG.info("Executing paginated query: " + paginatedQuery);
+
+		List<Map<String, Object>> resultSetRowsFromDB = objJdbcTemplate.queryForList(paginatedQuery);
+
+		LOG.info("Fetched " + resultSetRowsFromDB.size() + " rows from DB");
+
 
 		if (!PraeceptaObjectHelper.isObjectEmpty(resultSetRowsFromDB)) {
 			
 			PraeceptaDataRecord dataRecord = new PraeceptaDataRecord(resultSetRowsFromDB.size());
 			resultSetRowsFromDB.forEach(resultSetRecord -> {
 				dataRecord.addRecordEntry(GsonHelper.fromMapToJsonPerseveNumber(resultSetRecord), null, null);
-
 			});
+			updateOffset(); // updating offset to read next batch of chunkSize
 			return dataRecord;
 		}
 		return null;
@@ -115,7 +125,14 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 		super.terminateDataCollector();
 		
 	}
-	
+
+	private int getCurrentOffset() {
+		return currentOffset;
+	}
+
+	private void updateOffset() {
+		currentOffset += chunkSize;
+	}
 
 	
 }

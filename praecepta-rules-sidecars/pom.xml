@@ -114,5 +114,11 @@
 			<artifactId>praecepta-rules-sidecars-to</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>io.praecepta.data.collectors</groupId>
+            <artifactId>praecepta-data-collectors</artifactId>
+            <version>1.0.3-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 	</dependencies>
 </project>
