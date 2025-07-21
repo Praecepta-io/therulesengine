@@ -9,9 +9,10 @@ import io.praecepta.data.collectors.common.IPraeceptaDataCollector;
 import io.praecepta.rules.engine.execution.PraeceptaBasicRuleExecutionEngine;
 import io.praecepta.rules.executor.manager.PraeceptaRulesExecutionManager;
 import io.praecepta.rules.executor.spring.kafka.config.PraeceptaRulesExecutorKafkaConfig;
+import io.praecepta.rules.hub.spring.config.PraeceptaRuleBuilderConfig;
 
 @Configuration
-@Import({ PraeceptaRulesExecutorKafkaConfig.class})
+@Import({ PraeceptaRuleBuilderConfig.class, PraeceptaRulesExecutorKafkaConfig.class})
 public class PraeceptaRulesExecutorConfig {
 	
 

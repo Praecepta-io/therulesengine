@@ -94,6 +94,12 @@ public abstract class PraeceptaAbstractDataCollector<COLLECTOR_CONFIG extends Ge
 					totalRecordsPolled++;
 					polledRecords.add(dataRecord);
 				}
+				
+				try {
+					Thread.sleep(500L);
+				} catch (InterruptedException e) {
+					logger.error("Exception While Sleeping ", e);
+				}
 			}
 			logger.info("Total Number of Records Polled By Data Collector --> {}", totalRecordsPolled);
 		};

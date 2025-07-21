@@ -2,6 +2,7 @@ package io.praecepta.data.collectors.common.collector;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.sql.DataSource;
 
@@ -9,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import io.praecepta.core.helper.GsonHelper;
 import io.praecepta.core.helper.PraeceptaObjectHelper;
@@ -26,7 +30,13 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 
 	private JdbcTemplate objJdbcTemplate;
 	
-	private String queryToExecute;
+	private String selctQueryProvided;
+	
+	private AtomicInteger currentOffset = new AtomicInteger(0);
+	
+	private Object obj = new Object();
+	
+	private int chunkSize = 5;
 	
 	@Override
 	public void openCollectorConnection(PraeceptaDBInjestorConfig dbConfig) {
@@ -44,7 +54,7 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 			try {
 				dataSource = initializeDataSource(dbConfigPropertis);
 
-				queryToExecute = dbConfigPropertis.get(PraeceptaDBDataConfigType.SELECT_QUERY.getElementName());
+				selctQueryProvided = dbConfigPropertis.get(PraeceptaDBDataConfigType.SELECT_QUERY.getElementName());
 
 			} catch (Exception e) {
 				LOG.error("error while initializing DataSource", e);
@@ -57,21 +67,34 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 		
 	}
 	
-	protected DriverManagerDataSource initializeDataSource(Map<String, String> dbConfigPropertis) throws Exception {
+	protected DataSource initializeDataSource(Map<String, String> dbConfigPropertis) throws Exception {
 
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-		dataSource.setDriverClassName(dbConfigPropertis.get(PraeceptaDBDataConfigType.DB_DRIVER.getElementName()));
-		dataSource.setUrl(dbConfigPropertis.get(PraeceptaDBDataConfigType.DB_URL.getElementName()));
-		dataSource.setUsername(dbConfigPropertis.get(PraeceptaDBDataConfigType.USERNAME.getElementName()));
-		dataSource.setPassword(dbConfigPropertis.get(PraeceptaDBDataConfigType.PASSWORD.getElementName()));
+		
+		HikariConfig config = new HikariConfig();
+		
+		config.setJdbcUrl(dbConfigPropertis.get(PraeceptaDBDataConfigType.DB_URL.getElementName())); // Change as per your Oracle setup
+        config.setUsername(dbConfigPropertis.get(PraeceptaDBDataConfigType.USERNAME.getElementName()));
+        config.setPassword(dbConfigPropertis.get(PraeceptaDBDataConfigType.PASSWORD.getElementName()));
+        config.setDriverClassName(dbConfigPropertis.get(PraeceptaDBDataConfigType.DB_DRIVER.getElementName()));
+        
+     // Optional tuning
+        config.setMaximumPoolSize(10);
+        config.setMinimumIdle(5);
+        config.setIdleTimeout(30000);
+        config.setConnectionTimeout(30000);
+        config.setPoolName("OracleHikariCP");
+        
+        DataSource dataSource = new HikariDataSource(config);
+        
 		if (!PraeceptaObjectHelper.isObjectNull(dataSource)) {
 			objJdbcTemplate = initializeJdbcTemplate(dataSource);
 		}
+		
 		return dataSource;
 	}
 
-	public JdbcTemplate initializeJdbcTemplate(DriverManagerDataSource dataSource) {
+	public JdbcTemplate initializeJdbcTemplate(DataSource dataSource) {
+		LOG.info(" initializing the Jdbc Template"); 
 		JdbcTemplate jdbcTemplate = new JdbcTemplate();
 		jdbcTemplate.setDataSource(dataSource);
 		return jdbcTemplate;
@@ -86,18 +109,26 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 			throw new PraeceptaDataCollectorException("Perform Collector should be called only after Starting the Data Collector");
 		}
 		
-		List<Map<String, Object>> resultSetRowsFromDB =  objJdbcTemplate.queryForList(queryToExecute);
+		synchronized (obj) {
 		
-		LOG.info("After JDBC Template Query Execution is Done ");
-
-		if (!PraeceptaObjectHelper.isObjectEmpty(resultSetRowsFromDB)) {
+			String queryToExecute = new StringBuilder().append(selctQueryProvided).append(" OFFSET ").append( currentOffset ).append(" ROWS FETCH NEXT ").append( chunkSize).append( " ROWS ONLY").toString();
 			
-			PraeceptaDataRecord dataRecord = new PraeceptaDataRecord(resultSetRowsFromDB.size());
-			resultSetRowsFromDB.forEach(resultSetRecord -> {
-				dataRecord.addRecordEntry(GsonHelper.fromMapToJsonPerseveNumber(resultSetRecord), null, null);
-
-			});
-			return dataRecord;
+			List<Map<String, Object>> resultSetRowsFromDB =  objJdbcTemplate.queryForList(queryToExecute);
+			
+			LOG.info("After JDBC Template Query Execution is Done ");
+	
+			if (!PraeceptaObjectHelper.isObjectEmpty(resultSetRowsFromDB)) {
+				
+				PraeceptaDataRecord dataRecord = new PraeceptaDataRecord(resultSetRowsFromDB.size());
+				resultSetRowsFromDB.forEach(resultSetRecord -> {
+					dataRecord.addRecordEntry(GsonHelper.fromMapToJsonPerseveNumber(resultSetRecord), null, null);
+	
+				});
+				
+				currentOffset.addAndGet(chunkSize);
+				
+				return dataRecord;
+			}
 		}
 		return null;
 	}
@@ -107,15 +138,13 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 		
 		if (!PraeceptaObjectHelper.isObjectNull(dataSource)) {
 			try {
-				((DriverManagerDataSource) dataSource).getConnection().close();
+				( dataSource).getConnection().close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Database Connection Close has an error  ", e);
 			}
 		}
 		super.terminateDataCollector();
 		
 	}
-	
-
 	
 }
