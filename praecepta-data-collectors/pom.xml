@@ -15,19 +15,19 @@
 	<name>praecepta-data-collectors</name>
 
 	<url>https://praecepta.io</url>
-	
+
 	<description>
         Praecepta is a modern and intelligent globally distributed multi tenanat business rules engine that’s easy to set up, deploy and manage. 
         Use Praecepta to easily build personalized complex business rules using out of the box services to productize and run across any technology or platform.
     </description>
-	
+
 	<scm>
 		<connection>scm:git:https://github.com/Praecepta-io/therulesengine</connection>
 		<developerConnection>scm:git:git@github.com:Praecepta-io/therulesengine.git</developerConnection>
 		<url>https://github.com/Praecepta-io/therulesengine</url>
 		<tag>HEAD</tag>
 	</scm>
-	
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/Praecepta-io/therulesengine/issues</url>
@@ -37,7 +37,7 @@
 		<system>GitHub Actions</system>
 		<url>https://github.com/Praecepta-io/therulesengine/actions</url>
 	</ciManagement>
-	
+
 	<licenses>
 		<license>
 			<name>Apache License 2.0</name>
@@ -45,7 +45,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<developers>
 		<developer>
 			<name>Rajasrikar Rao Punugoti</name>
@@ -73,7 +73,7 @@
 			</roles>
 		</developer>
 	</developers>
-	
+
 	<properties>
 
 		<apache.calcite.version>1.32.0</apache.calcite.version>
@@ -106,6 +106,17 @@
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-client</artifactId>
 			<version>${activemq.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<version>19.8.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<!-- <version>5.1.0</version> -->
+			<version>4.0.3</version>
 		</dependency>
 	</dependencies>
 </project>
