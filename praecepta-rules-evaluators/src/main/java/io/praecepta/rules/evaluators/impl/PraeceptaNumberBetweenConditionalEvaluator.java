@@ -14,8 +14,8 @@ public class PraeceptaNumberBetweenConditionalEvaluator<INPUT extends PraeceptaS
 		
 		if(checkValidationStatus(input)) {
 			if(input.getConditionValueHolder().getToValue() != null && input.getConditionValueHolder().getFromValue() != null) {
-				return new BigDecimal(input.getConditionValueHolder().getToValue().toString()).compareTo(new BigDecimal(input.getConditionValueHolder().getFromValue().toString())) < 0
-						&& new BigDecimal(input.getParameters().get("endValue").toString()).compareTo(new BigDecimal(input.getConditionValueHolder().getFromValue().toString())) > 0;
+				return new BigDecimal(input.getConditionValueHolder().getToValue().toString()).compareTo(new BigDecimal(input.getConditionValueHolder().getFromValue().toString())) <= 0
+						&& new BigDecimal(input.getParameters().get("endValue").toString()).compareTo(new BigDecimal(input.getConditionValueHolder().getFromValue().toString())) >= 0;
 			}
 		}
 		return false;
