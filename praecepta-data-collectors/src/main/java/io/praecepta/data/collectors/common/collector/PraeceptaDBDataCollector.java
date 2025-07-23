@@ -36,7 +36,7 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 	
 	private Object obj = new Object();
 	
-	private int chunkSize = 5;
+	private int chunkSize = 500;
 	
 	@Override
 	public void openCollectorConnection(PraeceptaDBInjestorConfig dbConfig) {

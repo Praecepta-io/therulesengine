@@ -3,7 +3,9 @@ package io.praecepta.rules.executor.inspira.spring.config;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
-
+import io.praecepta.core.data.intf.IPraeceptaDataProcessor;
+import io.praecepta.data.processor.impl.PraeceptaDBDataProcessor;
+import io.praecepta.rules.executor.inspira.manager.PraeceptaInspiraRulesExecutionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,32 +33,19 @@ import static io.praecepta.rules.engine.helper.PraeceptaRuleDetailCaptureHelper.
 public class PraeceptaInspiraRulesExecutorConfig {
 	
 	private final static Logger logger = LoggerFactory.getLogger(PraeceptaInspiraRulesExecutorConfig.class);
-	
+
+	private final static String IS_BATCH_PROCESSING_ENABLED="batchProcessingRequired";
+	private static final String DEFAULT_BATCH_FLAG = "false";
+
 	@Autowired
 	private Environment env;
 
 	@Bean(name = "dataCollector")
 	public IPraeceptaDataCollector<PraeceptaDBInjestorConfig> getDataCollector(){
 
-
 		IPraeceptaDataCollector<PraeceptaDBInjestorConfig> dbCollector = new PraeceptaDBDataCollector();
 		
-		PraeceptaDBInjestorConfig dbConfig = new PraeceptaDBInjestorConfig();
-		dbConfig.addConfigElement(PraeceptaDBDataConfigType.DB_DRIVER, COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
-				getConfigPropName(PraeceptaDBDataConfigType.DB_DRIVER.getElementName())
-				);
-		
-		dbConfig.addConfigElement(PraeceptaDBDataConfigType.DB_URL, COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
-				getConfigPropName(PraeceptaDBDataConfigType.DB_URL.getElementName())
-				);
-		
-		dbConfig.addConfigElement(PraeceptaDBDataConfigType.USERNAME, COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
-				getConfigPropName(PraeceptaDBDataConfigType.USERNAME.getElementName())
-				);
-		
-		dbConfig.addConfigElement(PraeceptaDBDataConfigType.PASSWORD, COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
-				getConfigPropName(PraeceptaDBDataConfigType.PASSWORD.getElementName())
-				);
+		PraeceptaDBInjestorConfig dbConfig = buildDBConfig();
 		
 		dbConfig.addNonMandatoryConfigElements(PraeceptaDBDataConfigType.SELECT_QUERY.getElementName(), COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
 				getConfigPropName(PraeceptaDBDataConfigType.SELECT_QUERY.getElementName())
@@ -65,6 +54,28 @@ public class PraeceptaInspiraRulesExecutorConfig {
 		dbCollector.openCollectorConnection(dbConfig);
 		
 		return dbCollector;
+	}
+	@Bean(name = "dataProcessor")
+	public IPraeceptaDataProcessor<PraeceptaDBInjestorConfig> getDataProcessor(){
+
+		String batchProcessingRequired = env.getProperty(IS_BATCH_PROCESSING_ENABLED,DEFAULT_BATCH_FLAG);
+
+		if (!Boolean.parseBoolean(batchProcessingRequired)) {
+			logger.info("Batch processing not enabled");
+			return null;
+		}
+
+		PraeceptaDBDataProcessor dbProcessor = new PraeceptaDBDataProcessor();
+
+		PraeceptaDBInjestorConfig dbConfig = buildDBConfig();
+
+		dbConfig.addNonMandatoryConfigElements(PraeceptaDBDataConfigType.INSERT_QUERY.getElementName(), COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
+				getConfigPropName(PraeceptaDBDataConfigType.INSERT_QUERY.getElementName())
+		);
+
+		dbProcessor.initializeProcessor(dbConfig);
+
+		return dbProcessor;
 	}
 	
 	private String getConfigPropName(String configPropertyKey) {
@@ -81,8 +92,8 @@ public class PraeceptaInspiraRulesExecutorConfig {
 	}
 	
 	@Bean(name = "rulesExecutionManager")
-	public PraeceptaRulesExecutionManager getRulesExecutionManager(IPraeceptaDataCollector<PraeceptaDBInjestorConfig> dataCollector, PraeceptaBasicRuleExecutionEngine rulesExecutionEngine) {
-		PraeceptaRulesExecutionManager manager = new PraeceptaRulesExecutionManager(dataCollector, rulesExecutionEngine);
+	public PraeceptaRulesExecutionManager getRulesExecutionManager(IPraeceptaDataCollector<PraeceptaDBInjestorConfig> dataCollector, PraeceptaBasicRuleExecutionEngine rulesExecutionEngine,IPraeceptaDataProcessor dataProcessor) {
+		PraeceptaRulesExecutionManager manager = new PraeceptaInspiraRulesExecutionManager(dataCollector, rulesExecutionEngine,dataProcessor);
 		
 		// Capture Rule Space Details thru a System Param
 		PraeceptaDictionaryData inputEnricher = new PraeceptaDictionaryData();
@@ -127,5 +138,27 @@ public class PraeceptaInspiraRulesExecutorConfig {
 		
 		
 		return manager;
+	}
+
+	private PraeceptaDBInjestorConfig buildDBConfig() {
+		PraeceptaDBInjestorConfig dbConfig = new PraeceptaDBInjestorConfig();
+
+		dbConfig.addConfigElement(PraeceptaDBDataConfigType.DB_DRIVER, COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
+				getConfigPropName(PraeceptaDBDataConfigType.DB_DRIVER.getElementName())
+		);
+
+		dbConfig.addConfigElement(PraeceptaDBDataConfigType.DB_URL, COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
+				getConfigPropName(PraeceptaDBDataConfigType.DB_URL.getElementName())
+		);
+
+		dbConfig.addConfigElement(PraeceptaDBDataConfigType.USERNAME, COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
+				getConfigPropName(PraeceptaDBDataConfigType.USERNAME.getElementName())
+		);
+
+		dbConfig.addConfigElement(PraeceptaDBDataConfigType.PASSWORD, COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.STRING,
+				getConfigPropName(PraeceptaDBDataConfigType.PASSWORD.getElementName())
+		);
+
+		return dbConfig;
 	}
 }
