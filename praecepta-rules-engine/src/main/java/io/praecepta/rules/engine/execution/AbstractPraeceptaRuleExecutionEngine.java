@@ -1,5 +1,6 @@
 package io.praecepta.rules.engine.execution;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -7,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.praecepta.core.cocurrent.PraeceptaBatchProcessor;
+import io.praecepta.core.data.intf.IPraeceptaDataProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +31,8 @@ import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpace;
 import io.praecepta.rules.hub.dao.models.PraeceptaRuleSpaceCompositeKey;
 import io.praecepta.rules.model.PraeceptaCriteria;
 import io.praecepta.rules.model.projection.PraeceptaActionDetails;
+
+import static io.praecepta.rules.engine.helper.PraeceptaRuleDetailCaptureHelper.SPACE_NAME;
 
 /**
  * 
@@ -195,10 +200,23 @@ public abstract class AbstractPraeceptaRuleExecutionEngine
 		//to trigger configured Rule Group actions on success/failure
 		triggerRuleGroupActions(ruleStore);
 
+        //to trigger batch processor
+		addBatchDataToProcessor(ruleStore);
+
 		logger.debug("Exiting performRuleEngineExecution ");
 
 	}
 
+	protected void addBatchDataToProcessor(PraeceptaRequestStore ruleStore) {
+		PraeceptaBatchProcessor batchProcessor =
+				(PraeceptaBatchProcessor) ruleStore.fetchFromPraeceptaStore(
+						PraeceptaRuleRequestStoreType.RULE_GROUP_EXECUTION_BATCH_PROCESSOR
+				);
+
+		if (batchProcessor != null) {
+			batchProcessor.addData(ruleStore);
+		}
+	}
 	protected abstract void triggerRules(PraeceptaRequestStore ruleStore);
 	
 	protected abstract void enrichRuleStoreForExecution(PraeceptaRequestStore ruleStore);

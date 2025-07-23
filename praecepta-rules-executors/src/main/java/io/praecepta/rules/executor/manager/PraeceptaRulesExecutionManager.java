@@ -3,7 +3,6 @@ package io.praecepta.rules.executor.manager;
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.function.BiFunction;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,9 +26,9 @@ public class PraeceptaRulesExecutionManager {
 	
 	private PraeceptaDictionaryData magnifyingLense;
 	private BiFunction<RecordEntry, PraeceptaDictionaryData, RecordEntry> inputMagnifier;
-	
+
 	private PraeceptaExecutor executore = new PraeceptaExecutor(3);
-	
+
 	public PraeceptaRulesExecutionManager(IPraeceptaDataCollector<?> dataCollector,PraeceptaBasicRuleExecutionEngine rulesExecutionEngine) {
 		this.dataCollector=dataCollector;
 		this.rulesExecutionEngine=rulesExecutionEngine;
@@ -105,7 +104,7 @@ public class PraeceptaRulesExecutionManager {
 		}
 	}
 
-	private PraeceptaRequestStore createRuleStore(RecordEntry record) {
+	public PraeceptaRequestStore createRuleStore(RecordEntry record) {
 		
 		logger.info(" Creating Rule Request Store for Record Entry --> {}  ", record);
 		
@@ -119,7 +118,6 @@ public class PraeceptaRulesExecutionManager {
 			if(ruleRequestStore != null) {
 				PraeceptaSideCarHelper.convertSideCarMetadataToSideCarsForAStore(ruleRequestStore);
 			}
-			
 		}
 		
 		return ruleRequestStore;

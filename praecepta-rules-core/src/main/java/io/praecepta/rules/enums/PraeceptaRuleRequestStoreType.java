@@ -79,6 +79,7 @@ public enum PraeceptaRuleRequestStoreType implements IPraeceptaRequestStoreType{
 	SIDCAR_OUTPUT("SideCarOutput"),
 	
 	RULE_EXECUTION_ENGINE("ruleExecutionEngine"),
+	RULE_GROUP_EXECUTION_BATCH_PROCESSOR("ruleGrpExecBatchProcessor"),
 	;
 
 	private PraeceptaRuleRequestStoreType(String rulesProcessingAttributeName) {
