@@ -14,5 +14,10 @@ public class PraeceptaDictionaryData {
 	public void setDictionaryDetails(Map<String, Object> dictionaryDetails) {
 		this.dictionaryDetails = dictionaryDetails;
 	}
+
+	@Override
+	public String toString() {
+		return "PraeceptaDictionaryData [dictionaryDetails=" + dictionaryDetails + "]";
+	}
 	
 }

@@ -38,7 +38,7 @@ public class PraeceptaNumberEqualConditionalEvaluator<INPUT extends PraeceptaSim
 				 validLHSType =isValidBigDecimalNumber(valueHolder.getFromValue().toString());
 			}
 			if(!(valueHolder.getToValue() instanceof Number)  && valueHolder.getToValue() instanceof String) {
-				 validRHSType =isValidBigDecimalNumber(valueHolder.getFromValue().toString());
+				 validRHSType =isValidBigDecimalNumber(valueHolder.getToValue().toString());
 			}
 			
 			if(validLHSType && validRHSType) return true;

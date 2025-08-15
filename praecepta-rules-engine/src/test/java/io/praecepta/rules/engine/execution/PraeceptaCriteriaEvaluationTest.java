@@ -99,7 +99,7 @@ public class PraeceptaCriteriaEvaluationTest {
 		
 		PraeceptaSimpleCondition condition1 = new PraeceptaSimpleCondition("name", ConditionOperatorType.EQUAL_CHARS, new ConditionValueHolder<String>("Raja", "Raja"));
 		PraeceptaSimpleCondition condition2 = new PraeceptaSimpleCondition("id", ConditionOperatorType.LESS_THAN_NUMBER, new ConditionValueHolder<Integer>(10, 65));
-		PraeceptaSimpleCondition condition3 = new PraeceptaSimpleCondition("company", ConditionOperatorType.NOT_EQUAL_CHARS, new ConditionValueHolder<String>("zzz", "RSN"));
+		PraeceptaSimpleCondition condition3 = new PraeceptaSimpleCondition("company", ConditionOperatorType.NOT_EQUAL_CHARS, new ConditionValueHolder<String>("RSN", "RSN"));
 		
 		
 		condition1.setNextConditionInfo(JoinOperatorType.AND, condition2);
@@ -128,7 +128,7 @@ public class PraeceptaCriteriaEvaluationTest {
 // Multi Condition 2 - (name = "xyz" or id = 90) ) 
 		
 		PraeceptaSimpleCondition secondSetCondition1 = new PraeceptaSimpleCondition("name", ConditionOperatorType.EQUAL_CHARS, new ConditionValueHolder<String>("xyz", "zyx"));
-		PraeceptaSimpleCondition secondSetCondition2 = new PraeceptaSimpleCondition("id", ConditionOperatorType.EQUAL_NUMBER, new ConditionValueHolder<Integer>(10, 90));
+		PraeceptaSimpleCondition secondSetCondition2 = new PraeceptaSimpleCondition("id", ConditionOperatorType.EQUAL_NUMBER, new ConditionValueHolder<Integer>(90, 90));
 		
 		secondSetCondition1.setNextConditionInfo(JoinOperatorType.OR, secondSetCondition2);
 
@@ -231,10 +231,18 @@ public class PraeceptaCriteriaEvaluationTest {
 
 			if (evaluator != null) {
 				
+				ConditionValueHolder  conditionValueHolder = null;
+				
+				if(simpleCondition.getConditionValueHolder() != null) {
+					conditionValueHolder = simpleCondition.getConditionValueHolder();
+				} else {
 				// Build the Value Holder Here 
-				buildConditionValueHolder(simpleCondition, ruleStore);
+				  conditionValueHolder = buildConditionValueHolder(simpleCondition, ruleStore);
+				}
+				
+				PraeceptaSimpleCondition clonedSimpleCondition = new PraeceptaSimpleCondition(conditionOperator, conditionValueHolder, simpleCondition.getParameters());
 
-				simpleConditionResult = evaluator.evaluateTheCondition(simpleCondition);
+				simpleConditionResult = evaluator.evaluateTheCondition(clonedSimpleCondition);
 			}
 			
 		}
@@ -357,9 +365,11 @@ public class PraeceptaCriteriaEvaluationTest {
 	}
 	
 	@SuppressWarnings("unused")
-	public static void buildConditionValueHolder(PraeceptaSimpleCondition condition, PraeceptaRequestStore ruleStore){
+	public static ConditionValueHolder buildConditionValueHolder(PraeceptaSimpleCondition condition, PraeceptaRequestStore ruleStore){
 		
 		logger.info(" Building Condition value Holder ");
+		
+		ConditionValueHolder conditionValueHolder = null;
 		
 		
 		if(!PraeceptaObjectHelper.isObjectEmpty(ruleStore)) {
@@ -384,14 +394,14 @@ public class PraeceptaCriteriaEvaluationTest {
 				
 				logger.info(" RHS Value - {}", toValue);
 				
-				ConditionValueHolder conditionValueHolder = new ConditionValueHolder(fromValue, toValue);
+				conditionValueHolder = new ConditionValueHolder(fromValue, toValue);
 				
-				condition.setConditionValueHolder(conditionValueHolder);
+//				condition.setConditionValueHolder(conditionValueHolder);
 			
 			}
 		}
 		
-//		return conditionValueHolder;
+		return conditionValueHolder;
 	}
 
 	public static Object deriveLhsValue(PraeceptaSimpleCondition condition, Map<String, Object> requestMap) {

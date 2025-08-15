@@ -1,30 +1,29 @@
 package io.praecepta.data.injestors.common.impl;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.LinkedBlockingDeque;
 
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import io.praecepta.core.helper.GsonHelper;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import io.praecepta.core.data.PraeceptaDictionaryData;
 import io.praecepta.core.helper.PraeceptaObjectHelper;
-import io.praecepta.data.collectors.common.dto.PraeceptaDataRecord;
-import io.praecepta.data.collectors.common.dto.PraeceptaDataRecord.RecordEntry;
-import io.praecepta.data.configs.common.GenericAbstractPraeceptaDataConfig;
 import io.praecepta.data.configs.common.db.PraeceptaDBDataConfigType;
+import io.praecepta.data.configs.common.db.PraeceptaDBInjestorConfig;
 import io.praecepta.data.configs.common.enums.CONNECTION_STATUS;
 import io.praecepta.data.injestor.common.exception.PraeceptaDataInjestorException;
-import io.praecepta.data.injestors.common.enums.RULE_GROUP_INFO_KEYS;
 
-public class PraeceptaDBDataInjestor<DB_CONFIG extends GenericAbstractPraeceptaDataConfig>
-		extends PraeceptaAbstractDataInjestor<DB_CONFIG> {
+public class PraeceptaDBDataInjestor
+		extends PraeceptaAbstractDataInjestor<PraeceptaDBInjestorConfig, Collection<PraeceptaDictionaryData>> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(PraeceptaDBDataInjestor.class);
 
@@ -32,12 +31,12 @@ public class PraeceptaDBDataInjestor<DB_CONFIG extends GenericAbstractPraeceptaD
 
 	private JdbcTemplate objJdbcTemplate;
 
-	private String QUERY_TO_INSERT;
-	private String DEFAULT_QUERY="INSERT INTO `praecepta`.`rule_group_status_info` ( `RULE_GROUP_ID`, `RULE_GROUP_NAME`, `RULE_SPACE_NAME`, `APP_NAME`, `CLIENT_NAME`, `VERSION`, `RESPONSE`, `RESPONSE_METADATA`, `RULE_GROUP_EXECUTION_STATUS`, `CREATED_DATE`) VALUES (?, ?, ?, ?,?,?, ?, ?, ?, NOW())";
+	private String insertQuery;
 
+	private String attributeNamesToInsert;
 
 	@Override
-	public void openInjestorConnection(DB_CONFIG dbInjestorConfig) {
+	public void openInjestorConnection(PraeceptaDBInjestorConfig dbInjestorConfig) {
 
 		LOG.info("Before  establishing  connection for DB data injestor");
 
@@ -50,7 +49,7 @@ public class PraeceptaDBDataInjestor<DB_CONFIG extends GenericAbstractPraeceptaD
 		}
 	}
 
-	protected void initialize(DB_CONFIG dbInjestorConfig) throws Exception {
+	protected void initialize(PraeceptaDBInjestorConfig dbInjestorConfig) throws Exception {
 
 		LOG.info("Before initializing DB data injestor");
 
@@ -63,8 +62,10 @@ public class PraeceptaDBDataInjestor<DB_CONFIG extends GenericAbstractPraeceptaD
 			try {
 				dataSource = initializeDataSource(dbConfigPropertis);
 
-				QUERY_TO_INSERT = dbConfigPropertis.get(PraeceptaDBDataConfigType.INSERT_QUERY.getElementName());
-
+				insertQuery = dbConfigPropertis.get(PraeceptaDBDataConfigType.INSERT_QUERY.getElementName());
+				
+				attributeNamesToInsert = dbConfigPropertis.get(PraeceptaDBDataConfigType.INSERT_ATTRIBUTE_NAMES.getElementName());
+				
 			} catch (Exception e) {
 				LOG.error("error while initializing DataSource", e);
 				throw e;
@@ -79,12 +80,15 @@ public class PraeceptaDBDataInjestor<DB_CONFIG extends GenericAbstractPraeceptaD
 	}
 
 	@Override
-	public void injestData(PraeceptaDataRecord dataRecord) {
+	public void injestData(Collection<PraeceptaDictionaryData> dataRecordsToInsert) {
 
 		LOG.info("start processing data injest");
 
-		if (dataRecord == null) {
-			throw new PraeceptaDataInjestorException("Data Record object found null");
+		if (PraeceptaObjectHelper.isObjectNull(dataRecordsToInsert)) {
+			throw new PraeceptaDataInjestorException("There are no Data Records to insert");
+		} else {
+			
+			LOG.debug("Number of records to Insert --> {}", dataRecordsToInsert.size());
 		}
 
 		if (getInjestorStatus() == null || getInjestorStatus() == CONNECTION_STATUS.INITIALIZED) {
@@ -96,89 +100,101 @@ public class PraeceptaDBDataInjestor<DB_CONFIG extends GenericAbstractPraeceptaD
 			throw new PraeceptaDataInjestorException("Datasource should be initialized to perform InjestData");
 		}
 
-		if (PraeceptaObjectHelper.isObjectEmpty(getQuery())) {
-			LOG.info("Insert query from action configuration found null/empty,hence using default query");
-			QUERY_TO_INSERT=DEFAULT_QUERY;
+		if (PraeceptaObjectHelper.isObjectEmpty(insertQuery)) {
+			LOG.warn("Insert query from action configuration found null/empty,hence no insertion required");
+			return;
+		} else {
+			LOG.debug("Insert query to use --> {}", insertQuery);
 		}
-
-		LinkedBlockingDeque<RecordEntry> recordEntries = dataRecord.getRecordEntries();
-
-		while (recordEntries != null && !PraeceptaObjectHelper.isObjectEmpty(recordEntries)) {
-
-			RecordEntry recordDataObj = recordEntries.poll();
-
-			LOG.info("Before injesting data ");
+		
+		if (PraeceptaObjectHelper.isObjectEmpty(attributeNamesToInsert)) {
+			LOG.warn("Insert Attribute names are not provided, insertion cannot be performed.");
+			return;
+		} else {
+			LOG.debug("Columns Names to use --> {}", attributeNamesToInsert);
+		}
+		
+		String[] columnNames = attributeNamesToInsert.split("\\|");
+		
+		if(columnNames.length > 0) {
 
 			try {
-				performInjestData(recordDataObj);
+				performInjestData(columnNames, dataRecordsToInsert);
 			} catch (Exception e) {
-				LOG.error("error while inserting data to table");
+				LOG.error("error while inserting data to table ", e);
 			}
-			LOG.info("Done injesting data ");
 		}
+
 	}
 
 	@Override
 	public void terminateDataInjestor() {
+		LOG.info(" Initiated DB Injecstor Termination ");
 
 		if (!PraeceptaObjectHelper.isObjectNull(dataSource)) {
 			try {
-				((DriverManagerDataSource) dataSource).getConnection().close();
+				( dataSource).getConnection().close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Database Connection Close has an error  ", e);
 			}
 		}
+		super.terminateDataInjestor();
 
 	}
 
-	protected DriverManagerDataSource initializeDataSource(Map<String, String> dbConfigPropertis) throws Exception {
+	protected DataSource initializeDataSource(Map<String, String> dbConfigPropertis) throws Exception {
 
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-		dataSource.setDriverClassName(dbConfigPropertis.get(PraeceptaDBDataConfigType.DB_DRIVER.getElementName()));
-		dataSource.setUrl(dbConfigPropertis.get(PraeceptaDBDataConfigType.DB_URL.getElementName()));
-		dataSource.setUsername(dbConfigPropertis.get(PraeceptaDBDataConfigType.USERNAME.getElementName()));
-		dataSource.setPassword(dbConfigPropertis.get(PraeceptaDBDataConfigType.PASSWORD.getElementName()));
+		HikariConfig config = new HikariConfig();
+		
+		config.setJdbcUrl(dbConfigPropertis.get(PraeceptaDBDataConfigType.DB_URL.getElementName())); // Change as per your Oracle setup
+        config.setUsername(dbConfigPropertis.get(PraeceptaDBDataConfigType.USERNAME.getElementName()));
+        config.setPassword(dbConfigPropertis.get(PraeceptaDBDataConfigType.PASSWORD.getElementName()));
+        config.setDriverClassName(dbConfigPropertis.get(PraeceptaDBDataConfigType.DB_DRIVER.getElementName()));
+        
+     // Optional tuning
+        config.setMaximumPoolSize(100);
+        config.setMinimumIdle(5);
+        config.setIdleTimeout(30000);
+        config.setConnectionTimeout(30000);
+        config.setPoolName("OracleHikariCP");
+        
+        DataSource dataSource = new HikariDataSource(config);
+        
 		if (!PraeceptaObjectHelper.isObjectNull(dataSource)) {
 			objJdbcTemplate = initializeJdbcTemplate(dataSource);
 		}
 		return dataSource;
 	}
 
-	public JdbcTemplate initializeJdbcTemplate(DriverManagerDataSource dataSource) {
+	public JdbcTemplate initializeJdbcTemplate(DataSource dataSource) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate();
 		jdbcTemplate.setDataSource(dataSource);
 		return jdbcTemplate;
 	}
 	
-
-	private void performInjestData(RecordEntry recordDataObj) throws SQLException {
-		LOG.info("Before inserting data to db");
+	protected void performInjestData(String[] columnNames, Collection<PraeceptaDictionaryData> dataRecordsToInsert) throws SQLException {
 		
+		LOG.debug(" Inserting the records Size ->"+dataRecordsToInsert.size());
 		
-		Map<String,Object> responseMetaData=recordDataObj.getMetaData();
+		List<Object[]> batchArgs = new ArrayList<>();
+		
+		dataRecordsToInsert.stream().forEach( eachDictionaryData -> {
+			
+			List<Object> oneRowData = new ArrayList<>();
+			
+			for(int i=0; i < columnNames.length; i++) {
+				oneRowData.add(eachDictionaryData.getDictionaryDetails().get(columnNames[i]));
+			}
+			 
+			 batchArgs.add(oneRowData.toArray());
+		});
+		
+		LOG.debug(" Batch Args "+batchArgs);
+		int[] updateCounts = objJdbcTemplate.batchUpdate(insertQuery, batchArgs);
+		
+		LOG.debug(" Number of Records Inserted - {} ", updateCounts.length);
+	}
 	
-		objJdbcTemplate.update(getQuery(), new PreparedStatementSetter() {
-		      public void setValues(PreparedStatement ps) throws SQLException {
-		        ps.setString(1, recordDataObj.getMessageTextId());
-		        ps.setString(2, (String)responseMetaData.get(RULE_GROUP_INFO_KEYS.RULE_GROUP_NAME.name()));
-		        ps.setString(3, (String)responseMetaData.get(RULE_GROUP_INFO_KEYS.SPACE_NAME.name()));
-		        ps.setString(4, (String)responseMetaData.get(RULE_GROUP_INFO_KEYS.APP_NAME.name()));
-		        ps.setString(5, (String)responseMetaData.get(RULE_GROUP_INFO_KEYS.CLIENT_NAME.name()));
-		        ps.setString(6, (String)responseMetaData.get(RULE_GROUP_INFO_KEYS.VERSION.name()));
-		        ps.setString(7, recordDataObj.getMessageText());
-		        ps.setObject(8, GsonHelper.toJson(responseMetaData));
-		        ps.setObject(9, responseMetaData.get(RULE_GROUP_INFO_KEYS.RULE_GROUP_EXECUTION_STATUS.name()));
-		      }
-		    });
-
-	}
-
-	private String getQuery() {
-
-		return this.QUERY_TO_INSERT;
-	}
-
 	public JdbcTemplate getJdbcTemplate() {
 		return objJdbcTemplate;
 	}

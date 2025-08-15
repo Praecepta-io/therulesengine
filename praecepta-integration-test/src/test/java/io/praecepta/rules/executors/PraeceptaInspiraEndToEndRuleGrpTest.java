@@ -190,7 +190,7 @@ public class PraeceptaInspiraEndToEndRuleGrpTest {
 		
 		return  "{\r\n" + 
 //				"  \"ruleInput\": \"{\\r\\n\\t\\\"age\\\": 26,\\r\\n\\t\\\"hasSalaryAccount\\\" : \\\"Y\\\",\\r\\n\\t\\\"eligibleForQuickCredit\\\" : \\\"Y\\\",\\r\\n\\t\\\"activeFixedDepositAcc\\\" : \\\"Y\\\",\\r\\n\\t\\\"average12MonthsBal\\\" : 2700000,\\r\\n\\t\\\"turnOver12Mon\\\" : 6000000\\t\\t\\r\\n}\",\r\n" + 
-				"  \"ruleInput\": \"{\\r\\n\\t\\\"AGE\\\": 26,\\r\\n\\t\\\"HASSALARYACCOUNT\\\" : \\\"Y\\\",\\r\\n\\t\\\"ELIGIBLEFORQUICKCREDIT\\\" : \\\"Y\\\",\\r\\n\\t\\\"ACTIVEFIXEDDEPOSITACC\\\" : \\\"Y\\\",\\r\\n\\t\\\"AVERAGE12MONTHSBAL\\\" : 2700000,\\r\\n\\t\\\"TURNOVER12MON\\\" : 6000000\\t\\t\\r\\n}\",\r\n" + 
+				"  \"ruleInput\": \"{\\r\\n\\t\\\"AGE\\\": 71,\\r\\n\\t\\\"HASSALARYACCOUNT\\\" : \\\"Y\\\",\\r\\n\\t\\\"ELIGIBLEFORQUICKCREDIT\\\" : \\\"Y\\\",\\r\\n\\t\\\"ACTIVEFIXEDDEPOSITACC\\\" : \\\"Y\\\",\\r\\n\\t\\\"AVERAGE12MONTHSBAL\\\" : \\\"3071602\\\",\\r\\n\\t\\\"TURNOVER12MON\\\" : \\\"560661\\\"\\t\\t\\r\\n}\",\r\n" + 
 				"  \"spaceKeyDetails\": {\r\n" + 
 				"    \"spaceName\": \"INSPIRA\",\r\n" + 
 				"    \"clientId\": \"ABC_BANK\",\r\n" + 

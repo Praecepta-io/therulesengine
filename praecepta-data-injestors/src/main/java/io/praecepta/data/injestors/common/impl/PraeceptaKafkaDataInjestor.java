@@ -21,7 +21,7 @@ import io.praecepta.data.configs.common.kafka.PraeceptaKafkaInjestorConfig;
 import io.praecepta.data.injestor.common.exception.PraeceptaDataInjestorException;
 
 public class PraeceptaKafkaDataInjestor<K extends Serializable, V extends Serializable>
-		extends PraeceptaAbstractDataInjestor<PraeceptaKafkaInjestorConfig> {
+		extends PraeceptaAbstractDataInjestor<PraeceptaKafkaInjestorConfig, PraeceptaDataRecord> {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(PraeceptaKafkaDataInjestor.class);
 

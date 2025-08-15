@@ -36,7 +36,7 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 	
 	private Object obj = new Object();
 	
-	private int chunkSize = 5;
+	private int chunkSize = 500;
 	
 	@Override
 	public void openCollectorConnection(PraeceptaDBInjestorConfig dbConfig) {
@@ -78,7 +78,7 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
         config.setDriverClassName(dbConfigPropertis.get(PraeceptaDBDataConfigType.DB_DRIVER.getElementName()));
         
      // Optional tuning
-        config.setMaximumPoolSize(10);
+        config.setMaximumPoolSize(100);
         config.setMinimumIdle(5);
         config.setIdleTimeout(30000);
         config.setConnectionTimeout(30000);
@@ -103,7 +103,7 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 	@Override
 	protected PraeceptaDataRecord performCollection() {
 		// This method cannot be called directly. Must call startDataCollector(). Underlying will call this method to poll individual Collection 
-		LOG.info("Inside DB Fetch performCollection ");
+		LOG.debug("Inside DB Fetch performCollection ");
 		
 		if(getCollectorStatus() == null || getCollectorStatus() == CONNECTION_STATUS.INITIALIZED) {
 			throw new PraeceptaDataCollectorException("Perform Collector should be called only after Starting the Data Collector");
@@ -115,7 +115,7 @@ public class PraeceptaDBDataCollector extends PraeceptaAbstractDataCollector<Pra
 			
 			List<Map<String, Object>> resultSetRowsFromDB =  objJdbcTemplate.queryForList(queryToExecute);
 			
-			LOG.info("After JDBC Template Query Execution is Done ");
+			LOG.debug("After JDBC Template Query Execution is Done : "+ queryToExecute + " . Result Size Returned --> "+resultSetRowsFromDB.size());
 	
 			if (!PraeceptaObjectHelper.isObjectEmpty(resultSetRowsFromDB)) {
 				

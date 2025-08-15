@@ -81,7 +81,7 @@ public class PraeceptaRuleTernaryFileDbDao{
 		List<String> metaDataFilesContent;
 		try {
 			
-			LOG.debug("Get Meta Data File List for File Location {} and Meta Data File Name Suffix {}", fileLocation, fileNameSuffix );
+			LOG.info("Get Meta Data File List for File Location {} and Meta Data File Name Suffix {}", fileLocation, fileNameSuffix );
 			// Get Only Meta Data Files that doesn't have Delete extension in it. This will make sure to pull only Active Meta Data Files
 			metaDataFilesContent = PraeceptaFileUtil.readAllFilesInDirectoryWithAFormat(fileLocation, PraeceptaWindowsDbDao.getActiveFilePredicate(fileNameSuffix));
 
@@ -100,15 +100,15 @@ public class PraeceptaRuleTernaryFileDbDao{
 	}
 	
 	void bootstrapActiveMetaDataFiles() {
-		LOG.debug("inside bootstrapActiveMetaDataFiles" );
+		LOG.info("inside bootstrapActiveMetaDataFiles" );
 		
 		if(!bootStrapActiveMetaData) {
 		
-			LOG.debug("Bootstrapping the Active Meta Data Files" );
+			LOG.info("Bootstrapping the Active Meta Data Files" );
 			
 			List<PraeceptaRuleSpaceMetadata> metaDataList = getMetaDataFileList();
 			
-			LOG.debug("Active Meta Data Files Size is {} ", metaDataList.size() );
+			LOG.info("Active Meta Data Files Size is {} ", metaDataList.size() );
 			
 			captureRuleSpacePathDetails(metaDataList);
 			captureRuleGroupPathDetails(metaDataList);

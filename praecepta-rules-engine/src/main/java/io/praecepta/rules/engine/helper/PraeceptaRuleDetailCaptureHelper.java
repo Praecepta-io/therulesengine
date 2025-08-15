@@ -41,7 +41,7 @@ public class PraeceptaRuleDetailCaptureHelper {
 
 		}
 		
-		LOG.info("Here is the Space Key captured from Input Text - {} ", compositeKey);
+		LOG.debug("Here is the Space Key captured from Input Text - {} ", compositeKey);
 		return compositeKey;
 	}
 	
@@ -75,7 +75,7 @@ public class PraeceptaRuleDetailCaptureHelper {
 
 		}
 		
-		LOG.info("Here is the Version captured from Input Text - {} ", version);
+		LOG.debug("Here is the Version captured from Input Text - {} ", version);
 		return version;
 	}
 
@@ -108,7 +108,7 @@ public class PraeceptaRuleDetailCaptureHelper {
 
 		}
 		
-		LOG.info("Here is the Rule Group Name from Input Text - {} ", ruleGroupName);
+		LOG.debug("Here is the Rule Group Name from Input Text - {} ", ruleGroupName);
 		return ruleGroupName;
 	}
 
@@ -123,7 +123,7 @@ public class PraeceptaRuleDetailCaptureHelper {
 
 		}
 		
-		LOG.info("Here is the Rule Input from Input Text - {} ", ruleInput);
+		LOG.debug("Here is the Rule Input from Input Text - {} ", ruleInput);
 		return ruleInput;
 	}
 	
@@ -147,7 +147,7 @@ public class PraeceptaRuleDetailCaptureHelper {
 
 		}
 		
-		LOG.info("Here is the Rule Input Type from Input Text - {} ", ruleInputType);
+		LOG.debug("Here is the Rule Input Type from Input Text - {} ", ruleInputType);
 		return ruleInputType;
 	}
 	

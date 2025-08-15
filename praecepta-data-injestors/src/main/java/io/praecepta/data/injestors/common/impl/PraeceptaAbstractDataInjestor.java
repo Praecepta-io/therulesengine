@@ -9,8 +9,8 @@ import io.praecepta.data.configs.common.enums.CONNECTION_STATUS;
 import io.praecepta.data.injestor.common.exception.PraeceptaDataInjestorException;
 import io.praecepta.data.injestors.common.intf.IPraeceptaDataInjestor;
 
-public abstract class PraeceptaAbstractDataInjestor<INJESTOR_CONFIG extends GenericAbstractPraeceptaDataConfig>
-		implements IPraeceptaDataInjestor<INJESTOR_CONFIG> {
+public abstract class PraeceptaAbstractDataInjestor<INJESTOR_CONFIG extends GenericAbstractPraeceptaDataConfig, E>
+		implements IPraeceptaDataInjestor<INJESTOR_CONFIG, E> {
 
 	private final static Logger logger = LoggerFactory.getLogger(PraeceptaAbstractDataInjestor.class);
 

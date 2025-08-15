@@ -32,7 +32,7 @@ public class PraeceptaRuleExecutionEngineHelper {
 
 		PraeceptaRequestStore ruleStore = new PraeceptaRequestStore();
 		
-		LOG.info(" Input Text that needs to be used for Create store --> {} ", inputText);
+		LOG.debug(" Input Text that needs to be used for Create store --> {} ", inputText);
 		
 		Map<String, Object> dataMap = GsonHelper.toMapEntityPreserveNumber(inputText);
 		

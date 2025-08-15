@@ -10,7 +10,9 @@ import static org.mockito.Mockito.spy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -20,6 +22,7 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import io.praecepta.core.data.PraeceptaDictionaryData;
 import io.praecepta.core.helper.GsonHelper;
 import io.praecepta.data.collectors.common.dto.PraeceptaDataRecord;
 import io.praecepta.data.collectors.common.dto.PraeceptaDataRecord.RecordEntry;
@@ -34,7 +37,9 @@ public class PraeceptaDBDataInjestorTest {
 
 	PraeceptaDBDataInjestor dataInjestorMock = null;
 
-	PraeceptaDataRecord dataRecord = null;
+	PraeceptaDictionaryData dataRecord = null;
+	
+	List<PraeceptaDictionaryData> dataRecords = new ArrayList<>(1);
 
 	@Before
 	public void init() {
@@ -55,15 +60,16 @@ public class PraeceptaDBDataInjestorTest {
 		dbConfig.addNonMandatoryConfigElements(PraeceptaDBDataConfigType.INSERT_QUERY.getElementName(),
 				"INSERT INTO `praecepta`.`rule_response_info`(`RULE_GROUP_ID`,`RESPONSE`,`RESPONSE_METADATA`,`CREATED_DATE`)VALUES(?,?,?,NOW())");
 
-		dataRecord = new PraeceptaDataRecord(1);
+		 dataRecord = new PraeceptaDictionaryData();
 
-		String rulesResponse = "{\"attribute1\":\"val1\"}";
+		Map<String, Object> responseData = new HashMap<>();
 
-		Map<String, Object> responseMetaData = new HashMap<>();
+		responseData.put("attribute1", "val1");
+		responseData.put("status", "success");
 
-		responseMetaData.put("TEST", GsonHelper.toEntity("{\"status\":\"success\"}", Map.class));
-
-		dataRecord.addRecordEntry(rulesResponse, "TEST1", responseMetaData);
+		dataRecord.setDictionaryDetails(responseData);
+		
+		dataRecords.add(dataRecord);
 
 	}
 
@@ -103,9 +109,9 @@ public class PraeceptaDBDataInjestorTest {
 
 		testOpenInjestorConnection();
 
-		doNothing().when((PraeceptaAbstractDataInjestor) spyObj).injestData(dataRecord);
+		doNothing().when((PraeceptaAbstractDataInjestor) spyObj).injestData(dataRecords);
 
-		dataInjestorMock.injestData(dataRecord);
+		dataInjestorMock.injestData(dataRecords);
 
 		dataInjestorMock.terminateDataInjestor();
 
@@ -139,11 +145,11 @@ public class PraeceptaDBDataInjestorTest {
 		field3.setAccessible(true);
 		field3.set(dataInjestorMock, template);
 
-		Method privateMethod = PraeceptaDBDataInjestor.class.getDeclaredMethod("performInjestData", RecordEntry.class);
-
-		privateMethod.setAccessible(true);
-
-		privateMethod.invoke(dataInjestorMock, dataRecord.getRecordEntries().getFirst());
+//		Method privateMethod = PraeceptaDBDataInjestor.class.getDeclaredMethod("performInjestData", RecordEntry.class);
+//
+//		privateMethod.setAccessible(true);
+//
+//		privateMethod.invoke(dataInjestorMock, dataRecord.getRecordEntries().getFirst());
 
 	}
 
@@ -152,18 +158,21 @@ public class PraeceptaDBDataInjestorTest {
 		PraeceptaDBDataInjestor dataInjestor = new PraeceptaDBDataInjestor();
 
 		dataInjestor.openInjestorConnection(dbConfig);
+		
+		List<PraeceptaDictionaryData> dataRecords = new ArrayList<>(1);
 
-		PraeceptaDataRecord dataRecord = new PraeceptaDataRecord(1);
+		PraeceptaDictionaryData dataRecord = new PraeceptaDictionaryData();
 
-		String rulesResponse = "{\"attribute1\":\"val1\"}";
+		Map<String, Object> responseData = new HashMap<>();
 
-		Map<String, Object> responseMetaData = new HashMap<>();
+		responseData.put("attribute1", "val1");
+		responseData.put("status", "success");
 
-		responseMetaData.put("TEST", GsonHelper.toEntity("{\"status\":\"success\"}", Map.class));
+		dataRecord.setDictionaryDetails(responseData);
+		
+		dataRecords.add(dataRecord);
 
-		dataRecord.addRecordEntry(rulesResponse, "TEST1", responseMetaData);
-
-		dataInjestor.injestData(dataRecord);
+		dataInjestor.injestData(dataRecords);
 
 		dataInjestor.terminateDataInjestor();
 

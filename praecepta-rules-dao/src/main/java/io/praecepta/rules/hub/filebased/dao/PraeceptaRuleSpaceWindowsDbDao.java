@@ -85,6 +85,8 @@ public class PraeceptaRuleSpaceWindowsDbDao extends  PraeceptaWindowsDbDao imple
 
 	@Override
 	public Collection<PraeceptaRuleSpace> fetchAll() {
+		
+		LOG.info(" Space Fetch All  ");
 
 		Map<PraeceptaRuleSpaceCompositeKey, Map<String, String>> activeSpaceFileDetails = ternaryFileDbDao.getActiveSpaceFilePathDetails();
 

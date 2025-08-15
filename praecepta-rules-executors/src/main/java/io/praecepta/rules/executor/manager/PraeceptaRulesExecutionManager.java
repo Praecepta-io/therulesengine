@@ -28,7 +28,7 @@ public class PraeceptaRulesExecutionManager {
 	private PraeceptaDictionaryData magnifyingLense;
 	private BiFunction<RecordEntry, PraeceptaDictionaryData, RecordEntry> inputMagnifier;
 	
-	private PraeceptaExecutor executore = new PraeceptaExecutor(3);
+	private PraeceptaExecutor executore = new PraeceptaExecutor(15);
 	
 	public PraeceptaRulesExecutionManager(IPraeceptaDataCollector<?> dataCollector,PraeceptaBasicRuleExecutionEngine rulesExecutionEngine) {
 		this.dataCollector=dataCollector;
@@ -107,7 +107,7 @@ public class PraeceptaRulesExecutionManager {
 
 	private PraeceptaRequestStore createRuleStore(RecordEntry record) {
 		
-		logger.info(" Creating Rule Request Store for Record Entry --> {}  ", record);
+		logger.debug(" Creating Rule Request Store for Record Entry --> {}  ", record);
 		
 		PraeceptaRequestStore ruleRequestStore = null;
 		

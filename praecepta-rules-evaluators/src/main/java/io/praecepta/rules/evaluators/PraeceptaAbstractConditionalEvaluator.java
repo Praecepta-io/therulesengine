@@ -39,11 +39,11 @@ public abstract class PraeceptaAbstractConditionalEvaluator<INPUT extends Praece
 	public final boolean evaluateTheCondition(INPUT input) {
 		boolean result = false;
 		if(checkValidationStatus(input)) {
-			LOG.info("Evaluating input {}", input);
+			LOG.debug("Evaluating input {}", input);
 			result =  evaluate(input);
 			
 		}
-		LOG.info("Condition Result {}", result);
+		LOG.debug("Condition Result {}", result);
 		return result;
 	}
 

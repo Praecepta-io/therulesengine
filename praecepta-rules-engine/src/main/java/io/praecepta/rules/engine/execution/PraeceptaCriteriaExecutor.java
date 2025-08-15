@@ -51,7 +51,7 @@ public class PraeceptaCriteriaExecutor {
 		
 		logger.debug("Inside Execute Criterias Of A RuleGroup");
 		
-		logger.info(" Before Executing Pre Rule Group Side Car");
+		logger.debug(" Before Executing Pre Rule Group Side Car");
 		
 		Boolean ruleValidationStatus =  (Boolean) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_VALIDATION_STATUS);
 		
@@ -80,7 +80,7 @@ public class PraeceptaCriteriaExecutor {
 		
 		Object ruleRequestAsAMap = ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_AS_KEY_VALUE_PAIR);
 				
-		logger.info(" After Executing Pre Rule Group Side Car");
+		logger.debug(" After Executing Pre Rule Group Side Car");
 		
 		logger.info(" About to Rule Trigger for Rule Group {} ", ruleGroupToExecute);
 		
@@ -89,7 +89,7 @@ public class PraeceptaCriteriaExecutor {
 		List<PraeceptaRequestStore> resultCriteriaStores = new ArrayList<>();
 		
 		praeceptaOrderedCriterias.stream().forEach( eachCriteria -> {
-			logger.info(" Preparing the Rule Trigger for Criteria {} ", eachCriteria);
+			logger.debug(" Preparing the Rule Trigger for Criteria {} ", eachCriteria);
 			
 			PraeceptaRequestStore eachCriteriaStore = new PraeceptaRequestStore();
 			
@@ -108,7 +108,14 @@ public class PraeceptaCriteriaExecutor {
 
 			eachCriteriaStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_EXECUTION_ENGINE, ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_EXECUTION_ENGINE));
 			
+			try {
 			executeCriteria(eachCriteriaStore, eachCriteria);
+			}catch (Exception e) {
+				Map<String, Object> ruleResponseMap = (Map<String, Object>) eachCriteriaStore
+						 .fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_AS_KEY_VALUE_PAIR);
+				logger.error("Exception While Running the Criteria "+eachCriteria + " for Input "+ruleResponseMap + " . Here is the Exception : {}", e);
+//				e.printStackTrace();
+			}
 			
 			resultCriteriaStores.add(eachCriteriaStore);
 			
@@ -116,18 +123,18 @@ public class PraeceptaCriteriaExecutor {
 		
 		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.CRITERIA_RULE_STORES, resultCriteriaStores);
 		
-		logger.info(" Before Executing Post Rule Group Side Car");
+		logger.debug(" Before Executing Post Rule Group Side Car");
 		GenericPraeceptaInfoTrackerSideCarInjector postRuleGrpSideCar = (GenericPraeceptaInfoTrackerSideCarInjector) 
 				ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.POST_RULE_GROUP_SIDE_CAR);
 
 		if (postRuleGrpSideCar != null) {
 			 ruleGroupToExecute = (String) ruleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_GROUP_NAME);
 			
-			logger.info(" About to Perform Post Rule Grp Side car for Rule Group {} ", ruleGroupToExecute);
+			logger.debug(" About to Perform Post Rule Grp Side car for Rule Group {} ", ruleGroupToExecute);
 			performSideCarActivity(ruleStore, postRuleGrpSideCar);
 		}
 
-		logger.info(" After Executing Post Rule Group Side Car");
+		logger.debug(" After Executing Post Rule Group Side Car");
 		
 		logger.debug(" Finishing Execute Criterias Of A RuleGroup");
 	}
@@ -315,13 +322,13 @@ public class PraeceptaCriteriaExecutor {
 		
 		PraeceptaMultiNestedCondition nestedMultiCondition = criteria.getPredicates();
 		
-		logger.info(" Predicates to Evaluate {} ", nestedMultiCondition);
+		logger.debug(" Predicates to Evaluate {} ", nestedMultiCondition);
 		
 		/*Collection<PraeceptaActionDetails> actionsToPerform = criteria.getActionToPerform();
 		
-		logger.info(" Actions to Perform {} ", actionsToPerform);*/
+		logger.debug(" Actions to Perform {} ", actionsToPerform);*/
 		
-		logger.info(" Before Executing Pre Rule Side Car");
+		logger.debug(" Before Executing Pre Rule Side Car");
 		
 		GenericPraeceptaRuleLevelInfoTrackerSideCarInjector preRuleRunSideCar = (GenericPraeceptaRuleLevelInfoTrackerSideCarInjector)
 				criteriaRuleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.PRE_RULE_SIDE_CAR);
@@ -330,28 +337,28 @@ public class PraeceptaCriteriaExecutor {
 			performSideCarActivity(criteriaRuleStore, preRuleRunSideCar);
 		}
 		
-		logger.info(" After Executing Pre Rule Side Car");
+		logger.debug(" After Executing Pre Rule Side Car");
 
 		evaluateARule(nestedMultiCondition, criteriaRuleStore);
 		
-		logger.info(" Ready to Perform Actions ");
+		logger.debug(" Ready to Perform Actions ");
 
 		
 		Collection<PraeceptaActionDetails> simpleActionsList = null;
 		
 		// performAction
 		if(Boolean.valueOf(criteriaRuleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_CONDITION_STATUS).toString())){
-			logger.info(" Rule Condition is Status is Success. Capturing List of Success Actions");
+			logger.debug(" Rule Condition is Status is Success. Capturing List of Success Actions");
 
 			simpleActionsList = criteria.getActionToPerform();
 			
 		}else {
-			logger.info(" Rule Condition is Status is Failure. Capturing List of Failure Actions");
+			logger.debug(" Rule Condition is Status is Failure. Capturing List of Failure Actions");
 
 			//actions on condition fail
 			simpleActionsList = criteria.getActionToPerformOnFailure();
 		}
-		logger.info(" Triggering Actions");
+		logger.debug(" Triggering Actions");
 		
 		AbstractPraeceptaRuleExecutionEngine executionEngine = (AbstractPraeceptaRuleExecutionEngine) criteriaRuleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_EXECUTION_ENGINE);
 
@@ -371,7 +378,7 @@ public class PraeceptaCriteriaExecutor {
 			});
 		}
 		
-		logger.info(" Before Executing Post Rule Side Car");
+		logger.debug(" Before Executing Post Rule Side Car");
 		
 		GenericPraeceptaRuleLevelInfoTrackerSideCarInjector postRuleSideCar = (GenericPraeceptaRuleLevelInfoTrackerSideCarInjector) 
 				criteriaRuleStore.fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.POST_RULE_SIDE_CAR);
@@ -380,7 +387,7 @@ public class PraeceptaCriteriaExecutor {
 			performSideCarActivity(criteriaRuleStore, postRuleSideCar);
 		}
 		
-		logger.info(" After Executing Post Rule Side Car");
+		logger.debug(" After Executing Post Rule Side Car");
 		
 		logger.debug("Exiting from Execute Criteria");
 	}
@@ -412,7 +419,7 @@ public class PraeceptaCriteriaExecutor {
 		
 		boolean multiRuleEvaluationStatus = stimulateARule(nestedMultiCondition, ruleStore);
 		
-		logger.info("Final Rule Evaluation Status is --> {} ",multiRuleEvaluationStatus);
+		logger.debug("Final Rule Evaluation Status is --> {} ",multiRuleEvaluationStatus);
 		ruleStore.upsertToPraeceptaStore(PraeceptaRuleRequestStoreType.RULE_CONDITION_STATUS, multiRuleEvaluationStatus);
 		
 		logger.debug("Exiting from Rule Evaluation");
@@ -423,7 +430,7 @@ public class PraeceptaCriteriaExecutor {
 		
 		boolean simpleConditionResult = false;
 		
-		logger.info(" Triggering a Simple Condition ");
+		logger.debug(" Triggering a Simple Condition ");
 		
 		if (simpleCondition != null) {
 			
@@ -435,15 +442,23 @@ public class PraeceptaCriteriaExecutor {
 
 			if (evaluator != null) {
 				
+				ConditionValueHolder  conditionValueHolder = null;
+				
+				if(simpleCondition.getConditionValueHolder() != null) {
+					conditionValueHolder = simpleCondition.getConditionValueHolder();
+				} else {
 				// Build the Value Holder Here 
-				buildConditionValueHolder(simpleCondition, ruleStore);
+				  conditionValueHolder = buildConditionValueHolder(simpleCondition, ruleStore);
+				}
+				
+				PraeceptaSimpleCondition clonedSimpleCondition = new PraeceptaSimpleCondition(conditionOperator, conditionValueHolder, simpleCondition.getParameters());
 
-				simpleConditionResult = evaluator.evaluateTheCondition(simpleCondition);
+				simpleConditionResult = evaluator.evaluateTheCondition(clonedSimpleCondition);
 			}
 			
 		}
 		
-		logger.info(" Simple Rule Result --> {} ", simpleConditionResult);
+		logger.debug(" Simple Rule Result --> {} ", simpleConditionResult);
 		
 		return simpleConditionResult;
 	}
@@ -452,7 +467,7 @@ public class PraeceptaCriteriaExecutor {
 		
 		boolean multiConditionResult = false;
 		
-		logger.info(" Triggering a Multi Condition ");
+		logger.debug(" Triggering a Multi Condition ");
 		
 		if (multiCondition != null) {
 			
@@ -474,14 +489,14 @@ public class PraeceptaCriteriaExecutor {
 			multiConditionResult = previousSimpleConditionResult;
 			
 		}
-		logger.info(" Multi Condition Result --> {} ", multiConditionResult);
+		logger.debug(" Multi Condition Result --> {} ", multiConditionResult);
 		
 		return multiConditionResult;
 	}
 	
 	public static boolean evaluateAMultiNestedCondition(PraeceptaMultiNestedCondition multiNestedCondition, PraeceptaRequestStore ruleStore) {
 		
-		logger.info(" Triggering a Multi Nested Condition ");
+		logger.debug(" Triggering a Multi Nested Condition ");
 		
 		boolean multiNestedConditionResult = false;
 		
@@ -505,14 +520,14 @@ public class PraeceptaCriteriaExecutor {
 			multiNestedConditionResult = previousMultiConditionResult;
 			
 		}
-		logger.info(" Nested Multi Condition Result --> {} ", multiNestedConditionResult);
+		logger.debug(" Nested Multi Condition Result --> {} ", multiNestedConditionResult);
 		
 		return multiNestedConditionResult;
 	}
 	
 	public static boolean stimulateARule(PraeceptaMultiNestedCondition multiNestedCondition, PraeceptaRequestStore ruleStore) {
 		
-		logger.info(" Triggering a Criteria ");
+		logger.debug(" Triggering a Criteria ");
 		
 		boolean criteriaResult = false;
 		
@@ -536,7 +551,7 @@ public class PraeceptaCriteriaExecutor {
 			criteriaResult = previousMultiNestedConditionResult;
 			
 		}
-		logger.info(" Criteria Result --> {} ", criteriaResult);
+		logger.debug(" Criteria Result --> {} ", criteriaResult);
 		
 		return criteriaResult;
 		
@@ -561,9 +576,11 @@ public class PraeceptaCriteriaExecutor {
 	}
 	
 	@SuppressWarnings("unused")
-	public static void buildConditionValueHolder(PraeceptaSimpleCondition condition, PraeceptaRequestStore ruleStore){
+	public static ConditionValueHolder buildConditionValueHolder(PraeceptaSimpleCondition condition, PraeceptaRequestStore ruleStore){
 		
-		logger.info(" Building Condition value Holder ");
+		logger.debug(" Building Condition value Holder ");
+		
+		ConditionValueHolder conditionValueHolder = null;
 		
 		
 		if(!PraeceptaObjectHelper.isObjectEmpty(ruleStore)) {
@@ -577,12 +594,12 @@ public class PraeceptaCriteriaExecutor {
 				requestMap = (Map<String, Object>)ruleRequestAsAMap;
 				reQuestAvailableAsAMap = true;
 				
-				logger.info(" Rules Request is Available as a Key Value Pair");
+				logger.debug(" Rules Request is Available as a Key Value Pair");
 			}
 			
 			if(!reQuestAvailableAsAMap && !PraeceptaObjectHelper.isObjectEmpty(ruleRequest)) {
 				
-				logger.info(" Rules Request is Available as a String");
+				logger.debug(" Rules Request is Available as a String");
 				
 				if(GsonHelper.isValidJson(ruleRequest.toString())) {
 					requestMap = 
@@ -598,31 +615,31 @@ public class PraeceptaCriteriaExecutor {
 			if(!PraeceptaObjectHelper.isObjectEmpty(requestMap)) {
 				
 				// LHS value will comes from the Subject or Attribute name that we need to Compare  
-				logger.info(" Getting LHS Value ");
+				logger.debug(" Getting LHS Value ");
 				
 				Object fromValue = deriveLhsValue(condition, requestMap);
 				
-				logger.info(" LHS Value - {}", fromValue);
+				logger.debug(" LHS Value - {}", fromValue);
 				
 				// RHS value will comes from the Attribute name provided in the nested loop or a static value assigned in the Condition 
-				logger.info(" Getting RHS Value ");
+				logger.debug(" Getting RHS Value ");
 				
 				Object toValue = deriveRhsValue(condition, requestMap);
 				
-				logger.info(" RHS Value - {}", toValue);
+				logger.debug(" RHS Value - {}", toValue);
 				
-				ConditionValueHolder conditionValueHolder = new ConditionValueHolder(fromValue, toValue);
+				conditionValueHolder = new ConditionValueHolder(fromValue, toValue);
 				
-				condition.setConditionValueHolder(conditionValueHolder);
+//				condition.setConditionValueHolder(conditionValueHolder);
 			
 			}
 		}
 		
-//		return conditionValueHolder;
+		return conditionValueHolder;
 	}
 
 	public static Object deriveLhsValue(PraeceptaSimpleCondition condition, Map<String, Object> requestMap) {
-		logger.info(" Capturing LHS Value ");
+		logger.debug(" Capturing LHS Value ");
 		
 		Object fromValue = null;
 		
@@ -636,13 +653,13 @@ public class PraeceptaCriteriaExecutor {
 			
 		}
 		
-		logger.info(" LHS Value Captured - {} ", fromValue);
+		logger.debug(" LHS Value Captured - {} ", fromValue);
 		return fromValue;
 	}
 	
 	public static Object getValueUsingAttributeName(String attributeName, Map<String, Object> requestMap) {
 		
-		logger.info(" Getting Value for Attribute Name - {} ", attributeName);
+		logger.debug(" Getting Value for Attribute Name - {} ", attributeName);
 		Object valueToReturn = null; 
 		
 		if(!PraeceptaObjectHelper.isObjectEmpty(attributeName)) {
@@ -658,7 +675,7 @@ public class PraeceptaCriteriaExecutor {
 	}
 
 	private static Object deriveRhsValue(PraeceptaSimpleCondition condition, Map<String, Object> requestMap) {
-		logger.info(" Capturing RHS Value ");
+		logger.debug(" Capturing RHS Value ");
 		
 		Object toValue = null;
 		
@@ -672,7 +689,7 @@ public class PraeceptaCriteriaExecutor {
 			
 		}
 		
-		logger.info(" RHS Value Captured - {} ", toValue);
+		logger.debug(" RHS Value Captured - {} ", toValue);
 		return toValue;
 	}
 	

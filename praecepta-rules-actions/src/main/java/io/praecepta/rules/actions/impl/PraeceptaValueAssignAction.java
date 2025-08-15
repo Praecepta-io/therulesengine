@@ -40,7 +40,7 @@ public final class PraeceptaValueAssignAction extends PraeceptaAbstractAction{
 	public final void doAction(PraeceptaRequestStore requestStore) {
 		LOG.debug( "Inside the Value Assign Action");
 		
-		LOG.info( "Performing the Value Assign Action for Rule Condition Status - {}", getActionTypeExecuted());
+		LOG.debug( "Performing the Value Assign Action for Rule Condition Status - {}", getActionTypeExecuted());
 		
 		boolean actionSuccessStatusFlag = false;
 
@@ -59,7 +59,7 @@ public final class PraeceptaValueAssignAction extends PraeceptaAbstractAction{
 				}
 			}
 			
-			LOG.info( "Rules Request Received {} Inside the Value Assign Action", requestMap);
+			LOG.debug( "Rules Request Received {} Inside the Value Assign Action", requestMap);
 			
 			
 			if (!PraeceptaObjectHelper.isObjectEmpty(requestMap)) {
@@ -122,7 +122,7 @@ public final class PraeceptaValueAssignAction extends PraeceptaAbstractAction{
 	
 								if (actionHolder != null) {
 	
-									LOG.info(" Applied Factored Value Based on the Factor Action Type Received ");
+									LOG.debug(" Applied Factored Value Based on the Factor Action Type Received ");
 	
 									// Retrieving the Action value after Applying the Factor
 									valueToAssign = actionHolder.getActionedValue();
@@ -190,9 +190,9 @@ public final class PraeceptaValueAssignAction extends PraeceptaAbstractAction{
 
 	private void applyStrategy(Map<String, Object> requestMap, Object valueToAssign) {
 		
-		LOG.info( "Inside the Apply Strategy with Action Attribute Name {}  and Value To Assign {}", getActionAttributeName(), valueToAssign);
+		LOG.debug( "Inside the Apply Strategy with Action Attribute Name {}  and Value To Assign {}", getActionAttributeName(), valueToAssign);
 		
-		LOG.info( " Here is the Strategy to Apply - {} ", getActionStrategy());
+		LOG.debug( " Here is the Strategy to Apply - {} ", getActionStrategy());
 		
 		PraeceptaActionStrategyType actionStrategy = getActionStrategy() == null ? PraeceptaActionStrategyType.ADD_TO_PAYLOAD : getActionStrategy();
 
@@ -212,6 +212,6 @@ public final class PraeceptaValueAssignAction extends PraeceptaAbstractAction{
 			}
 //		}
 		
-		LOG.info( "Exiting from Apply Strategy");
+		LOG.debug( "Exiting from Apply Strategy");
 	}
 }

@@ -24,8 +24,10 @@ public class PraeceptaRuleGroupApiLauncher
     {
     	
     	System.setProperty("contextPath", "io.praecepta.rest.api.config.RulesConfiguration");
+    	
+    	String ruleKnowledge = System.getProperty("praecepta.rule.load.props.location", "praecepta-rule-load.properties");
 
-    	PraeceptaRuleBuilder.buildWithEnvParmPropsFile().buildAll();
+    	PraeceptaRuleBuilder.buildWithPropsClasspath(ruleKnowledge).buildAll();
 
 		ApplicationContext context = PraeceptaPivotalRulesHubContextHolder.getHubContext();
 
