@@ -34,7 +34,7 @@ public class PraeceptaRulesExecutorLauncher {
 		System.setProperty(RULE_GRP_NAME, "CREDIT_CHECK");
 		
 		
-		System.setProperty("contextPath", "io.praecepta.rules.executor.inspira.spring.config.PraeceptaInspiraRulesExecutorConfig");
+		System.getProperty("contextPath", "io.praecepta.rules.executor.inspira.spring.config.PraeceptaInspiraRulesExecutorConfig");
 		
 		String inspiraConnectonDetails = System.getProperty("praecepta.rule.data.collector.props.location", "praecepta-inspira-oracle-data-collector.properties");
 		
