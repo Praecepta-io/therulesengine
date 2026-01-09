@@ -1,0 +1,6 @@
+io/praecepta/data/injestors/common/impl/PraeceptaDBDataInjestor.class
+io/praecepta/data/injestors/common/impl/PraeceptaKafkaDataInjestor.class
+io/praecepta/data/injestors/common/intf/IPraeceptaDataInjestor.class
+io/praecepta/data/injestors/common/impl/PraeceptaAbstractDataInjestor.class
+io/praecepta/data/injestors/common/enums/RULE_GROUP_INFO_KEYS.class
+io/praecepta/data/injestor/common/exception/PraeceptaDataInjestorException.class

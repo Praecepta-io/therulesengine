@@ -1,0 +1,13 @@
+io/praecepta/data/configs/common/exception/PraeceptaDataConfigException.class
+io/praecepta/data/configs/common/kafka/PraeceptaKafkaDataConfigType.class
+io/praecepta/data/configs/common/IPraeceptaDataConfigElementNameType.class
+io/praecepta/data/configs/common/IPraeceptaDataConfig$COLLECTOR_CONFIG_DATA_ELEMENT_TYPE.class
+io/praecepta/data/collectors/common/dto/PraeceptaDataRecord$RecordEntry.class
+io/praecepta/data/configs/common/db/PraeceptaDBDataConfigType.class
+io/praecepta/data/configs/common/GenericAbstractPraeceptaDataConfig.class
+io/praecepta/data/configs/common/kafka/PraeceptaKafkaInjestorConfig.class
+io/praecepta/data/configs/common/db/PraeceptaDBInjestorConfig.class
+io/praecepta/data/collectors/common/dto/PraeceptaDataRecord.class
+io/praecepta/data/configs/common/IPraeceptaDataConfig.class
+io/praecepta/data/configs/common/GenericAbstractPraeceptaDataConfig$ElementNameToDataTypePair.class
+io/praecepta/data/configs/common/enums/CONNECTION_STATUS.class

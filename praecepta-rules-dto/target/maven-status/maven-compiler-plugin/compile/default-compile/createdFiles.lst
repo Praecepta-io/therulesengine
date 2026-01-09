@@ -1,0 +1,14 @@
+io/praecepta/rules/dto/SimpleConditionCriteriaInfo.class
+io/praecepta/rules/dto/MultiConditionCriteriaInfo.class
+io/praecepta/rules/dto/MultiNestedConditionGroupInfo.class
+io/praecepta/rules/dto/RuleActionInfo.class
+io/praecepta/rules/dto/RuleSpaceInfo.class
+io/praecepta/rules/dto/CONDITION_TYPE.class
+io/praecepta/rules/dto/MultiNestedConditionInfo.class
+io/praecepta/rules/dto/MultiNestedConditionCriteriaInfo.class
+io/praecepta/rules/dto/ConditionInfo.class
+io/praecepta/rules/dto/RuleGroupInfo.class
+io/praecepta/rules/dto/SimpleConditionGroupInfo.class
+io/praecepta/rules/dto/SimpleConditionInfo.class
+io/praecepta/rules/dto/MultiConditionGroupInfo.class
+io/praecepta/rules/dto/MultiConditionInfo.class

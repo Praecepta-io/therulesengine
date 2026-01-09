@@ -1,0 +1,6 @@
+/home/runner/work/therulesengine/therulesengine/praecepta-dao/src/main/java/io/praecepta/hibernate/spring/config/HibernateConfig.java
+/home/runner/work/therulesengine/therulesengine/praecepta-dao/src/main/java/io/praecepta/dao/model/AbstractHibernateBaseModel.java
+/home/runner/work/therulesengine/therulesengine/praecepta-dao/src/main/java/io/praecepta/dao/AbstractDao.java
+/home/runner/work/therulesengine/therulesengine/praecepta-dao/src/main/java/io/praecepta/hibernate/dao/intf/IHibernateDao.java
+/home/runner/work/therulesengine/therulesengine/praecepta-dao/src/main/java/io/praecepta/hibernate/dao/HibernateDao.java
+/home/runner/work/therulesengine/therulesengine/praecepta-dao/src/main/java/io/praecepta/dao/intf/IDAO.java

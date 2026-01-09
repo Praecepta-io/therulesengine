@@ -1,0 +1,14 @@
+io/praecepta/rest/api/config/RulesConfiguration.class
+io/praecepta/rest/api/controller/IPraeceptaRuleSpaceController.class
+io/praecepta/rest/api/service/IPraeceptaRulesGroupService.class
+io/praecepta/rest/api/controller/IPraeceptaRuleGroupController.class
+io/praecepta/rest/constants/ServiceAndMethodNames.class
+io/praecepta/rest/api/controller/PraeceptaRuleSpaceController.class
+io/praecepta/rest/api/controller/PraeceptaRuleGroupController.class
+io/praecepta/rest/api/PraeceptaRuleGroupApiLauncher.class
+io/praecepta/rest/api/service/impl/PraeceptaRuleGroupServiceImpl.class
+io/praecepta/rest/enums/PraeceptaWsRequestStoreType.class
+io/praecepta/rest/api/service/impl/PraeceptaSidecarService.class
+io/praecepta/rest/api/controller/PraeceptaSidecarController.class
+io/praecepta/rest/api/controller/IPraeceptaSidecarController.class
+io/praecepta/rest/api/service/IPraeceptaSidecarService.class

@@ -1,0 +1,14 @@
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/rulegrp/sidecars/PraeceptaDefaultPreRuleGrpSideCarInjector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/execution/IPraeceptaRuleExecutionEngine.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/sidecars/GenericPraeceptaInfoTrackerSideCarInjector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/helper/PraeceptaRuleDetailCaptureHelper.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/helper/PraeceptaRuleExecutionEngineHelper.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/execution/AbstractPraeceptaRuleExecutionEngine.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/rulegrp/sidecars/PraeceptaDefaultPostRuleGrpSideCarInjector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/sidecars/GenericPraeceptaRuleLevelInfoTrackerSideCarInjector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/execution/PraeceptaCriteriaExecutor.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/rule/sidecars/PraeceptaDefaultPreRuleSideCarInjector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/execution/PraeceptaBasicRuleExecutionEngine.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/sidecars/enums/PraeceptaSideCarStoreType.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/sidecars/IPraeceptaInfoTrackerSideCarInjector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-engine/src/main/java/io/praecepta/rules/engine/rule/sidecars/PraeceptaDefaultPostRuleSideCarInjector.java

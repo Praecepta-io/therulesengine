@@ -1,0 +1,11 @@
+io/praecepta/rest/api/swagger/PraeceptaSwaggerGenerator.class
+io/praecepta/rest/api/swagger/PraeceptaSwaggerGenerator$SwaggerType.class
+io/praecepta/rest/api/builder/PraeceptaSparkApiServiceMethodBuilder.class
+io/praecepta/rest/api/service/IPraeceptaApiService.class
+io/praecepta/rest/api/interceptor/PraeceptaRestServiceInterceptorRegistry.class
+io/praecepta/rest/constants/ServiceAndMethodNames.class
+io/praecepta/rest/api/builder/PraeceptaSparkApiServiceBuilder.class
+io/praecepta/rest/api/model/PraeceptaRestServiceInterceptorModel.class
+io/praecepta/rest/enums/PraeceptaWsRequestStoreType.class
+io/praecepta/rest/api/annotation/PraeceptaExposeAsRestService.class
+io/praecepta/rest/api/annotation/PraeceptaExposeAsRestServiceMethod.class

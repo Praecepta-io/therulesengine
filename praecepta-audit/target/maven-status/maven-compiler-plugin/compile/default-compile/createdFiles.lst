@@ -1,0 +1,10 @@
+io/praecepta/audit/service/PraeceptaAuditServiceConstants.class
+io/praecepta/audit/controller/IPraeceptaAuditController.class
+io/praecepta/audit/api/PraeceptaAuditLauncher.class
+io/praecepta/audit/service/helper/PraeceptaRuleSpaceHelper.class
+io/praecepta/audit/service/IPraeceptaAuditService.class
+io/praecepta/audit/service/impl/PraeceptaAuditServiceImpl.class
+io/praecepta/audit/service/impl/PraeceptaExecutionAuditServiceImpl.class
+io/praecepta/audit/config/PraeceptaAuditSpringConfig.class
+io/praecepta/audit/service/IPraeceptaExecutionAuditService.class
+io/praecepta/audit/controller/PraeceptaAuditController.class

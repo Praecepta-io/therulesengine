@@ -1,0 +1,14 @@
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/controller/PraeceptaRuleGroupController.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/service/impl/PraeceptaRuleGroupServiceImpl.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/controller/PraeceptaRuleSpaceController.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/controller/IPraeceptaRuleGroupController.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/constants/ServiceAndMethodNames.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/controller/PraeceptaSidecarController.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/service/IPraeceptaRulesGroupService.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/service/impl/PraeceptaSidecarService.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/enums/PraeceptaWsRequestStoreType.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/config/RulesConfiguration.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/service/IPraeceptaSidecarService.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/controller/IPraeceptaSidecarController.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/PraeceptaRuleGroupApiLauncher.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/controller/IPraeceptaRuleSpaceController.java

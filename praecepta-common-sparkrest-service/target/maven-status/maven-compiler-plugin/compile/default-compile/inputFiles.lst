@@ -1,0 +1,10 @@
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/api/annotation/PraeceptaExposeAsRestServiceMethod.java
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/api/service/IPraeceptaApiService.java
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/api/model/PraeceptaRestServiceInterceptorModel.java
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/enums/PraeceptaWsRequestStoreType.java
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/api/builder/PraeceptaSparkApiServiceBuilder.java
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/constants/ServiceAndMethodNames.java
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/api/annotation/PraeceptaExposeAsRestService.java
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/api/swagger/PraeceptaSwaggerGenerator.java
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/api/interceptor/PraeceptaRestServiceInterceptorRegistry.java
+/home/runner/work/therulesengine/therulesengine/praecepta-common-sparkrest-service/src/main/java/io/praecepta/rest/api/builder/PraeceptaSparkApiServiceMethodBuilder.java
