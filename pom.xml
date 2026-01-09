@@ -70,27 +70,24 @@
 	</developers>
 
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- <springframework.version>5.0.6.RELEASE</springframework.version> <springboot.version>2.0.1.RELEASE</springboot.version> -->
-
-<!-- 		<springframework.version>4.3.7.RELEASE</springframework.version> -->
-		<springframework.version>5.3.14</springframework.version>
-		<!-- <springboot.version>1.5.2.RELEASE</springboot.version> -->
+		<spring-boot.version>3.2.1</spring-boot.version>
+		<springframework.version>6.1.2</springframework.version>
 
 		<junit.version>4.12</junit.version>
 
-		<slf4j.version>1.6.6</slf4j.version>
+		<slf4j.version>1.7.36</slf4j.version>
 		<common.version>${project.version}</common.version>
 
-		<logback.version>1.2.3</logback.version>
+		<logback.version>1.4.14</logback.version>
 
-		<java.version>1.8</java.version>
+		<java.version>17</java.version>
 		<kafka.version>3.4.0</kafka.version>
 		<activemq.version>5.18.1</activemq.version>
 
@@ -131,7 +128,7 @@
 	<modules>
 		<module>praecepta-core</module>
 		<module>praecepta-dao</module>
-		<module>praecepta-common-sparkrest-service</module>
+		<module>praecepta-common-springboot-service</module>
 		<module>praecepta-rules-core</module>
 		<module>praecepta-rules-sidecars-to</module>
 		<module>praecepta-rules-dao</module>
@@ -183,6 +180,18 @@
 			</snapshots>
 		</repository>
 	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 
