@@ -11,8 +11,8 @@
 	</parent>
 	
 	<groupId>io.praecepta.common.restservice</groupId>
-	<artifactId>praecepta-common-sparkrest-service</artifactId>
-	<name>praecepta-common-sparkrest-service</name>
+	<artifactId>praecepta-common-springboot-service</artifactId>
+	<name>praecepta-common-springboot-service</name>
 	<url>https://www.praecepta.io</url>
 	
 	<description>

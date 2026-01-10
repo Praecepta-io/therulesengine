@@ -74,9 +74,13 @@ public class RulesConfiguration {
 		
 		List<HandlerInterceptor> rulePreMethodLeverlFilters = new ArrayList<>();
 		
-		rulePreMethodLeverlFilters.add((request, response, handler) -> {
-			response.setHeader("methodFilterTriggered", "Yes");
-			return true;
+		rulePreMethodLeverlFilters.add(new HandlerInterceptor() {
+			@Override
+			public boolean preHandle(jakarta.servlet.http.HttpServletRequest request, 
+					jakarta.servlet.http.HttpServletResponse response, Object handler) throws Exception {
+				response.setHeader("methodFilterTriggered", "Yes");
+				return true;
+			}
 		});
 		
 		addPreInterceptors(rulePreGetMethodLevelModel, rulePreMethodLeverlFilters );

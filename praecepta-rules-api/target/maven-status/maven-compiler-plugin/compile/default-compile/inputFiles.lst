@@ -10,5 +10,5 @@
 /home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/config/RulesConfiguration.java
 /home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/service/IPraeceptaSidecarService.java
 /home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/controller/IPraeceptaSidecarController.java
-/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/PraeceptaRuleGroupApiLauncher.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/PraeceptaRuleGroupApiApplication.java
 /home/runner/work/therulesengine/therulesengine/praecepta-rules-api/src/main/java/io/praecepta/rest/api/controller/IPraeceptaRuleSpaceController.java
