@@ -77,8 +77,8 @@
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<spring-boot.version>3.2.1</spring-boot.version>
-		<springframework.version>6.1.2</springframework.version>
+		<spring-boot.version>3.2.5</spring-boot.version>
+		<springframework.version>6.1.6</springframework.version>
 
 		<junit.version>4.12</junit.version>
 
