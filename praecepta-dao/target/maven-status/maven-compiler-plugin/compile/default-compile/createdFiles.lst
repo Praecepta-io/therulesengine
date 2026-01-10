@@ -1,0 +1,7 @@
+io/praecepta/dao/intf/IDAO.class
+io/praecepta/dao/AbstractDao.class
+io/praecepta/hibernate/spring/config/HibernateConfig$1.class
+io/praecepta/hibernate/spring/config/HibernateConfig.class
+io/praecepta/dao/model/AbstractHibernateBaseModel.class
+io/praecepta/hibernate/dao/HibernateDao.class
+io/praecepta/hibernate/dao/intf/IHibernateDao.class

@@ -1,0 +1,17 @@
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/cocurrent/PraeceptaBatchProcessor.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/helper/IPraeceptaInterfaceAdapter.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/helper/GsonHelper.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/intf/IPraeceptaDataProcessor.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/helper/PraeceptaObjectHelper.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/PraeceptaOutputDto.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/PraeceptaDictionaryData.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/intf/IDto.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/intf/IBaseModel.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/intf/IModel.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/cocurrent/PraeceptaExecutor.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/helper/PraeceptaCollectionUtil.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/intf/ITransformer.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/helper/GsonHelperWithAdapter.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/PraeceptaInputDto.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/PraeceptaRequestStore.java
+/home/runner/work/therulesengine/therulesengine/praecepta-core/src/main/java/io/praecepta/core/data/enums/IPraeceptaRequestStoreType.java

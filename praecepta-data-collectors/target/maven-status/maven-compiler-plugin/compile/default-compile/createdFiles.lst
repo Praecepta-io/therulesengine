@@ -1,0 +1,10 @@
+io/praecepta/data/collectors/common/collector/PraeceptaAbstractDataCollector.class
+io/praecepta/data/collectors/common/exception/PraeceptaDataCollectorException.class
+io/praecepta/data/collectors/common/configs/GenericAbstractPraeceptaCollectorConfig.class
+io/praecepta/data/collectors/common/IPraeceptaDataCollectorConfig.class
+io/praecepta/data/collectors/common/collector/PraeceptaDBDataCollector.class
+io/praecepta/data/collectors/common/configs/kafka/PraeceptaKafkaCollectorConfig.class
+io/praecepta/data/collectors/common/IPraeceptaDataCollector.class
+io/praecepta/data/collectors/common/IPraeceptaDataCollectorConfigElementNameType.class
+io/praecepta/data/collectors/common/collector/PraeceptaKafkaDataCollector.class
+io/praecepta/data/collectors/common/configs/GenericAbstractPraeceptaCollectorConfig$ElementNameToDataTypePair.class

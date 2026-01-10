@@ -81,7 +81,8 @@ public class PraeceptaSpringRestClientWrapper extends PraeceptaRestClientWrapper
 			
 			logger.info(" Here is the Http Response Received -> {} ", strResponse);
 			
-			holder.setHttpStatus(strResponse.getStatusCode());
+			// Convert HttpStatusCode to HttpStatus in Spring 6
+			holder.setHttpStatus(HttpStatus.valueOf(strResponse.getStatusCode().value()));
 			
 			holder.setOutput(strResponse.getBody());
 			

@@ -2,3 +2,9 @@
 /Binaries/choreographic-rules-engine/lib
 /Binaries/orchestration-rules-engine/lib
 *.bak
+target/
+*.class
+.classpath
+.project
+.settings/
+*.versionsBackup

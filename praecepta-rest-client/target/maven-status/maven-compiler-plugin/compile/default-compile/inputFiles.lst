@@ -1,0 +1,12 @@
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/builder/PraeceptaRestClientBuilder.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/enums/PraeceptaEnricherAttributeType.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/config/PraeceptaWebServiceClientConfig.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/enums/REST_CLIENT_TYPE.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/wrapper/PraeceptaRestClientWrapper.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/builder/PraeceptaSecureRestClientBuilder.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/enums/REST_CLIENT_CONFIG_KEYS.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/wrapper/PraeceptaSpringRestClientWrapper.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/PraeceptaWsRestClient.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/config/PraeceptaSecureWebServiceClientConfig.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/enums/VALUE_STRATEGY_TYPE.java
+/home/runner/work/therulesengine/therulesengine/praecepta-rest-client/src/main/java/io/praecepta/rest/client/dto/PraeceptaWsRequestResponseHolder.java

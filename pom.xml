@@ -70,40 +70,37 @@
 	</developers>
 
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- <springframework.version>5.0.6.RELEASE</springframework.version> <springboot.version>2.0.1.RELEASE</springboot.version> -->
-
-<!-- 		<springframework.version>4.3.7.RELEASE</springframework.version> -->
-		<springframework.version>5.3.14</springframework.version>
-		<!-- <springboot.version>1.5.2.RELEASE</springboot.version> -->
+		<spring-boot.version>3.2.5</spring-boot.version>
+		<springframework.version>6.1.6</springframework.version>
 
 		<junit.version>4.12</junit.version>
 
-		<slf4j.version>1.6.6</slf4j.version>
+		<slf4j.version>1.7.36</slf4j.version>
 		<common.version>${project.version}</common.version>
 
-		<logback.version>1.2.3</logback.version>
+		<logback.version>1.4.14</logback.version>
 
-		<java.version>1.8</java.version>
+		<java.version>17</java.version>
 		<kafka.version>3.4.0</kafka.version>
 		<activemq.version>5.18.1</activemq.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Plugin versions used for Praecepta -->
-		<version.compiler.plugin>3.6.1</version.compiler.plugin>
+		<version.compiler.plugin>3.11.0</version.compiler.plugin>
 		<coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
 		<cyclonedx-maven-plugin.version>2.8.0</cyclonedx-maven-plugin.version>
 		<maven-archetype-plugin.version>3.2.1</maven-archetype-plugin.version>
 		<maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
-		<maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
-		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+		<maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
+		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
 		<maven-filtering.version>3.3.2</maven-filtering.version>
 		<maven-gpg-plugin.version>3.2.4</maven-gpg-plugin.version>
@@ -131,7 +128,7 @@
 	<modules>
 		<module>praecepta-core</module>
 		<module>praecepta-dao</module>
-		<module>praecepta-common-sparkrest-service</module>
+		<module>praecepta-common-springboot-service</module>
 		<module>praecepta-rules-core</module>
 		<module>praecepta-rules-sidecars-to</module>
 		<module>praecepta-rules-dao</module>
@@ -184,6 +181,18 @@
 		</repository>
 	</repositories>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 
 		<dependency>
@@ -193,27 +202,24 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- SLF4J and Logback versions managed by Spring Boot -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-			<version>${logback.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-to-slf4j</artifactId>
-			<version>2.9.1</version>
 		</dependency>
 
 		<dependency>

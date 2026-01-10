@@ -1,7 +1,7 @@
 package io.praecepta.rest.client.builder;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -42,7 +42,8 @@ public class PraeceptaRestClientBuilder<CONFIG extends PraeceptaWebServiceClient
 		
 		logger.info("Read Time Out Speccified {} ",wsClientConfig.getReadTimeOut().intValue());
 		
-		requestFactory.setReadTimeout(wsClientConfig.getReadTimeOut().intValue());
+		// In Spring 6, setReadTimeout has been replaced with setConnectTimeout
+		requestFactory.setConnectTimeout(java.time.Duration.ofMillis(wsClientConfig.getReadTimeOut().intValue()));
 		
 		logger.info(" Preparing the Rest Template with the given Configuration");
 		

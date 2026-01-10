@@ -1,0 +1,4 @@
+io/praecepta/rules/sidecars/model/PraeceptaRuleGroupSideCarsInfo.class
+io/praecepta/rules/sidecars/model/PraeceptaRuleLevelSideCarsInfo.class
+io/praecepta/rules/sidecars/to/PraeceptaSideCarDataHolder.class
+io/praecepta/rules/sidecars/model/PraeceptaSideCarMetadata.class

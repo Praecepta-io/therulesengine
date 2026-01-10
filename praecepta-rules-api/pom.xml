@@ -77,7 +77,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.praecepta.common.restservice</groupId>
-			<artifactId>praecepta-common-sparkrest-service</artifactId>
+			<artifactId>praecepta-common-springboot-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

@@ -1,0 +1,9 @@
+/home/runner/work/therulesengine/therulesengine/praecepta-data-collectors/src/main/java/io/praecepta/data/collectors/common/collector/PraeceptaAbstractDataCollector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-data-collectors/src/main/java/io/praecepta/data/collectors/common/configs/kafka/PraeceptaKafkaCollectorConfig.java
+/home/runner/work/therulesengine/therulesengine/praecepta-data-collectors/src/main/java/io/praecepta/data/collectors/common/collector/PraeceptaDBDataCollector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-data-collectors/src/main/java/io/praecepta/data/collectors/common/collector/PraeceptaKafkaDataCollector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-data-collectors/src/main/java/io/praecepta/data/collectors/common/configs/GenericAbstractPraeceptaCollectorConfig.java
+/home/runner/work/therulesengine/therulesengine/praecepta-data-collectors/src/main/java/io/praecepta/data/collectors/common/exception/PraeceptaDataCollectorException.java
+/home/runner/work/therulesengine/therulesengine/praecepta-data-collectors/src/main/java/io/praecepta/data/collectors/common/IPraeceptaDataCollector.java
+/home/runner/work/therulesengine/therulesengine/praecepta-data-collectors/src/main/java/io/praecepta/data/collectors/common/IPraeceptaDataCollectorConfigElementNameType.java
+/home/runner/work/therulesengine/therulesengine/praecepta-data-collectors/src/main/java/io/praecepta/data/collectors/common/IPraeceptaDataCollectorConfig.java

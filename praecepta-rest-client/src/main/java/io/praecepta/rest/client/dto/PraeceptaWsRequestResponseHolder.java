@@ -38,7 +38,7 @@ public class PraeceptaWsRequestResponseHolder {
 
 	private void captureHttpMethod(PraeceptaWsOperationType httpOperationType) {
 		if(httpOperationType != null) {
-			httpMethod = HttpMethod.resolve(httpOperationType.name());
+			httpMethod = HttpMethod.valueOf(httpOperationType.name());
 		}
 	}
 	
