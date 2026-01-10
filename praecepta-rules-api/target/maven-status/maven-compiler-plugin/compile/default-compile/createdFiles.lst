@@ -9,7 +9,10 @@ io/praecepta/rest/api/controller/PraeceptaRuleGroupController.class
 io/praecepta/rest/api/service/impl/PraeceptaRuleGroupServiceImpl.class
 io/praecepta/rest/enums/PraeceptaWsRequestStoreType.class
 io/praecepta/rest/api/PraeceptaRuleGroupApiApplication.class
+io/praecepta/rest/api/controller/PraeceptaRuleSpaceRestController.class
 io/praecepta/rest/api/service/impl/PraeceptaSidecarService.class
+io/praecepta/rest/api/controller/PraeceptaSidecarRestController.class
 io/praecepta/rest/api/controller/PraeceptaSidecarController.class
+io/praecepta/rest/api/controller/PraeceptaRuleGroupRestController.class
 io/praecepta/rest/api/controller/IPraeceptaSidecarController.class
 io/praecepta/rest/api/service/IPraeceptaSidecarService.class
