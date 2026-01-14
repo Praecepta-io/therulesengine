@@ -141,7 +141,7 @@ public class PraeceptaKafkaDataCollectorTest {
 			try {
 				Thread.sleep(1000*5L);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				System.out.println("Exception Message - " + e.getMessage());
 			}
 			
 			counter++;
@@ -159,7 +159,7 @@ public class PraeceptaKafkaDataCollectorTest {
 					try {
 						Thread.sleep(10L);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						System.out.println("Exception Message - " + e.getMessage());
 					}
 
 					Collection<PraeceptaDataRecord> recordsPolledAfterTermination = kafkaCollector.getCollectedData();

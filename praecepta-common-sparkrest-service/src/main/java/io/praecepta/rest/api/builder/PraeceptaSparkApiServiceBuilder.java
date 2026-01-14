@@ -38,7 +38,7 @@ public class PraeceptaSparkApiServiceBuilder {
 	private static final String headerAllowHeaders = "Access-Control-Allow-Headers";
 	private static final String headerAllowOrigin = "Access-Control-Allow-Origin";
 	private static final String headerRequestMethod = "Access-Control-Request-Method";
-	private static final String wildcard = "*";
+	private static final String praecepta_wildcard = "*praecepta.com";
 
 	public static void buildServices(Map<String,Object> beans, Map<PraeceptaRestServiceInterceptorModel, List<Filter>> restPreInterceptors, 
 			Map<PraeceptaRestServiceInterceptorModel, List<Filter>> restPostInterceptors) {
@@ -133,9 +133,9 @@ public class PraeceptaSparkApiServiceBuilder {
 		    			
 		    			before("/*", (request, response) -> {
 							LOG.info("Execute this Filter to All the Methods in this Class before calling any methods");
-							response.header(headerAllowOrigin, wildcard);
-							response.header(headerRequestMethod, wildcard);
-							response.header(headerAllowHeaders, wildcard);
+							response.header(headerAllowOrigin, praecepta_wildcard);
+							response.header(headerRequestMethod, praecepta_wildcard);
+							response.header(headerAllowHeaders, praecepta_wildcard);
 
 						});
 		    			

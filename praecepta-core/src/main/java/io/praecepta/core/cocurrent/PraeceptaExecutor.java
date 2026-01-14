@@ -56,8 +56,7 @@ public class PraeceptaExecutor {
 				try {
 						command.call();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Exception Message - " + e.getMessage());
 				} finally {
 					semaphore.release(); // Release the permit when the task completes (or fails).
 				}

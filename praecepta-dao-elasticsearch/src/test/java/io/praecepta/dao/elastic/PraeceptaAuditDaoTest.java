@@ -56,8 +56,7 @@ public class PraeceptaAuditDaoTest {
 		try {
 			Thread.sleep(5000L);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception Message - " + e.getMessage());
 		}
 		
 		System.out.println(entity.getId());
@@ -205,8 +204,7 @@ public class PraeceptaAuditDaoTest {
 		try {
 			Thread.sleep(5000L);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception Message - " + e.getMessage());
 		}
 		
 		System.out.println(entity.getId());

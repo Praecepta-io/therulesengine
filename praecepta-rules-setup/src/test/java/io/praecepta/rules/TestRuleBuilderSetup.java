@@ -137,7 +137,7 @@ public class TestRuleBuilderSetup {
 			methodToUpdate.setAccessible(true);
 			methodToUpdate.invoke(hubManager,objRuleSpace, false);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Exception Message - " + e.getMessage());
 		}
 	}
 	

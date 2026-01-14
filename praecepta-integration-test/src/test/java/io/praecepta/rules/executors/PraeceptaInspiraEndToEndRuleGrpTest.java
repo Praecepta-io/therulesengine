@@ -146,8 +146,7 @@ public class PraeceptaInspiraEndToEndRuleGrpTest {
 			try {
 				Thread.sleep(3000L);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Exception Message - " + e.getMessage());
 			}
 			
 			if(numberOfMessages == 1) {

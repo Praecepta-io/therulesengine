@@ -114,7 +114,7 @@ public class PraeceptaCriteriaExecutor {
 				Map<String, Object> ruleResponseMap = (Map<String, Object>) eachCriteriaStore
 						 .fetchFromPraeceptaStore(PraeceptaRuleRequestStoreType.RULES_REQUEST_AS_KEY_VALUE_PAIR);
 				logger.error("Exception While Running the Criteria "+eachCriteria + " for Input "+ruleResponseMap + " . Here is the Exception : {}", e);
-//				e.printStackTrace();
+
 			}
 			
 			resultCriteriaStores.add(eachCriteriaStore);

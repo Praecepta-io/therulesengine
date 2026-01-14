@@ -52,7 +52,7 @@ public class PraeceptaDataCollectorTest {
 			try {
 				Thread.sleep(10L);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				System.out.println("Exception Message - " + e.getMessage());
 			}
 			counter++;
 			if(counter == 10) {
@@ -68,7 +68,7 @@ public class PraeceptaDataCollectorTest {
 					/*try {
 						Thread.sleep(10L);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						System.out.println("Exception Message - " + e.getMessage());
 					}*/
 					
 					Collection<PraeceptaDataRecord> recordsPolledAfterTermination = testDataCollector.getCollectedData();

@@ -28,6 +28,8 @@ import spark.route.HttpMethod;
 @Configuration
 @Import({ PraeceptaRuleBuilderConfig.class })
 public class ParserConfiguration {
+	
+	private static final String praecepta_wildcard = "*praecepta.com";
 
 	@Bean(name = ServiceAndMethodNames.PARSER_EXECUTION_CONTROLLER_NAME)
 	public IPraeceptaSQLParserExecutionController getParserExecutionController() {
@@ -86,10 +88,10 @@ public class ParserConfiguration {
 	
 	private Filter corseFilter() {
 		return (req, res) -> {
-			res.header("Access-Control-Allow-Headers", "*");
-			res.header("Access-Control-Allow-Origin", "*");
-			res.header("Access-Control-Allow-Methods", "*");
-			res.header("Access-Control-Request-Method", "*");
+			res.header("Access-Control-Allow-Headers", praecepta_wildcard);
+			res.header("Access-Control-Allow-Origin", praecepta_wildcard);
+			res.header("Access-Control-Allow-Methods", praecepta_wildcard);
+			res.header("Access-Control-Request-Method", praecepta_wildcard);
 		};
 	}
 

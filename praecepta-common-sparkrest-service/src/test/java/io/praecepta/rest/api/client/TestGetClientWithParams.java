@@ -38,11 +38,9 @@ public static void main(String[] args) throws Exception{
 				}
 				
 			} catch (UnsupportedOperationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Exception Message - " + e.getMessage());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Exception Message - " + e.getMessage());
 			}
 		}
 	    client.close();

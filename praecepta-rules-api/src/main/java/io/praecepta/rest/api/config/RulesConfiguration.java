@@ -31,6 +31,8 @@ import spark.route.HttpMethod;
 @Import({PraeceptaRuleBuilderConfig.class})
 public class RulesConfiguration {
 	
+	private static final String praecepta_wildcard = "*praecepta.com";
+	
 	@Bean(name = ServiceAndMethodNames.RULE_GROUP_CONTROLLER_NAME)
 	public IPraeceptaRuleGroupController getRuleGroupController() {
 		return new PraeceptaRuleGroupController();
@@ -94,10 +96,10 @@ public class RulesConfiguration {
 	
 	private Filter corseFilter() {
 		return (req, res) -> {
-			res.header("Access-Control-Allow-Headers", "*");
-			res.header("Access-Control-Allow-Origin", "*");
-			res.header("Access-Control-Allow-Methods", "*");
-			res.header("Access-Control-Request-Method", "*");
+			res.header("Access-Control-Allow-Headers", praecepta_wildcard);
+			res.header("Access-Control-Allow-Origin", praecepta_wildcard);
+			res.header("Access-Control-Allow-Methods", praecepta_wildcard);
+			res.header("Access-Control-Request-Method", praecepta_wildcard);
 		};
 	}
 

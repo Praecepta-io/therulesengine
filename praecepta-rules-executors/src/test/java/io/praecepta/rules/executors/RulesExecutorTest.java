@@ -10,7 +10,7 @@ public class RulesExecutorTest {
 		try {
 			PraeceptaRulesExecutorLauncher.main(null);
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+			System.out.println("Exception Message - " + e.getMessage());
 		}
 	}
 }

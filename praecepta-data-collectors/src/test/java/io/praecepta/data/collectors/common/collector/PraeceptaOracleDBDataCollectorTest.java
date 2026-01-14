@@ -80,8 +80,7 @@ public class PraeceptaOracleDBDataCollectorTest {
 			try {
 				Thread.sleep(100L);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Exception Message - " + e.getMessage());
 			}
 			
 			if(counter == 5) {

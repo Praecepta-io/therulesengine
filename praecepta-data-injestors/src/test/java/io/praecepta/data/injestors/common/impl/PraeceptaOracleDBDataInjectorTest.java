@@ -72,8 +72,7 @@ public class PraeceptaOracleDBDataInjectorTest {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception Message - " + e.getMessage());
 		}
 
 		dbInjector.terminateDataInjestor();
