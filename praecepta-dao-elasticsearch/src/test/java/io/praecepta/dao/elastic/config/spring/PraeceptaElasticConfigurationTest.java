@@ -15,7 +15,7 @@ public class PraeceptaElasticConfigurationTest {
 		esConfig.setUseSSL(true);
 		esConfig.setUseSubject(true);
 		esConfig.setConnectionSubjectName("PraeceptaES");
-		esConfig.setConnectionSubjectSupport("Praecep1@E$");
+		
 		
 		
 		esConfig.elasticsearchClient();
